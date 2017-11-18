@@ -1,16 +1,14 @@
-package entity;
+package com.compay.entity;
+
+
 import javax.persistence.*;
 
-
-// TBD нам точно нужны другие вещи в дб. дополнять еще придется.
-
-
 @Entity
-@Table(name = "UNKNOWN")//TBD
-public class CompayEntity {
+@Table(name = "USERS")//TBD
+public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "LOGIN")
@@ -25,11 +23,10 @@ public class CompayEntity {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column (name = "SURRNAME")
-    private String surrName;
-
     @Column (name = "NAME")
     private String name;
+
+
 
 
 
@@ -73,13 +70,6 @@ public class CompayEntity {
         this.lastName = lastName;
     }
 
-    public String getSurrName() {
-        return surrName;
-    }
-
-    public void setSurrName(String surrName) {
-        this.surrName = surrName;
-    }
 
     public String getName() {
         return name;
@@ -89,3 +79,4 @@ public class CompayEntity {
         this.name = name;
     }
 }
+

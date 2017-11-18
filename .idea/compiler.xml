@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Hillel_EVO_COMPAY" />
+        <module name="test_EVO_COMPANY" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Hillel_EVO_COMPAY" target="1.7" />
+      <module name="test_EVO_COMPANY" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
