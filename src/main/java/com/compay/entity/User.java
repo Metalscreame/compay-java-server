@@ -1,14 +1,12 @@
 package com.compay.entity;
-
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USERS")//TBD
+@Table(name = "TEST")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// если ставить авто, то  HIBERNATE_SEQUENCE exceptrion
     private int id;
 
     @Column(name = "LOGIN")
@@ -20,8 +18,8 @@ public class User {
     @Column(name = "EMAIL")
     private String email;
 
-    @Column(name = "LAST_NAME")
-    private String lastName;
+//    @Column(name = "LAST_NAME")
+//    private String lastName;
 
     @Column (name = "NAME")
     private String name;
@@ -62,13 +60,13 @@ public class User {
         this.email = email;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
 
 
     public String getName() {
