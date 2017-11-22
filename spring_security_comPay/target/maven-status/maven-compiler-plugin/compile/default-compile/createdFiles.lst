@@ -1,0 +1,12 @@
+com\websecurity\config\WebAppConfig.class
+com\websecurity\entity\User.class
+com\websecurity\service\UserServiceImpl.class
+com\websecurity\controller\MainController.class
+com\websecurity\controller\LoginController.class
+com\websecurity\entity\Admin.class
+com\websecurity\entity\Anonym.class
+com\websecurity\service\UserDetailsServiceImpl.class
+com\websecurity\config\Initializer.class
+com\websecurity\config\SecurityConfig.class
+com\websecurity\entity\enums\UserRoleEnum.class
+com\websecurity\service\UserService.class
