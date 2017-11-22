@@ -2,7 +2,7 @@ package com.compay.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "TEST")
+@Table(name = "USERS")
 public class User {
 
     @Id
