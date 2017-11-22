@@ -2,11 +2,11 @@ package com.compay.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "TEST")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// если ставить авто, то  HIBERNATE_SEQUENCE exceptrion
+    @GeneratedValue(strategy = GenerationType.AUTO)// если ставить авто, то  HIBERNATE_SEQUENCE exceptrion
     private int id;
 
     @Column(name = "LOGIN")
@@ -25,7 +25,9 @@ public class User {
     private String name;
 
 
-
+    User(){
+        this.id=id;
+    }
 
 
     public int getId() {
