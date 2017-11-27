@@ -2,11 +2,11 @@ package com.compay.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "TEST")
+@Table(name = "USERS")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)// если ставить авто, то  HIBERNATE_SEQUENCE exceptrion
+    //@GeneratedValue с этим не работает
     private int id;
 
     @Column(name = "LOGIN")
@@ -23,11 +23,6 @@ public class User {
 
     @Column (name = "NAME")
     private String name;
-
-
-    User(){
-        this.id=id;
-    }
 
 
     public int getId() {

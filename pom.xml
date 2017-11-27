@@ -7,12 +7,17 @@
   <version>1.0-SNAPSHOT</version>
   <name>test Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  <repositories><repository>
+    <id>hibernatesqlite-maven</id>
+    <url>https://hibernate-sqlite.googlecode.com/svn/trunk/mavenrepo</url>
+  </repository></repositories>
+
   <properties>
     <spring.version>4.2.0.RELEASE</spring.version>
     <spring-security.version>4.0.2.RELEASE</spring-security.version>
     <spring-data-jpa.version>1.8.2.RELEASE</spring-data-jpa.version>
     <javax.servlet>4.0.0</javax.servlet>
-    <hibernate-validator.version>5.2.1.Final</hibernate-validator.version>
+    <hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
     <mysql-connector.version>5.1.36</mysql-connector.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
     <jstl.version>1.2</jstl.version>
@@ -29,6 +34,21 @@
       <artifactId>spring-web</artifactId>
       <version>${spring.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>3.20.1</version>
+    </dependency>
+
+
+
+    <dependency>
+      <groupId>com.enigmabridge</groupId>
+      <artifactId>hibernate4-sqlite-dialect</artifactId>
+      <version>0.1.2</version>
+    </dependency>
+
 
     <dependency>
       <groupId>org.springframework</groupId>
@@ -78,7 +98,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>5.2.6.Final</version>
+      <version>4.3.11.Final</version>
     </dependency>
 
     <dependency>
@@ -124,6 +144,16 @@
       <artifactId>slf4j-api</artifactId>
       <version>1.7.25</version>
     </dependency>
+
+
+
+
+
+
+
+
+
+
 
   </dependencies>
 
