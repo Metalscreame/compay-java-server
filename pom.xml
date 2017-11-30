@@ -31,15 +31,54 @@
 
 
   <properties>
-    <org.springframework-version>4.1.7.RELEASE</org.springframework-version>
-    <org.hibernate-em-version>4.3.8.Final</org.hibernate-em-version>
-    <org.springframework.data-version>1.9.0.RELEASE</org.springframework.data-version>
-    <dbcp-version>1.4</dbcp-version>
-    <mysql-connector-version>5.1.28</mysql-connector-version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <org.springframework-version>4.1.7.RELEASE</org.springframework-version>
+      <org.hibernate-em-version>4.3.8.Final</org.hibernate-em-version>
+      <org.springframework.data-version>1.9.0.RELEASE</org.springframework.data-version>
+      <dbcp-version>1.4</dbcp-version>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <jcl.slf4j.version>1.7.12</jcl.slf4j.version>
+      <!-- For JSON -->
+      <jstl.version>1.2</jstl.version>
+      <jackson.version>2.6.3</jackson.version>
+      <logback.version>1.1.3</logback.version>
+      <servletapi.version>3.1.0</servletapi.version>
   </properties>
 
   <dependencies>
+      <!-- Need this for com.compay.json to/from object -->
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+          <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>${jackson.version}</version>
+      </dependency>
+
+      <!-- JSTL for views -->
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>jstl</artifactId>
+          <version>${jstl.version}</version>
+      </dependency>
+
+      <!-- Logging -->
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+          <version>${jcl.slf4j.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>${logback.version}</version>
+      </dependency>
+
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
@@ -64,11 +103,6 @@
       <version>${org.hibernate-em-version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>${mysql-connector-version}</version>
-    </dependency>
 
     <dependency>
       <groupId>commons-dbcp</groupId>
@@ -80,8 +114,14 @@
           <artifactId>sqlite-jdbc</artifactId>
           <version>3.20.1</version>
       </dependency>
-
-
+      <!-- compile only, runtime container will provide this -->
+      <!-- Need this for config annotation -->
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+          <version>${servletapi.version}</version>
+          <scope>provided</scope>
+      </dependency>
 
       <dependency>
           <groupId>com.enigmabridge</groupId>
@@ -89,18 +129,14 @@
           <version>0.1.2</version>
       </dependency>
 
-
   </dependencies>
+
+
+
+
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -109,6 +145,14 @@
                     <httpConnector>
                         <port>9999</port>
                     </httpConnector>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>
