@@ -18,14 +18,13 @@ public class TestController{
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public String test() {
-//        User user = new User();
-//
-//        user.setName("Roman2");
-//        user.setPassword("040593");
-//        user.setEmail("test532@test.test");
-//        svc.create(user);
-//        svc.findUserById(1).getEmail();
-        return svc.findUserById(2).getEmail();
+        User user = new User();
+
+        user.setName("");
+        user.setPassword("040593");
+        user.setEmail("test52@test.test");
+        svc.create(user);
+        return "The first user in the database is : "+svc.findUserById(1).getEmail();
         //return "redirect:index2.jsp/";
     }
 

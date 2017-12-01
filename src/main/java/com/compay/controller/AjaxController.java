@@ -77,6 +77,8 @@ public class AjaxController {
     private void iniDataForTesting() {
         userJSONS = new ArrayList<UserJSON>();
 
+
+        //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
         UserJSON userJSONS1 = new UserJSON("root", "mkyong@yahoo.com", "root");
         UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
         UserJSON userJSONS3 = new UserJSON("root", "mkyong3@yahoo.com", "root3");
