@@ -20,20 +20,26 @@
 <div class="container">
 
     <div class="jumbotron" style="margin-top :20px;">
-        <h1>Подтверждение ваторизации</h1>
+        <h1>Welcom to ComPay</h1>
         <p class="lead">
             _____________________________________________
         </p>
         <sec:authorize access="!isAuthenticated()">
             <p><a class="btn btn-lg btn-success" href="<c:url value="/login " />" role="button">Войти</a></p>
         </sec:authorize>
+
         <sec:authorize access="isAuthenticated()">
             <p>Ваш логин: <sec:authentication property="principal.username" /></p>
             <p> <a class="btn btn-lg btn-danger" href="<c:url value="/logout" />" role="button">Выйти</a></p>
         </sec:authorize>
+
+        <%--<sec:authorize access="!isAuthenticated()">--%>
+            <%--<p><a class="btn btn-lg btn-success" href="<c:url value="/addInform " />" role="button">inf</a></p>--%>
+        <%--</sec:authorize>--%>
+
     </div>
     <div class="footer">
-        <p> @New service </p>
+        <p> ComPay </p>
     </div>
 </div>
 </body>

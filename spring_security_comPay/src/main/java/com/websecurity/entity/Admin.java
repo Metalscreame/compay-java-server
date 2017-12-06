@@ -1,12 +1,19 @@
 package com.websecurity.entity;
 
+
+
+
 public class Admin {
+
+
+    int id;
     private String login;
     private String password;
 
-    public Admin(String login, String password){
+    public Admin(String login, String password, int id){
         this.login = login;
         this.password = password;
+        this.id = id;
     }
     public Admin(){}
 

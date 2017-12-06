@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Spring Security</title>
+    <title>ComPay</title>
     <link href="/pages/css/bootstrap.css " rel="stylesheet">
     <link href="/pages/css/jumbotron-narrow.css " rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,10 +22,14 @@
     <c:url value="/j_spring_security_check" var="loginUrl" />
     <form action="<c:url value="/j_spring_security_check"></c:url>" method="post" role="form">
         <h1 class="form-signin-heading">Авторизация</h1>
-        <input type="text" class="form-control" name="j_username" placeholder="Email address" required autofocus value="max">
-        <input type="password" class="form-control" name="j_password" placeholder="Password" required value="1234">
+        <input type="text" class="form-control" name="j_username" placeholder="Email address" required autofocus value="">
+        <input type="password" class="form-control" name="j_password" placeholder="Password" required value="">
         <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-    </form>
+
+     </form>
+    <sec:authorize access="!isAuthenticated()">
+        <p><a class="" href="<c:url value="/help " />" role="button">Забыли пароль?</a></p>
+    </sec:authorize>
 </div>
 </body>
 </html>

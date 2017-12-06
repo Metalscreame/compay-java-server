@@ -6,7 +6,10 @@ com\websecurity\controller\LoginController.class
 com\websecurity\entity\Admin.class
 com\websecurity\entity\Anonym.class
 com\websecurity\service\UserDetailsServiceImpl.class
+com\websecurity\controller\AccountController.class
 com\websecurity\config\Initializer.class
 com\websecurity\config\SecurityConfig.class
+com\websecurity\controller\RegistrationController.class
+com\websecurity\controller\HelpController.class
 com\websecurity\entity\enums\UserRoleEnum.class
 com\websecurity\service\UserService.class

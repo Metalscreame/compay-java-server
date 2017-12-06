@@ -4,7 +4,7 @@ public enum UserRoleEnum {
 
     ADMIN,
     USER,
-    ANONYMOUS;
+    ANONYM;
 
     UserRoleEnum(){}
 }
