@@ -17,7 +17,6 @@
         <dbcp-version>1.4</dbcp-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jcl.slf4j.version>1.7.12</jcl.slf4j.version>
-        <!-- For JSON -->
         <jstl.version>1.2</jstl.version>
         <jackson.version>2.6.3</jackson.version>
         <servletapi.version>3.1.0</servletapi.version>
