@@ -1,8 +1,6 @@
 package com.compay.json;
 
-
 //The “json data” will be converted into this object, via @RequestBody.
-
 public class SearchCriteria {
 
     String name;

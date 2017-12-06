@@ -8,39 +8,39 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-  <context:property-placeholder location="/WEB-INF/spring/hiber.properties" />
+    <context:property-placeholder location="/WEB-INF/spring/hiber.properties"/>
 
-  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-        p:driverClassName="${db.driver}" p:url="${db.url}"
-        p:username="${db.username}" p:password="${db.password}" />
-  <!--  "... :/var/tomcat/persist/db_name" для внешнего сервера-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          p:driverClassName="${db.driver}" p:url="${db.url}"
+          p:username="${db.username}" p:password="${db.password}"/>
+    <!--  "... :/var/tomcat/persist/db_name" для внешнего сервера-->
 
-  <bean id="hibernateJpaVendorAdapter"
-        class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+    <bean id="hibernateJpaVendorAdapter"
+          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
 
-  <!-- Configure the entity manager factory bean -->
-  <bean id="entityManagerFactory"
-        class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-    <property name="dataSource" ref="dataSource" />
-    <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
-    <!-- Set JPA properties -->
-    <property name="jpaProperties">
-      <props>
-        <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-        <prop key="hibernate.hbm2ddl.auto">update</prop>
-      </props>
-    </property>
-    <property name="packagesToScan" value="com.compay.entity" />
-  </bean>
+    <!-- Configure the entity manager factory bean -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
+        <!-- Set JPA properties -->
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        <property name="packagesToScan" value="com.compay.entity"/>
+    </bean>
 
-  <!-- Configure the transaction manager bean -->
-  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-    <property name="entityManagerFactory" ref="entityManagerFactory" />
-  </bean>
+    <!-- Configure the transaction manager bean -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
 
-  <tx:annotation-driven />
+    <tx:annotation-driven/>
 
-  <jpa:repositories base-package="com.compay.repository" />
-  <context:component-scan base-package="com.compay.service" />
+    <jpa:repositories base-package="com.compay.repository"/>
+    <context:component-scan base-package="com.compay.service"/>
 </beans>
 

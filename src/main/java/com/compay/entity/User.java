@@ -1,7 +1,11 @@
 package com.compay.entity;
 
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "USERS")
@@ -11,15 +15,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "PASSWORD",nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "EMAIL",nullable = false,unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column (name = "NAME",nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
-
 
     public int getId() {
         return id;
@@ -45,15 +48,6 @@ public class User {
         this.email = email;
     }
 
-//    public String getLastName() {
-//        return lastName;
-//    }
-//
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
-
-
     public String getName() {
         return name;
     }
@@ -62,5 +56,3 @@ public class User {
         this.name = name;
     }
 }
-
-
