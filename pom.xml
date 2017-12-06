@@ -135,6 +135,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            
             <!-- WAR versioning -->
             <!-- https://github.com/alx3apps/jgit-buildnumber -->
             <!-- enable JGit plugin -->
@@ -175,5 +176,4 @@
             <!-- WAR versioning -->
         </plugins>
     </build>
-
 </project>
