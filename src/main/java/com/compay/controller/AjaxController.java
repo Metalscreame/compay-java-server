@@ -23,8 +23,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class AjaxController {
     List<UserJSON> userJSONS;
 
-//    @Autowired
-//    UserService svc;
+    @Autowired
+    private UserService svc;
 
     // @ResponseBody, not necessary, since class is annotated with @RestController
     // @RequestBody - Convert the com.compay.json data into object (SearchCriteria) mapped by field name.
@@ -77,9 +77,11 @@ public class AjaxController {
     private void iniDataForTesting() {
         userJSONS = new ArrayList<UserJSON>();
 
-
+        String email = svc.findUserById(2).getEmail();
+        String name = svc.findUserById(2).getName();
+        String password = svc.findUserById(2).getPassword();
         //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
-        UserJSON userJSONS1 = new UserJSON("root", "mkyong@yahoo.com", "root");
+        UserJSON userJSONS1 = new UserJSON(password, email, name);
         UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
         UserJSON userJSONS3 = new UserJSON("root", "mkyong3@yahoo.com", "root3");
 

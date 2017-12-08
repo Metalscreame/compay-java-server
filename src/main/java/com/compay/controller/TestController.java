@@ -9,21 +9,25 @@ import org.springframework.web.bind.annotation.*;
 import com.compay.service.UserService;
 
 @Controller
-@RequestMapping(value = "/test")
 public class TestController{
     @Autowired
     UserService svc;
 
-
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
-    public String test() {
+    public String saveTest(){
         User user = new User();
 
-        user.setName("");
+        user.setName("romka");
         user.setPassword("040593");
-        user.setEmail("test52@test.test");
+        user.setEmail("test5423331@test.test");
         svc.create(user);
+        return "User " + user.getName() + "with " + user.getEmail() + " email has been saved";
+    }
+
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    @ResponseBody
+    public String test() {
         return "The first user in the database is : "+svc.findUserById(1).getEmail();
         //return "redirect:index2.jsp/";
     }
