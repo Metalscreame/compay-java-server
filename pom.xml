@@ -34,7 +34,7 @@
         <profile>
             <id>production</id>
             <properties>
-                <maven.war.webxml>src/main/webapp/WEB-INF/spring/prod/web.xml</maven.war.webxml>
+                <maven.war.webxml>src\main\webapp\WEB-INF\spring\prod\webProd.xml</maven.war.webxml>
             </properties>
             <activation>
                 <property>
@@ -51,7 +51,7 @@
                          other file should have place holders or you should
                          exclude other files from being filtered. -->
                     <resource>
-                        <directory>src/main/webapp/WEB-INF/spring/prod/</directory>
+                        <directory>src\main\webapp\WEB-INF\spring\prod\</directory>
                         <filtering>true</filtering>
                         <includes>
                             <include>prodHiber.properties</include>
@@ -65,7 +65,7 @@
         <profile>
             <id>development</id>
             <properties>
-                <maven.war.webxml>src/main/webapp/WEB-INF/spring/dev/web.xml</maven.war.webxml>
+                <maven.war.webxml>src\main\webapp\WEB-INF\spring\dev\webDev.xml</maven.war.webxml>
             </properties>
             <activation>
                 <property>
@@ -82,15 +82,11 @@
                          other file should have place holders or you should
                          exclude other files from being filtered. -->
                     <resource>
-                        <directory>/src/main/webapp/WEBINF/spring/dev/</directory>
+                        <directory>src\main\webapp\WEB-INF\spring\dev\</directory>
                         <filtering>true</filtering>
                         <includes>
                             <include>hiber.properties</include>
                         </includes>
-                    </resource>
-                    <resource>
-                        <directory>/src/main/webapp/WEBINF/spring/dev/</directory>
-                        <filtering>true</filtering>
                     </resource>
                 </resources>
             </build>

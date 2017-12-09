@@ -2,6 +2,7 @@ package com.compay.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
@@ -12,6 +13,7 @@ import com.compay.json.UserJSON;
 import com.compay.json.Views;
 import com.compay.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,17 +77,25 @@ public class AjaxController {
     // Init some userJSONS for testing
     @PostConstruct
     private void iniDataForTesting() {
+        User user = new User();
+
+        Random random = new Random();
+        int rand=random.nextInt();
+        user.setName("romka");
+        user.setPassword("040593");
+        user.setEmail("test"+rand+"@test.test");
+        user.setLastName("Kosiy");
+        user.setSurrName("Stanislavovich");
+        svc.create(user);
         userJSONS = new ArrayList<UserJSON>();
 
-        String email = svc.findUserById(2).getEmail();
-        String name = svc.findUserById(2).getName();
-        String password = svc.findUserById(2).getPassword();
+        String email = svc.findUserById(1).getEmail();
+        String name = svc.findUserById(1).getName();
+        String password = svc.findUserById(1).getPassword();
         //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
         UserJSON userJSONS1 = new UserJSON(password, email, name);
         UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
         UserJSON userJSONS3 = new UserJSON("root", "mkyong3@yahoo.com", "root3");
-
-
 
         userJSONS.add(userJSONS1);
         userJSONS.add(userJSONS2);

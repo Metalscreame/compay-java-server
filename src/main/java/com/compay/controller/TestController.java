@@ -8,19 +8,25 @@ import org.springframework.web.bind.annotation.*;
 
 import com.compay.service.UserService;
 
+import java.util.Random;
+
 @Controller
 public class TestController{
     @Autowired
     UserService svc;
+
 
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
     public String saveTest(){
         User user = new User();
 
+
         user.setName("romka");
         user.setPassword("040593");
-        user.setEmail("test5423331@test.test");
+        user.setEmail("test@test.test");
+        user.setLastName("Kosiy");
+        user.setSurrName("Stanislavovich");
         svc.create(user);
         return "User " + user.getName() + "with " + user.getEmail() + " email has been saved";
     }
