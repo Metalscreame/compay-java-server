@@ -1,9 +1,7 @@
 package com.compay.json;
-
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class UserJSON {
-
     @JsonView(Views.Public.class)
     private String password;
 
@@ -12,12 +10,6 @@ public class UserJSON {
 
     @JsonView(Views.Public.class)
     private String name;
-
-    public UserJSON(String password, String email, String name) {
-        this.password = password;
-        this.email = email;
-        this.name = name;
-    }
 
     public String getPassword() {
         return password;
@@ -42,4 +34,13 @@ public class UserJSON {
     public void setName(String name) {
         this.name = name;
     }
+
+    public UserJSON(String password, String email, String name) {
+        this.password = password;
+        this.email = email;
+        this.name = name;
+    }
+
+//getters, setters and contructors
+
 }

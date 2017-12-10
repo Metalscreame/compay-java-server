@@ -1,52 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--&lt;!&ndash;-->
+  <!--Licensed to the Apache Software Foundation (ASF) under one or more-->
+  <!--contributor license agreements.  See the NOTICE file distributed with-->
+  <!--this work for additional information regarding copyright ownership.-->
+  <!--The ASF licenses this file to You under the Apache License, Version 2.0-->
+  <!--(the "License"); you may not use this file except in compliance with-->
+  <!--the License.  You may obtain a copy of the License at-->
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
-    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
-        <param name="Threshold" value="debug" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern"
-                   value="%d{HH:mm:ss} %p [%t]:%c{3}.%M()%L - %m%n" />
-        </layout>
-    </appender>
+      <!--http://www.apache.org/licenses/LICENSE-2.0-->
 
-    <appender name="springAppender" class="org.apache.log4j.RollingFileAppender"> 
-        <param name="file" value=" ${catalina.base}/logs/compay/spring-details.log" /> 
-        <param name="append" value="true" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" 
-                   value="%d{yyyy/MM/dd HH:mm:ss}  [%t]:%c{5}.%M()%L %m%n" />
-        </layout>
-    </appender>
+  <!--Unless required by applicable law or agreed to in writing, software-->
+  <!--distributed under the License is distributed on an "AS IS" BASIS,-->
+  <!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+  <!--See the License for the specific language governing permissions and-->
+  <!--limitations under the License.-->
+<!--&ndash;&gt;-->
+<!--<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">-->
 
-    <category name="org.springframework">
-        <priority value="debug" />
-    </category>
+<!--<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">-->
+  <!--&lt;!&ndash;-->
+     <!-- - This is a sample configuration for log4j.-->
+     <!-- - It simply just logs everything into a single log file.-->
+     <!-- - Note, that you can use properties for value substitution.-->
+    <!--&ndash;&gt;-->
+  <!--<appender name="CORE" class="org.apache.log4j.FileAppender">-->
+    <!--<param name="File"   value="${org.apache.cocoon.work.directory}/cocoon-logs/log4j.log" />-->
+    <!--<param name="Append" value="false" />-->
+    <!--<layout class="org.apache.log4j.PatternLayout">-->
+      <!--<param name="ConversionPattern" value="%d %-5p %t %c - %m%n"/>-->
+    <!--</layout>-->
+  <!--</appender>-->
 
-    <category name="org.springframework.beans">
-        <priority value="debug" />
-    </category>
-
-    <category name="org.springframework.security">
-        <priority value="debug" />
-    </category>
-
-    <category
-        name="org.springframework.beans.CachedIntrospectionResults">
-        <priority value="debug" />
-    </category>
-
-    <category name="org.springframework.jdbc.core">
-        <priority value="debug" />
-    </category>
-
-    <category name="org.springframework.transaction.support.TransactionSynchronizationManager">
-        <priority value="debug" />
-    </category>
-
-    <root>
-        <priority value="debug" />
-        <appender-ref ref="springAppender" />
-        <appender-ref ref="STDOUT"/>  
-    </root>
-</log4j:configuration>
+  <!--<root>-->
+    <!--<priority value="${org.apache.cocoon.log4j.loglevel}"/>-->
+    <!--<appender-ref ref="CORE"/>-->
+  <!--</root>-->
+<!--</log4j:configuration>-->

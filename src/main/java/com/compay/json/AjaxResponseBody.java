@@ -1,8 +1,9 @@
 package com.compay.json;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import java.util.List;
+
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class AjaxResponseBody {
 
@@ -10,7 +11,7 @@ public class AjaxResponseBody {
     String msg;
 
     @JsonView(Views.Public.class)
-    int code;
+    String code;
 
     @JsonView(Views.Public.class)
     List<UserJSON> result;
@@ -23,11 +24,11 @@ public class AjaxResponseBody {
         this.msg = msg;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
