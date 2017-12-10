@@ -1,33 +1,58 @@
 package com.compay.controller;
 
 import com.compay.entity.User;
-import com.compay.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.compay.service.UserService;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.TreeMap;
+import java.util.stream.Stream;
 
 @Controller
-@RequestMapping(value = "/test")
-public class TestController {
-
+public class TestController{
     @Autowired
     UserService svc;
 
-    @RequestMapping(method = RequestMethod.GET)
+
+    @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
-    public String test() {
+    public String saveTest(){
         User user = new User();
 
-        user.setName(StringUtils.EMPTY);
+        Random random = new Random();
+        int rand=random.nextInt();
+        user.setName("romka");
         user.setPassword("040593");
-        user.setEmail("test52@test.test");
+        user.setEmail("test"+rand+"@test.test");
+        user.setLastName("Kosiy");
+        user.setSurrName("Stanislavovich");
         svc.create(user);
-        return "The first user in the database is : " + svc.findUserById(1).getEmail();
-        //return "redirect:index2.jsp/";
+        return "User " + user.getName() + "with " + user.getEmail() + " email has been saved";
     }
+
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    @ResponseBody
+    public String test() {
+
+//        ArrayList<String> buffer = new ArrayList<>();
+//
+//        try (Stream<User> stream = svc.findAll()) {
+//            stream.forEach((k)->buffer.add("User : " + k));
+//        }
+
+
+
+
+        return "The first user in the database is : "+svc.findUserById(1).getEmail();
+        //return "redirect:index2.jsp/";
+//        return buffer.get(1);
+    }
+
 
 //    @RequestMapping(method = RequestMethod.GET)
 //    public String test(Model model){
@@ -35,4 +60,7 @@ public class TestController {
 //
 //        return "index";
 //    }
+
+
+
 }

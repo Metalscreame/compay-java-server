@@ -1,11 +1,7 @@
 package com.compay.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 
 @Entity
 @Table(name = "USERS")
@@ -15,14 +11,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "PASSWORD",nullable = false)
     private String password;
 
-    @Column(name = "EMAIL", nullable = false, unique = true)
+    @Column(name = "EMAIL",nullable = false,unique = true)
     private String email;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "SURRNAME", nullable = false)
+    private String surrName;
+
+
+    @Column (name = "NAME",nullable = false)
     private String name;
+
+    @Column(name = "LASTNAME",nullable = false)
+    private String lastName;
+
 
     public int getId() {
         return id;
@@ -48,6 +52,14 @@ public class User {
         this.email = email;
     }
 
+    public String getSurrName() {
+        return surrName;
+    }
+
+    public void setSurrName(String surrName) {
+        this.surrName = surrName;
+    }
+
     public String getName() {
         return name;
     }
@@ -55,4 +67,14 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }
+
+
