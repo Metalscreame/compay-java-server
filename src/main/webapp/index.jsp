@@ -6,15 +6,16 @@
 <head>
     <c:url var="home" value="/" scope="request" />
 
-    <spring:url value="/resources/core/core.css/hello.core.css" var="coreCss" />
+
     <spring:url value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" var="bootstrapCss" />
     <link href="${bootstrapCss}" rel="stylesheet" />
-    <link href="${coreCss}" rel="stylesheet" />
 
-    <spring:url value="/resources/core/js/jquery.1.10.2.min.js"
+
+    <spring:url value="https://code.jquery.com/jquery-1.10.2.min.js"
                 var="jqueryJs" />
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 </head>
+
 
 <nav class="navbar navbar-inverse">
     <div class="container">
