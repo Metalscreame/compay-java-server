@@ -41,7 +41,7 @@ public class AjaxController {
 
             if (userJSONS.size() > 0) {
                 result.setCode("200");
-                result.setMsg("");
+                result.setMsg("SomeMessage... HELLO FROM UKRAINE");
                 result.setResult(userJSONS);
             } else {
                 result.setCode("204");
@@ -88,9 +88,14 @@ public class AjaxController {
         svc.create(user);
         userJSONS = new ArrayList<UserJSON>();
 
-        String email = svc.findUserById(1).getEmail();
-        String name = svc.findUserById(1).getName();
-        String password = svc.findUserById(1).getPassword();
+
+        List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
+        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
+
+
+        String email = firstUserWithMail.getEmail();
+        String name = firstUserWithMail.getName();
+        String password = firstUserWithMail.getPassword();
         //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
         UserJSON userJSONS1 = new UserJSON(password, email, name);
         UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");

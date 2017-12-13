@@ -5,12 +5,13 @@ import com.compay.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
+
 
     public User findUserById(Integer id) {
         return userRepository.findOne(id);
@@ -30,8 +31,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Stream<User> findAll() {
-        return userRepository.findAllByCustomQueryAndStream();
+    public List<String> findByName(String name) {
+        return userRepository.findByName(name);
     }
+
+    @Override
+    public List<String> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 
 }
