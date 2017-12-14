@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.compay.service.UserService;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.stream.Stream;
@@ -46,21 +47,32 @@ public class TestController{
 //        }
 
 
-
-
         return "The first user in the database is : "+svc.findUserById(1).getEmail();
+
+        //TODO сделать функцию, в которую загоняется стринга (результат очереди, и которая возвращает стринг с джсоном или как-то так)
         //return "redirect:index2.jsp/";
 //        return buffer.get(1);
     }
 
+    @RequestMapping(value = "/testName",method = RequestMethod.GET)
+    @ResponseBody
+    public String testNameFinder() {
 
-//    @RequestMapping(method = RequestMethod.GET)
-//    public String test(Model model){
-//        model.addAttribute("name");
-//
-//        return "index";
-//    }
+        List testList = svc.findByName("romka");//сетаем то, что мы будем искать
+        User firstUserWIthName = (User) testList.get(1);//Возвращает первую запись
 
+        return firstUserWIthName.getName();
+    }
+
+    @RequestMapping(value = "/testEmail",method = RequestMethod.GET)
+    @ResponseBody
+    public String testEmailFind() {
+
+        List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
+        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
+
+        return "The user with " + firstUserWithMail.getEmail()+ " has ID: "+ firstUserWithMail.getId() + ", Name : "  + firstUserWithMail.getName()  + ", Password :  " + firstUserWithMail.getPassword();
+    }
 
 
 }
