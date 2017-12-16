@@ -1,44 +1,40 @@
 package com.compay.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.PostConstruct;
-
 import com.compay.entity.User;
 import com.compay.json.AjaxResponseBody;
 import com.compay.json.SearchCriteria;
 import com.compay.json.UserJSON;
 import com.compay.json.Views;
 import com.compay.service.UserService;
+import com.compay.service.UserServiceImpl;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @RestController
 public class AjaxController {
     List<UserJSON> userJSONS;
 
     @Autowired
-    private UserService svc;
+    UserService svc;
 
     // @ResponseBody, not necessary, since class is annotated with @RestController
-    // @RequestBody - Convert the com.compay.json data into object (SearchCriteria) mapped by field name.
-    // @JsonView(Views.Public.class) - Optional, filters com.compay.json data to display.
+    // @RequestBody - Convert the com.com.compay.json data into object (SearchCriteria) mapped by field name.
+    // @JsonView(Views.Public.class) - Optional, filters com.com.compay.json data to display.
     @JsonView(Views.Public.class)
     @RequestMapping(value = "/search/api/getSearchResult")
     public AjaxResponseBody getSearchResultViaAjax(@RequestBody SearchCriteria search) {
-
         AjaxResponseBody result = new AjaxResponseBody();
-
         if (isValidSearchCriteria(search)) {
             List<UserJSON> userJSONS = findByUserNameOrEmail(search.getName(), search.getEmail());
-
             if (userJSONS.size() > 0) {
                 result.setCode("200");
                 result.setMsg("SomeMessage... HELLO FROM UKRAINE");
@@ -52,24 +48,18 @@ public class AjaxController {
             result.setCode("400");
             result.setMsg("Search criteria is empty!");
         }
-
         //AjaxResponseBody will be converted into json format and send back to the request.
         return result;
-
     }
 
     private boolean isValidSearchCriteria(SearchCriteria search) {
-
         boolean valid = true;
-
         if (search == null) {
             valid = false;
         }
-
         if ((StringUtils.isEmpty(search.getName())) && (StringUtils.isEmpty(search.getEmail()))) {
             valid = false;
         }
-
         return valid;
     }
 
@@ -88,10 +78,8 @@ public class AjaxController {
         svc.create(user);
         userJSONS = new ArrayList<UserJSON>();
 
-
         List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
         User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
-
 
         String email = firstUserWithMail.getEmail();
         String name = firstUserWithMail.getName();
@@ -104,9 +92,7 @@ public class AjaxController {
         userJSONS.add(userJSONS1);
         userJSONS.add(userJSONS2);
         userJSONS.add(userJSONS3);
-
     }
-
     // Simulate the search function
     private List<UserJSON> findByUserNameOrEmail(String username, String email) {
 
@@ -122,7 +108,6 @@ public class AjaxController {
                 } else {
                     continue;
                 }
-
             }
             if (!StringUtils.isEmpty(username)) {
                 if (username.equals(user.getName())) {
@@ -137,10 +122,7 @@ public class AjaxController {
                     continue;
                 }
             }
-
         }
-
         return result;
-
     }
 }
