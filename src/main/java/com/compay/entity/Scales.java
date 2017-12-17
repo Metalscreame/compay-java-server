@@ -1,6 +1,8 @@
 package com.compay.entity;
 
+
 import javax.persistence.*;
+
 @Entity
 @Table(name = "SCALES")
 public class Scales {

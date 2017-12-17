@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Licensed to the Apache Software Foundation (ASF) under one
-  or more contributor license agreements.  See the NOTICE file
-  distributed with this work for additional information
-  regarding copyright ownership.  The ASF licenses this file
-  to you under the Apache License, Version 2.0 (the
-  "License"); you may not use this file except in compliance
-  with the License.  You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
-  specific language governing permissions and limitations
-  under the License.
--->
-<!-- $Id: pom.xml 642118 2008-03-28 08:04:16Z reinhard $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -33,9 +14,9 @@
         <!-- Nike profile needs go here -->
         <profile>
             <id>production</id>
-            <properties>
-                <maven.war.webxml>src\main\webapp\WEB-INF\spring\prod\webProd.xml</maven.war.webxml>
-            </properties>
+            <!--<properties>-->
+                <!--<maven.war.webxml>src\main\webapp\WEB-INF\spring\prod\webProd.xml</maven.war.webxml>-->
+            <!--</properties>-->
             <activation>
                 <property>
                     <name>environment.type</name>
@@ -51,10 +32,10 @@
                          other file should have place holders or you should
                          exclude other files from being filtered. -->
                     <resource>
-                        <directory>src\main\webapp\WEB-INF\spring\prod\</directory>
+                        <directory>src\main\resources\prod\</directory>
                         <filtering>true</filtering>
                         <includes>
-                            <include>prodHiber.properties</include>
+                            <include>hiber.properties</include>
                         </includes>
                     </resource>
                 </resources>
@@ -64,9 +45,9 @@
         <!-- Catalyst profile needs go here -->
         <profile>
             <id>development</id>
-            <properties>
-                <maven.war.webxml>src\main\webapp\WEB-INF\spring\dev\webDev.xml</maven.war.webxml>
-            </properties>
+            <!--<properties>-->
+                <!--<maven.war.webxml>src\main\resources\webDev.xml</maven.war.webxml>-->
+            <!--</properties>-->
             <activation>
                 <property>
                     <name>environment.type</name>
@@ -82,7 +63,7 @@
                          other file should have place holders or you should
                          exclude other files from being filtered. -->
                     <resource>
-                        <directory>src\main\webapp\WEB-INF\spring\dev\</directory>
+                        <directory>src\main\resources\dev\</directory>
                         <filtering>true</filtering>
                         <includes>
                             <include>hiber.properties</include>
@@ -97,8 +78,8 @@
 
 
     <properties>
-        <org.springframework-version>4.1.7.RELEASE</org.springframework-version>
-        <org.hibernate-em-version>4.3.8.Final</org.hibernate-em-version>
+        <org.springframework-version>4.3.4.RELEASE</org.springframework-version>
+        <org.hibernate-em-version>4.3.11.Final</org.hibernate-em-version>
         <org.springframework.data-version>1.9.0.RELEASE</org.springframework.data-version>
         <dbcp-version>1.4</dbcp-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -112,7 +93,7 @@
     </properties>
 
     <dependencies>
-        <!-- Need this for com.compay.json to/from object -->
+        <!-- Need this for com.com.compay.json to/from object -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -146,30 +127,24 @@
         </dependency>
 
         <!--SPRING-->
+        <!-- Add Spring Security -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${spring.securiry}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring.securiry}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${spring.securiry}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${org.springframework-version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.securiry}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
 
@@ -180,16 +155,58 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.securiry}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.securiry}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.securiry}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.securiry}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>${org.springframework.data-version}</version>
+            <version>1.7.2.RELEASE</version>
         </dependency>
+
+
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>${org.hibernate-em-version}</version>
+            <version>4.3.11.Final</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>4.3.11.Final</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
+
+
+
 
 
         <dependency>
@@ -235,6 +252,13 @@
             <artifactId>jcabi-manifests</artifactId>
             <version>1.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>4.3.4.RELEASE</version>
+        </dependency>
+
+
 
 
     </dependencies>

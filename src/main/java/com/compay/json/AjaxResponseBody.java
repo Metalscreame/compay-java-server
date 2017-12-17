@@ -1,9 +1,8 @@
 package com.compay.json;
 
-import java.util.List;
-
-
 import com.fasterxml.jackson.annotation.JsonView;
+
+import java.util.List;
 
 public class AjaxResponseBody {
 

@@ -1,18 +1,15 @@
 package com.compay.controller;
 
 import com.compay.entity.User;
+import com.compay.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.compay.service.UserService;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.TreeMap;
-import java.util.stream.Stream;
 
 @Controller
 public class TestController{
@@ -50,7 +47,7 @@ public class TestController{
         return "The first user in the database is : "+svc.findUserById(1).getEmail();
 
         //TODO сделать функцию, в которую загоняется стринга (результат очереди, и которая возвращает стринг с джсоном или как-то так)
-        //return "redirect:index2.jsp/";
+        //return "redirect:index.jsp/";
 //        return buffer.get(1);
     }
 

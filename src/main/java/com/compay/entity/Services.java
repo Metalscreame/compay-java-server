@@ -1,5 +1,4 @@
 package com.compay.entity;
-
 import javax.persistence.*;
 
 @Entity
