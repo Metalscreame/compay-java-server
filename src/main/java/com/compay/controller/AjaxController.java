@@ -79,19 +79,20 @@ public class AjaxController {
         userJSONS = new ArrayList<UserJSON>();
 
         List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
-        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
-
-        String email = firstUserWithMail.getEmail();
-        String name = firstUserWithMail.getName();
-        String password = firstUserWithMail.getPassword();
-        //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
-        UserJSON userJSONS1 = new UserJSON(password, email, name);
-        UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
-        UserJSON userJSONS3 = new UserJSON("root", "mkyong3@yahoo.com", "root3");
-
-        userJSONS.add(userJSONS1);
-        userJSONS.add(userJSONS2);
-        userJSONS.add(userJSONS3);
+        //TODO генерирует ошибку (контейнер не стартует!!), т.к. не всегда существует вервая запись
+//        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
+//
+//        String email = firstUserWithMail.getEmail();
+//        String name = firstUserWithMail.getName();
+//        String password = firstUserWithMail.getPassword();
+//        //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
+//        UserJSON userJSONS1 = new UserJSON(password, email, name);
+//        UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
+//        UserJSON userJSONS3 = new UserJSON("root", "mkyong3@yahoo.com", "root3");
+//
+//        userJSONS.add(userJSONS1);
+//        userJSONS.add(userJSONS2);
+//        userJSONS.add(userJSONS3);
     }
     // Simulate the search function
     private List<UserJSON> findByUserNameOrEmail(String username, String email) {
