@@ -12,6 +12,7 @@ public class AjaxResponseBody {
     @JsonView(Views.Public.class)
     String code;
 
+    //TODO сделать разные резалты для разных запросов, соответственно сделать разные классы для поиска
     @JsonView(Views.Public.class)
     List<UserJSON> result;
 

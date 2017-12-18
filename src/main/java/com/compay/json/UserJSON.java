@@ -40,7 +40,4 @@ public class UserJSON {
         this.email = email;
         this.name = name;
     }
-
-//getters, setters and contructors
-
 }

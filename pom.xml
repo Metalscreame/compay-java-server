@@ -153,6 +153,11 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -177,37 +182,30 @@
             <version>${spring.securiry}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+
+                                    <!--dataBase-->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>1.7.2.RELEASE</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.3.11.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>4.3.11.Final</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>1.0.0.Final</version>
         </dependency>
-
-
-
-
 
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -219,6 +217,7 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.20.1</version>
         </dependency>
+
         <!-- compile only, runtime container will provide this -->
         <!-- Need this for config annotation -->
         <dependency>
@@ -240,29 +239,36 @@
         </dependency>
 
         <dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.5</version>
         </dependency>
 
         <dependency>
-            <!-- application version -->
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-manifests</artifactId>
             <version>1.1</version>
         </dependency>
+
+
+        <!--SHA-1-->
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>4.3.4.RELEASE</version>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.2</version>
         </dependency>
 
 
 
 
     </dependencies>
-
 
     <build>
         <finalName>${project.version}</finalName>
@@ -281,14 +287,6 @@
                     <httpConnector>
                         <port>9999</port>
                     </httpConnector>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
                 </configuration>
             </plugin>
 
