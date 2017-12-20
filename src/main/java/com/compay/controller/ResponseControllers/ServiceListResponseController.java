@@ -54,7 +54,7 @@ public class ServiceListResponseController {
     //TODO @RequestMapping(value="/car/{carId}", method = RequestMethod.Get)
     @RequestMapping(value = "/serviceList/{objectId}", method = RequestMethod.GET)
     @ResponseBody
-    public String  responseBody(HttpServletResponse response, @PathVariable("objectId") String id) {
+    public String responseBody(HttpServletResponse response, @PathVariable("objectId") String id) {
         /*
         Это ID из другой таблицы: Address. По нему определяется объект учета (домохозяйство).
         Потом из соединения AddressServices с Services по этому ID получается список услуг
@@ -62,32 +62,43 @@ public class ServiceListResponseController {
         String result = null;
         ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
 
-        if(id!=null){
-            serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
 
-            //TODO здесь будут вытаскиваться данные из базы и добавляться в виде обжектов
-            serviceListJsonBuilder.addInfo(new ServiceListEntity("Электроснабжение", "electric"));
+        serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
 
-            try {
-                result = serviceListJsonBuilder.createJson();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+        //TODO здесь будут вытаскиваться данные из базы и добавляться в виде обжектов
+        serviceListJsonBuilder.addInfo(new ServiceListEntity("Электроснабжение", "electric"));
+
+        try {
+            result = serviceListJsonBuilder.createJson();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
 
+        //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
+        response.setStatus(200);
+        response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+        response.setHeader("data", result);
+        return result;
+    }
 
-        else {
-            serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
-            try {
-                result = serviceListJsonBuilder.createJson();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+    // if null
+    @RequestMapping(value = "/serviceList", method = RequestMethod.GET)
+    @ResponseBody
+    public String responseBody(HttpServletResponse response) {
+        String result = null;
+        ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
+        serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
+        try {
+            result = serviceListJsonBuilder.createJson();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
         //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
         response.setStatus(200);
-        response.setHeader("headers","{ 'Content-Type': 'application/json' }");
-        response.setHeader("data",result);
+        response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+        response.setHeader("data", result);
         return result;
     }
+
+
 }

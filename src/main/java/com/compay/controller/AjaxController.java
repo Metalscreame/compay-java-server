@@ -21,7 +21,7 @@ import java.util.Random;
 
 @RestController
 public class AjaxController {
-    List<UserJSON> userJSONS;
+    List<UserJSON> userJSONS =new ArrayList<>();
 
     @Autowired
     UserService svc;

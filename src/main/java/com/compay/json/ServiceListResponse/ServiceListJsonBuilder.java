@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ServiceListJsonBuilder implements JsonBuilder{
-    ServiceListEntityList list = new ServiceListEntityList();
+    private ServiceListEntityList list = new ServiceListEntityList();
 
     @Override
     public void addInfo(Object o){
