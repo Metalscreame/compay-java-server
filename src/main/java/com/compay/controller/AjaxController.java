@@ -66,46 +66,41 @@ public class AjaxController {
     // Init some userJSONS for testing
     @PostConstruct
     private void iniDataForTesting() {
-        User user = new User();
+        //User user = new User();
 
-        Random random = new Random();
-        int rand=random.nextInt();
-        user.setName("romka");
-        user.setPassword("040593");
-        user.setEmail("test"+rand+"@test.test");
-        user.setLastName("Kosiy");
-        user.setSurrName("Stanislavovich");
-        svc.create(user);
-        userJSONS = new ArrayList<UserJSON>();
+//        Random random = new Random();
+//        int rand=random.nextInt();
+//        user.setName("romka");
+//        user.setPassword("040593");
+//        user.setEmail("test"+rand+"@test.test");
+//        user.setLastName("Kosiy");
+//        user.setSurrName("Stanislavovich");
+//        svc.create(user);
+//        userJSONS = new ArrayList<UserJSON>();
 
-        List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
-
+       // List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
 
         //TODO генерирует ошибку (контейнер не стартует!!), т.к. не всегда существует вервая запись
         //TODO комментировать перед заливанием в мастер.
-        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
-
-        String email = firstUserWithMail.getEmail();
-        String name = firstUserWithMail.getName();
-        String password = firstUserWithMail.getPassword();
-        //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
-        UserJSON userJSONS1 = new UserJSON(password, email, name);
-        UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
+//        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
+//
+//        String email = firstUserWithMail.getEmail();
+//        String name = firstUserWithMail.getName();
+//        String password = firstUserWithMail.getPassword();
+//        //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
+//        UserJSON userJSONS1 = new UserJSON(password, email, name);
+       UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
         UserJSON userJSONS3 = new UserJSON("root", "mkyong3@yahoo.com", "root3");
-
-        userJSONS.add(userJSONS1);
-        userJSONS.add(userJSONS2);
-        userJSONS.add(userJSONS3);
+//
+//        userJSONS.add(userJSONS1);
+       userJSONS.add(userJSONS2);
+       userJSONS.add(userJSONS3);
     }
     // Simulate the search function
     private List<UserJSON> findByUserNameOrEmail(String username, String email) {
-
         List<UserJSON> result = new ArrayList<UserJSON>();
-
         for (UserJSON user : userJSONS) {
-
             if ((!StringUtils.isEmpty(username)) && (!StringUtils.isEmpty(email))) {
-
                 if (username.equals(user.getName()) && email.equals(user.getEmail())) {
                     result.add(user);
                     continue;
