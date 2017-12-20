@@ -62,7 +62,8 @@
 <div class="container">
     <footer>
         <p>
-            © <a href="https://itschool-hillel.org/">Hillel</a> 2015
+            <a Все возможные ссылки смотрите в контроллерах </a> 2015
+            <a ©href="https://itschool-hillel.org/">Hillel</a> 2015
         </p>
     </footer>
 </div>
