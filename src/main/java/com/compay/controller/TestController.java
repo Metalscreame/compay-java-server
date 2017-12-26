@@ -47,7 +47,6 @@ public class TestController{
 //        }
         return "The first user in the database is : "+svc.findUserById(1).getEmail();
 
-        //TODO сделать функцию, в которую загоняется стринга (результат очереди, и которая возвращает стринг с джсоном или как-то так)
         //return "redirect:index.jsp/";
 //        return buffer.get(1);
     }
