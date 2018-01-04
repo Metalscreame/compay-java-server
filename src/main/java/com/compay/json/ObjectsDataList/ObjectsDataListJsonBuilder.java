@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ObjectsDataListJsonBuilder implements JsonBuilder{
 
-    private ObjectsDataListEntityList list = new ObjectsDataListJsonBuilder();
+   // private ObjectsDataListEntityList list = new ObjectsDataListJsonBuilder();
 
     @Override
     public void addInfo(Object o) {
@@ -15,7 +15,8 @@ public class ObjectsDataListJsonBuilder implements JsonBuilder{
 
     @Override
     public String createJson() throws JsonProcessingException {
-        String serialized = new ObjectMapper().;
-        return serialized;
+       // String serialized = new ObjectMapper().writeValueAsString();
+       // return serialized;
+        return null;
     }
 }
