@@ -2,12 +2,15 @@ package com.compay.controller;
 
 import com.compay.entity.User;
 import com.compay.service.UserService;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.List;
 import java.util.Random;
 
@@ -42,11 +45,8 @@ public class TestController{
 //        try (Stream<User> stream = svc.findAll()) {
 //            stream.forEach((k)->buffer.add("User : " + k));
 //        }
-
-
         return "The first user in the database is : "+svc.findUserById(1).getEmail();
 
-        //TODO сделать функцию, в которую загоняется стринга (результат очереди, и которая возвращает стринг с джсоном или как-то так)
         //return "redirect:index.jsp/";
 //        return buffer.get(1);
     }
@@ -56,7 +56,7 @@ public class TestController{
     public String testNameFinder() {
 
         List testList = svc.findByName("romka");//сетаем то, что мы будем искать
-        User firstUserWIthName = (User) testList.get(1);//Возвращает первую запись
+        User firstUserWIthName = (User) testList.get(0);//Возвращает первую запись
 
         return firstUserWIthName.getName();
     }
@@ -72,4 +72,14 @@ public class TestController{
     }
 
 
+
+    @RequestMapping(value = "/testJson",method = RequestMethod.GET)
+    @ResponseBody
+    public String testJson() {
+        List testList = svc.findByName("romka");
+        User firstUserWIthName = (User) testList.get(0);//Возвращает первую запись
+        Gson gs = new Gson();
+        String str = gs.toJson(firstUserWIthName);
+        return "status 200"+str;
+    }
 }

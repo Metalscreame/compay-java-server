@@ -2,6 +2,7 @@ package com.compay.service;
 
 import com.compay.entity.User;
 import com.compay.repository.UserRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public User create(User user) {
+        //sha-1 encoding before saving to the database
+        String shaPasswordEncoded = DigestUtils.sha1Hex(user.getPassword());
+        user.setPassword(shaPasswordEncoded);
         return userRepository.save(user);
     }
 

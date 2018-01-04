@@ -66,21 +66,6 @@ public class JpaConfig {
         properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
         return properties;
     }
-//    @Bean
-//    public LocalEntityManagerFactoryBean entityManagerFactory() {
-//        LocalEntityManagerFactoryBean factoryBean = new LocalEntityManagerFactoryBean();
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("LOCAL_PERSISTENCE");
-//        factoryBean.setPersistenceUnitName("LOCAL_PERSISTENCE");
-//        return factoryBean;
-//    }
-//
-//    @Bean
-//    public JpaTransactionManager geJpaTransactionManager() {
-//        JpaTransactionManager transactionManager = new JpaTransactionManager();
-//        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-//        return transactionManager;
-//
-//    }
 
     @Bean
     public JpaTransactionManager transactionManager() {

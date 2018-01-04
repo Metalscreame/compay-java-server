@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         List testList = userService.findByEmail(email);//сетаем то, что мы будем искать
-        User user = (User) testList.get(1);//Возвращает первую запись
+        User user = (User) testList.get(0);//Возвращает первую запись
 
 
         Set<GrantedAuthority> roles = new HashSet();

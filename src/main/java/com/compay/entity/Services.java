@@ -12,6 +12,9 @@ public class Services {
     @Column(name = "SERVICE_NAME")
     private String serviceName;
 
+    @Column(name="LINK")
+    private String link;
+
     public int getId() {
         return id;
     }

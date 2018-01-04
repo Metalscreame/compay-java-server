@@ -12,6 +12,7 @@ public class AjaxResponseBody {
     @JsonView(Views.Public.class)
     String code;
 
+
     @JsonView(Views.Public.class)
     List<UserJSON> result;
 
