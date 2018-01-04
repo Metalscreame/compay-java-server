@@ -1,6 +1,5 @@
 package com.compay.controller.ResponseControllers;
 
-
 import com.compay.json.ServiceListResponse.ServiceListEntity;
 import com.compay.json.ServiceListResponse.ServiceListJsonBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /*
 Example
-
 status: 200
 headers: { 'Content-Type': 'application/json' }
 data: {
@@ -29,14 +27,11 @@ data: {
         { name: "Вывоз мусора",     link: "garbage" }
     ]
 }
-
 objectID - это ID текущего объекта учета, который выбран в хедере сайта.
 Может быть пустым (если у пользователя еще нет зарегистрированных объектов учета).
 В ответ сервер должен отдать JSON, который содержит массив услуг, "подвязанных" к выбранному объекту учета:
 
-
 Если у пользователя нет зарегистрированных объектов (передан пустой objectID), то в ответ сервер должен отдать JSON с данными:
-
 status: 200
 headers: { 'Content-Type': 'application/json' }
 data: {
@@ -47,18 +42,27 @@ data: {
  */
 //TODO добавить в каждый контроллер проверку токена и если истек, то выкидываем хидер со статусом 401 и переход на главную страницу
 
-
 @Controller
 public class ServiceListResponseController {
     //TODO может быть разный айди. поискать как получать разные айдишники при запросе
     //TODO @RequestMapping(value="/car/{carId}", method = RequestMethod.Get)
-    @RequestMapping(value = "/serviceList/{objectId}", method = RequestMethod.GET)
+    //TODO сделать проверку на является ли обжект айди стрингом при десериализации или интом. пропускать только инты
+    @RequestMapping(value = "/serviceList/{objectId}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String responseBody(HttpServletResponse response, @PathVariable("objectId") String id) {
         /*
         Это ID из другой таблицы: Address. По нему определяется объект учета (домохозяйство).
         Потом из соединения AddressServices с Services по этому ID получается список услуг
+        objectID - это ID текущего объекта учета, который выбран в хедере сайта. Может быть пустым (если у пользователя еще нет зарегистрированных объектов учета). В ответ сервер должен отдать JSON, который содержит массив услуг, "подвязанных" к выбранному объекту учета:
+
          */
+
+        try {//TODO Подвязать айди к базе
+            int objectId = Integer.parseInt(id);
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+
         String result = null;
         ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
 
@@ -67,7 +71,8 @@ public class ServiceListResponseController {
 
         //TODO здесь будут вытаскиваться данные из базы и добавляться в виде обжектов
         serviceListJsonBuilder.addInfo(new ServiceListEntity("Электроснабжение", "electric"));
-
+        serviceListJsonBuilder.addInfo(new ServiceListEntity("Газоснабжение","gas"));
+        serviceListJsonBuilder.addInfo(new ServiceListEntity("Водоснабжение","water"));
         try {
             result = serviceListJsonBuilder.createJson();
         } catch (JsonProcessingException e) {
@@ -77,14 +82,18 @@ public class ServiceListResponseController {
         //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
         response.setStatus(200);
         response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
-        response.setHeader("data", result);
+
+
+        //response.setHeader("data", result);
         return result;
     }
 
     // if null
-    @RequestMapping(value = "/serviceList", method = RequestMethod.GET)
+    @RequestMapping(value = "/serviceList", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String responseBody(HttpServletResponse response) {
+
+
         String result = null;
         ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
         serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
@@ -96,7 +105,10 @@ public class ServiceListResponseController {
         //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
         response.setStatus(200);
         response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
-        response.setHeader("data", result);
+//        byte[] ptext = result.getBytes(ISO_8859_1);
+//        String value = new String(ptext, UTF_8);
+        //response.setHeader("data",result);
+
         return result;
     }
 
