@@ -11,8 +11,11 @@ public class Scales {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "RATEID",nullable = false)
-    private int rateId;
+    //@Column(name = "RATEID",nullable = false)
+    //private int rateId;
+    @ManyToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "RATEID", nullable=false, referencedColumnName="Id")
+    private Rates rate;
 
     @Column(name = "MINVALUE")
     private int minValue;
@@ -20,8 +23,8 @@ public class Scales {
     @Column(name = "MAXVALUE")
     private int maxValue;
 
-    @Column(name = "MAINRATE")
-    private int mainRate;
+    @Column(name = "MAINRATE", columnDefinition="Decimal(10,2) default '0.00'")
+    private double mainRate;
 
     public int getId() {
         return id;
@@ -30,13 +33,21 @@ public class Scales {
     public void setId(int id) {
         this.id = id;
     }
-
+/*
     public int getRateId() {
         return rateId;
     }
 
     public void setRateId(int rateId) {
         this.rateId = rateId;
+    }
+*/
+    public Rates getRate() {
+    return rate;
+}
+
+    public void setRate(Rates rate) {
+        this.rate = rate;
     }
 
     public int getMinValue() {
@@ -55,11 +66,11 @@ public class Scales {
         this.maxValue = maxValue;
     }
 
-    public int getMainRate() {
+    public double getMainRate() {
         return mainRate;
     }
 
-    public void setMainRate(int mainRate) {
+    public void setMainRate(double mainRate) {
         this.mainRate = mainRate;
     }
 }

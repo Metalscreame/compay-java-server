@@ -2,6 +2,8 @@ package com.compay.entity;
 
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "ADRESS")
@@ -11,8 +13,9 @@ public class Adress {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "USERID",nullable = false)
-    private int userId;
+    @ManyToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")//foreignKey = @ForeignKey())
+    private User user;
 
     @Column(name = "HOUSE_NUMBER",nullable = false)
     private short houseNumber;
@@ -37,12 +40,12 @@ public class Adress {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return this.user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public short getHouseNumber() {
@@ -84,4 +87,10 @@ public class Adress {
     public void setRegion(String region) {
         this.region = region;
     }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
+    private Set<AdressArguments> adress;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
+    private Set<AdressServices> adressService;
 }

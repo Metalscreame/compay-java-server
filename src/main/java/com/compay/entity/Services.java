@@ -1,5 +1,6 @@
 package com.compay.entity;
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "SERVICES")
@@ -30,4 +31,15 @@ public class Services {
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="service")
+    private Set<AdressServices> adressServices;
 }
