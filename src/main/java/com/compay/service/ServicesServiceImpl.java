@@ -26,6 +26,11 @@ public class ServicesServiceImpl implements  ServicesService{
         return servicesRepository.save(serviceObject);
     }
 
+    @Override
+    public List<Services> findAll() {
+        return servicesRepository.findAll();
+    }
+
 //    @Override
 //    @Transactional
 //    public List<String> findByName(String name) {

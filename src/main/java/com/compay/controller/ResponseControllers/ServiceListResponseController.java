@@ -1,8 +1,15 @@
 package com.compay.controller.ResponseControllers;
 
+import com.compay.entity.Adress;
+import com.compay.entity.AdressServices;
+import com.compay.entity.Services;
 import com.compay.json.ServiceListResponse.ServiceListEntity;
 import com.compay.json.ServiceListResponse.ServiceListJsonBuilder;
+import com.compay.service.AdressService;
+import com.compay.service.AdressServicesService;
+import com.compay.service.ServicesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /*
 Example
@@ -44,6 +52,18 @@ data: {
 
 @Controller
 public class ServiceListResponseController {
+
+    @Autowired
+    AdressService adressService;
+
+    @Autowired
+    ServicesService servicesService;
+
+    @Autowired
+    AdressServicesService adressServicesService;
+
+
+
     //TODO может быть разный айди. поискать как получать разные айдишники при запросе
     //TODO @RequestMapping(value="/car/{carId}", method = RequestMethod.Get)
     //TODO сделать проверку на является ли обжект айди стрингом при десериализации или интом. пропускать только инты
@@ -69,10 +89,17 @@ public class ServiceListResponseController {
 
         serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
 
+        Adress adress = adressService.findAdressById(Integer.valueOf(id));
+        List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
+
         //TODO здесь будут вытаскиваться данные из базы и добавляться в виде обжектов
-        serviceListJsonBuilder.addInfo(new ServiceListEntity("Электроснабжение", "electric"));
-        serviceListJsonBuilder.addInfo(new ServiceListEntity("Газоснабжение","gas"));
-        serviceListJsonBuilder.addInfo(new ServiceListEntity("Водоснабжение","water"));
+        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Электроснабжение", "electric"));
+        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Газоснабжение","gas"));
+        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Водоснабжение","water"));
+        for(AdressServices adressServices: adressServicesList){
+            Services service = adressServices.getService();
+            serviceListJsonBuilder.addInfo(new ServiceListEntity(service.getServiceName(),service.getLink()));
+        }
         try {
             result = serviceListJsonBuilder.createJson();
         } catch (JsonProcessingException e) {
@@ -97,6 +124,11 @@ public class ServiceListResponseController {
         String result = null;
         ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
         serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
+        List<Services> servicesList = servicesService.findAll();
+        for(Services service: servicesList){
+            serviceListJsonBuilder.addInfo(new ServiceListEntity(service.getServiceName(),service.getLink()));
+        }
+
         try {
             result = serviceListJsonBuilder.createJson();
         } catch (JsonProcessingException e) {
