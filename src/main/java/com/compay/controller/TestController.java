@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +19,19 @@ import java.util.Random;
 public class TestController{
     @Autowired
     UserService svc;
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllUsers(){
+        String result="";
+        List<User> users = new ArrayList<>();
+
+        users=svc.findAll();
+
+        for (User ob: users) {
+            result =result+ob.getId()+" "+ ob.getName() + " " + ob.getLastName() + " " + ob.getSurrName() + " " + ob.getEmail() +" " + ob.getPassword() + "\n";
+        }
+        return result;
+    }
 
 
     @RequestMapping(value = "/save",method = RequestMethod.GET)
