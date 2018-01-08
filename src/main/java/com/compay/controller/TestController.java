@@ -13,9 +13,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+/*
+Controller to test the stuff
+ */
+
 
 @Controller
 public class TestController{
@@ -46,6 +52,8 @@ public class TestController{
     @Autowired
     ScalesService scalesService;
 
+    @Autowired
+    TokenService tokenService;
 
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
@@ -110,14 +118,60 @@ public class TestController{
         return "status 200"+str;
     }
 
+    //Find all users
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllUsers(){
+        String result="";
+        List<User> users = new ArrayList<>();
+
+        users=svc.findAll();
+        for (User ob: users) {
+            result =result+ob.getId()+" "+ ob.getName() + " " + ob.getLastName() + " " + ob.getSurrName() + " " + ob.getEmail() +" " + ob.getPassword() + "\r\n";
+        }
+        return result;
+    }
+
+
+    @RequestMapping(value = "/time",method = RequestMethod.GET)
+    @ResponseBody
+    public String testTimeTOken() {
+       Token token = new Token();
+        User user = svc.findUserById(1);
+        token.setId(2);
+        token.setToken("asdas");
+        token.setUser(user);
+        token.setTokenCreateDate();
+        tokenService.create(token);
+        return "token create time created";
+    }
+
+
+
     @RequestMapping(value = "/testInitializeDataBase",method = RequestMethod.GET)
     @ResponseBody
     public String testInitializeDataBase(){
+        User root = new User();//root test user
 
+        root.setName("root");
+        root.setPassword("root");
+        root.setEmail("root@root.root");
+        root.setLastName("rootLname");
+        root.setSurrName("rootSurrname");
+        svc.create(root);
 
         String message = "Initial filling of tables:";
-        ///////////////////////////////////////////////Adress
         User user = svc.findUserById(1);
+
+        //Token - root
+        java.util.Date utilDate = new java.util.Date();
+        Token token = new Token();
+        token.setId(1);
+        token.setToken("root");
+        token.setUser(user);
+        token.setTokenCreateDate();
+        tokenService.create(token);
+        ///////////////////////////////////////////////Adress
         //Flat
         Adress adressId1 = new Adress();
         adressId1.setId(1);
@@ -126,7 +180,9 @@ public class TestController{
         adressId1.setCity("Днепр");
         adressId1.setHouseNumber((short) 15);
         adressId1.setRegion("");
+        adressId1.setType("Квартира");
         adressId1.setStreet("Гагарина");
+        adressId1.setObjectDefault(true);
         adressService.create(adressId1);
         //Garage
         Adress adressId2 = new Adress();
@@ -134,9 +190,11 @@ public class TestController{
         adressId2.setUser(user);
         adressId2.setAppartmentNumber("");
         adressId2.setCity("Днепр");
-        adressId2.setHouseNumber((short) 0);
+        adressId2.setHouseNumber((short) 100);
         adressId2.setRegion("");
-        adressId2.setStreet("Гараж");
+        adressId2.setType("Гараж");
+        adressId2.setStreet("Гаражная");
+        adressId2.setObjectDefault(false);
         adressService.create(adressId2);
         //Country house
         Adress adressId3 = new Adress();
@@ -144,9 +202,11 @@ public class TestController{
         adressId3.setUser(user);
         adressId3.setAppartmentNumber("");
         adressId3.setCity("Днепр");
-        adressId3.setHouseNumber((short) 0);
+        adressId3.setHouseNumber((short) 100);
         adressId3.setRegion("");
-        adressId3.setStreet("Дача");
+        adressId3.setType("Дача");
+        adressId3.setStreet("Суворова");
+        adressId3.setObjectDefault(false);
         adressService.create(adressId3);
 
         message += " Adress;";

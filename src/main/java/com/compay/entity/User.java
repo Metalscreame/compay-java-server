@@ -24,13 +24,11 @@ public class User {
     @Column(name = "SURRNAME", nullable = false)
     private String surrName;
 
-
     @Column (name = "NAME",nullable = false)
     private String name;
 
     @Column(name = "LASTNAME",nullable = false)
     private String lastName;
-
 
     public int getId() {
         return id;
