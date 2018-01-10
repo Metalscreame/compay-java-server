@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User,Integer>{
      *          If no persons is found, this method returns an empty list.
 
     @Query("SELECT p FROM Person p WHERE LOWER(p.lastName) = LOWER(:lastName)")
-    public List<Person> find(@Param("lastName") String lastName)
+    public ObjectDataListList<Person> find(@Param("lastName") String lastName)
      */
 
 

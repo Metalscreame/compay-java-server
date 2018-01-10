@@ -80,9 +80,8 @@ public class ServiceListResponseController {
         List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
 
         //TODO здесь будут вытаскиваться данные из базы и добавляться в виде обжектов
-        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Электроснабжение", "electric"));
-        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Газоснабжение","gas"));
-        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Водоснабжение","water"));
+
+
         for(AdressServices adressServices: adressServicesList){
             Services service = adressServices.getService();
             serviceListJsonBuilder.addInfo(new ServiceListEntity(service.getServiceName(),service.getLink()));
