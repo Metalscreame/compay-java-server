@@ -108,7 +108,7 @@ public class ObjectDataListResponseContoller {
                 e.printStackTrace();
             }
             response.setStatus(200);
-            response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
            // String fixedResult = result.replace("\\","");
             return result;
         }
@@ -121,7 +121,7 @@ public class ObjectDataListResponseContoller {
                 e.printStackTrace();
             }
             response.setStatus(200);
-            response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return result;
         }
     }

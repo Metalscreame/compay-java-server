@@ -94,7 +94,7 @@ public class ServiceListResponseController {
 
         //TODO условие проверке токена авторизации и выдача 401 в случае чего -> редирект
         response.setStatus(200);
-        response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+        response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
 
         return result;
     }
@@ -119,7 +119,7 @@ public class ServiceListResponseController {
         }
         //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
         response.setStatus(200);
-        response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+        response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
         return result;
     }
 

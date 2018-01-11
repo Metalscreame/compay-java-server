@@ -2,7 +2,7 @@ package com.compay.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public interface JsonBuilder {
-    void addInfo(Object o);
+public interface JsonBuilder<T> {
+    void addInfo(T o);
     String createJson() throws JsonProcessingException;
 }

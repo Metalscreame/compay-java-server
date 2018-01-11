@@ -3,6 +3,7 @@ package com.compay.controller;
 import com.compay.entity.*;
 import com.compay.service.*;
 import com.google.gson.Gson;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,7 @@ public class TestController{
         user.setPassword("040593");
         user.setEmail("test"+rand+"@test.test");
         user.setLastName("Kosiy");
-        user.setSurrName("Stanislavovich");
+        user.setRole("user");
         svc.create(user);
         return "User " + user.getName() + "with " + user.getEmail() + " email has been saved";
     }
@@ -100,8 +101,7 @@ public class TestController{
     @ResponseBody
     public String testEmailFind() {
 
-        List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
-        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
+        User firstUserWithMail = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
 
         return "The user with " + firstUserWithMail.getEmail()+ " has ID: "+ firstUserWithMail.getId() + ", Name : "  + firstUserWithMail.getName()  + ", Password :  " + firstUserWithMail.getPassword();
     }
@@ -127,23 +127,9 @@ public class TestController{
 
         users=svc.findAll();
         for (User ob: users) {
-            result =result+ob.getId()+" "+ ob.getName() + " " + ob.getLastName() + " " + ob.getSurrName() + " " + ob.getEmail() +" " + ob.getPassword() + "\r\n";
+            result =result+ob.getId()+" "+ ob.getName() + " " + ob.getLastName() + " " + ob.getEmail() +" " + ob.getPassword() + "\r\n";
         }
         return result;
-    }
-
-
-    @RequestMapping(value = "/time",method = RequestMethod.GET)
-    @ResponseBody
-    public String testTimeTOken() {
-       Token token = new Token();
-        User user = svc.findUserById(1);
-        token.setId(2);
-        token.setToken("asdas");
-        token.setUser(user);
-        token.setTokenCreateDate();
-        tokenService.create(token);
-        return "token create time created";
     }
 
 
@@ -157,19 +143,29 @@ public class TestController{
         root.setPassword("root");
         root.setEmail("root@root.root");
         root.setLastName("rootLname");
-        root.setSurrName("rootSurrname");
+        root.setRole("admin");
         svc.create(root);
+        User newUsr= new User();
+        newUsr.setEmail("dima@dima.dima");
+        newUsr.setName("Дмитрий");
+        newUsr.setRole("user");
+        newUsr.setLastName("Павлочич");
+        newUsr.setPassword("040593");
+        svc.create(newUsr);
 
         String message = "Initial filling of tables:";
         User user = svc.findUserById(1);
 
         //Token - root
-        java.util.Date utilDate = new java.util.Date();
+
+        message+= "Admin acc; User acc; Token;";
         Token token = new Token();
         token.setId(1);
-        token.setToken("root");
         token.setUser(user);
+        String sha = DigestUtils.sha1Hex(user.getEmail()+user.getPassword());
+        token.setUserPlusPassHash(sha);
         token.setTokenCreateDate();
+        token.setToken();
         tokenService.create(token);
         ///////////////////////////////////////////////Adress
         //Flat

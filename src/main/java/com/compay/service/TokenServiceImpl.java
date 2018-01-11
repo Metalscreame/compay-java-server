@@ -23,4 +23,14 @@ public class TokenServiceImpl implements TokenService {
     public Token create(Token token) {
         return tokenRepository.save(token);
     }
+
+    @Override
+    public void delete(String token) {
+        tokenRepository.deleteByToken(token);
+    }
+
+    @Override
+    public Token findByUsrPssHash(String usrPssHash) {
+        return tokenRepository.findByUserPlusPassHash(usrPssHash);
+    }
 }

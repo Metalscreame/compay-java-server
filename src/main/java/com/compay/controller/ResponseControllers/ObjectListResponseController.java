@@ -82,13 +82,13 @@ public class ObjectListResponseController {
                 e.printStackTrace();
             }
             response.setStatus(200);
-            response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return result;
         }
         //Если у пользователя нет зарегистрированных объектов, то в ответ сервер должен отдать JSON с пустым массивом:
         else {
             response.setStatus(200);
-            response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{accountObjects: []}";
         }
         //TODO проверка токена и все вытекающие
