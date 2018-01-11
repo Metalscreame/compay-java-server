@@ -63,10 +63,6 @@ public class ServiceListResponseController {
     AdressServicesService adressServicesService;
 
 
-
-    //TODO может быть разный айди. поискать как получать разные айдишники при запросе
-    //TODO @RequestMapping(value="/car/{carId}", method = RequestMethod.Get)
-    //TODO сделать проверку на является ли обжект айди стрингом при десериализации или интом. пропускать только инты
     @RequestMapping(value = "/serviceList/{objectId}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String responseBody(HttpServletResponse response, @PathVariable("objectId") String id) {
@@ -76,26 +72,16 @@ public class ServiceListResponseController {
         objectID - это ID текущего объекта учета, который выбран в хедере сайта. Может быть пустым (если у пользователя еще нет зарегистрированных объектов учета). В ответ сервер должен отдать JSON, который содержит массив услуг, "подвязанных" к выбранному объекту учета:
 
          */
-
-        try {//TODO Подвязать айди к базе
-            int objectId = Integer.parseInt(id);
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-        }
-
         String result = null;
         ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
 
-
         serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
-
         Adress adress = adressService.findAdressById(Integer.valueOf(id));
         List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
 
         //TODO здесь будут вытаскиваться данные из базы и добавляться в виде обжектов
-        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Электроснабжение", "electric"));
-        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Газоснабжение","gas"));
-        //serviceListJsonBuilder.addInfo(new ServiceListEntity("Водоснабжение","water"));
+
+
         for(AdressServices adressServices: adressServicesList){
             Services service = adressServices.getService();
             serviceListJsonBuilder.addInfo(new ServiceListEntity(service.getServiceName(),service.getLink()));
@@ -106,20 +92,17 @@ public class ServiceListResponseController {
             e.printStackTrace();
         }
 
-        //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
+        //TODO условие проверке токена авторизации и выдача 401 в случае чего -> редирект
         response.setStatus(200);
-        response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+        response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
 
-
-        //response.setHeader("data", result);
         return result;
     }
 
-    // if null
+    // if objectID == null
     @RequestMapping(value = "/serviceList", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String responseBody(HttpServletResponse response) {
-
 
         String result = null;
         ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
@@ -136,11 +119,7 @@ public class ServiceListResponseController {
         }
         //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
         response.setStatus(200);
-        response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
-//        byte[] ptext = result.getBytes(ISO_8859_1);
-//        String value = new String(ptext, UTF_8);
-        //response.setHeader("data",result);
-
+        response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
         return result;
     }
 

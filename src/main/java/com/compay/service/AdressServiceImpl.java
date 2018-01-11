@@ -1,17 +1,24 @@
 package com.compay.service;
 
 import com.compay.entity.Adress;
+import com.compay.entity.User;
 import com.compay.repository.AdressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class AdressServiceImpl implements  AdressService{
 
     @Autowired
     private AdressRepository adressRepository;
+
+    @Override
+    public List<Adress> findAllByUser(User user) {
+        return adressRepository.findAllByUser(user);
+    }
 
     @Override
     @Transactional
