@@ -15,7 +15,7 @@ public class PostTestController {
     @ResponseBody
     public String  poster(HttpServletResponse response){
         response.setStatus(200);
-        response.setHeader("headers", "{ 'Content-Type': 'application/json' }");
+        response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
         return "{\"message\": \"Test success!\"}";
     }
 

@@ -78,7 +78,7 @@ public class AjaxController {
 //        svc.create(user);
 //        userJSONS = new ArrayList<UserJSON>();
 
-       // List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
+       // ObjectDataListList testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
 
         //TODO генерирует ошибку (контейнер не стартует!!), т.к. не всегда существует вервая запись
         //TODO комментировать перед заливанием в мастер.
