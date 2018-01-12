@@ -29,16 +29,17 @@ public class LoginController {
     private TokenService tokenService;
 
     @ResponseBody
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-//TODO change to post
+    @RequestMapping(value = "/login", method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
     public String loginPage(@RequestHeader(value = "Content-Type") String contentType,
                             @RequestBody String body,
                             HttpServletResponse response) throws IOException {
         boolean isUser, isAdmin;
+        LoginResponseBuilder builder = new LoginResponseBuilder();
+
 
         //json deserealize
-        LoginResponseBuilder builder = new LoginResponseBuilder();
         PersonToLoginEntity userToLogin = new ObjectMapper().readValue(body, PersonToLoginEntity.class);
+
         Token newToken = new Token();
         try {
             String result;
@@ -95,11 +96,11 @@ public class LoginController {
 
             builder.addInfo(new LoginResponseEntity(newToken.getToken(),  isAdmin,isUser, new ArrayList()));
             result = builder.createJson();
-            response.setHeader("Status", "200");
+            response.setStatus(200);
             response.setHeader("Headers", "{\"Content-Type\":\"application/json\"}");
             return result;
         } catch (Exception e) {
-            response.setHeader("Status", "401");
+            response.setStatus(401);
             response.setHeader("Headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\":\"Неверный пароль или логин\"}";
         }

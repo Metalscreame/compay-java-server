@@ -1,18 +1,23 @@
 package com.compay.controller.securityContollers;
 
 
+import com.compay.entity.Token;
 import com.compay.entity.User;
+import com.compay.json.jsonReceive.login.PersonToLoginEntity;
 import com.compay.json.jsonReceive.register.PersonToRegisterEntity;
+import com.compay.service.MailService;
+import com.compay.service.TokenService;
 import com.compay.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.sqlite.SQLiteException;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.SQLException;
 
 @Controller
@@ -21,33 +26,45 @@ public class RegistrationController {
     @Autowired
     private UserService service;
 
-    @RequestMapping(value = "/register",method = RequestMethod.GET)//TODO change to post
+    @Autowired
+    private MailService mailSender;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @RequestMapping(value = "/auth/register",method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")//TODO change to post
     @ResponseBody
-    public String registrationPage(@RequestParam(value = "body",required = false) PersonToRegisterEntity newUser1, HttpServletResponse response){
+    public String registrationPage(@RequestHeader(value = "Content-Type") String contentType,
+                                   @RequestBody String body,
+                                   HttpServletResponse response) throws IOException {
         User user = new User();
-        //--for test only
-        PersonToRegisterEntity newUser = new PersonToRegisterEntity("root@root.root","adasd","asdaa","adag");
-        //--for test only
+        PersonToRegisterEntity newUser = new ObjectMapper().readValue(body, PersonToRegisterEntity.class);
 
        try {
+           //check for unique email
+           User checkerUser = service.findByEmail(newUser.getEmail());
+           if(checkerUser!=null){
+               if(checkerUser.getEmail().equals(newUser.getEmail()))
+                   throw new Exception();
+           }
 
-           //--for test only
-           user.setId(214748367);//cant be null and cant be a number that is already registered
+
+
+           user.setId(Integer.MAX_VALUE);//cant be null and cant be a number that is already registered
            user.setEmail(newUser.getEmail());
            user.setPassword(newUser.getPassword());
            user.setName(newUser.getName());
+           user.setLastName(newUser.getSurname());
            user.setRole("user");
-           user.setLastName("a");
            service.create(user);
-           //--for test only
 
-
-           response.setHeader("status","200");
+           mailSender.sendEmail(user);
+           response.setStatus(200);
            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
 
            return "{\"info\":\"New User Registered!\"}";
        }catch (Exception e){
-           response.setHeader("status","400");
+           response.setStatus(401);
            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
            return "{\"info\":\"Email is already in use!\"}";
        }
