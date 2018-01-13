@@ -1,9 +1,9 @@
 package com.compay.json.jsonReceive.register;
 
 public class PersonToRegisterEntity {
-    private String email;
     private String name;
     private String surname;
+    private String email;
     private String password;
 
     public String getEmail() {
@@ -22,10 +22,4 @@ public class PersonToRegisterEntity {
         return password;
     }
 
-    public PersonToRegisterEntity(String email, String name, String surname, String password) {
-        this.email = email;
-        this.name = name;
-        this.surname = surname;
-        this.password = password;
-    }
 }

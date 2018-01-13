@@ -8,4 +8,6 @@ public interface TokenService {
     Token create(Token token);
     void delete(String token);
     Token findByUsrPssHash(String usrPssHash);
+    boolean authChek(String authTokenToCheck);
+
 }

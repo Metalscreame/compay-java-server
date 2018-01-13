@@ -81,7 +81,21 @@ public class User {
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
     private Set<Adress> adress;
-/*
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role='" + role + '\'' +
+                ", adress=" + adress +
+                '}';
+    }
+
+    /*
     public void setAdress(Set<Adress> adress){
         this.adress = adress;
     }

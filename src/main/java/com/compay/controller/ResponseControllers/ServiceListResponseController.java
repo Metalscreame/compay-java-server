@@ -3,18 +3,19 @@ package com.compay.controller.ResponseControllers;
 import com.compay.entity.Adress;
 import com.compay.entity.AdressServices;
 import com.compay.entity.Services;
+import com.compay.exception.AuthException;
+import com.compay.exception.WrongDataExc;
 import com.compay.json.ServiceListResponse.ServiceListEntity;
 import com.compay.json.ServiceListResponse.ServiceListJsonBuilder;
 import com.compay.service.AdressService;
 import com.compay.service.AdressServicesService;
 import com.compay.service.ServicesService;
+import com.compay.service.TokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -62,66 +63,90 @@ public class ServiceListResponseController {
     @Autowired
     AdressServicesService adressServicesService;
 
+    @Autowired
+    private TokenService tokenService;
 
     @RequestMapping(value = "/serviceList/{objectId}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String responseBody(HttpServletResponse response, @PathVariable("objectId") String id) {
+    public String responseBody(@RequestHeader(value = "Content-Type") String contentType,
+                               @RequestHeader(value = "Authorization") String authToken,
+                               HttpServletResponse response, @PathVariable("objectId") String id) {
         /*
         Это ID из другой таблицы: Address. По нему определяется объект учета (домохозяйство).
         Потом из соединения AddressServices с Services по этому ID получается список услуг
         objectID - это ID текущего объекта учета, который выбран в хедере сайта. Может быть пустым (если у пользователя еще нет зарегистрированных объектов учета). В ответ сервер должен отдать JSON, который содержит массив услуг, "подвязанных" к выбранному объекту учета:
-
          */
-        String result = null;
-        ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
-
-        serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
-        Adress adress = adressService.findAdressById(Integer.valueOf(id));
-        List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
-
-        //TODO здесь будут вытаскиваться данные из базы и добавляться в виде обжектов
-
-
-        for(AdressServices adressServices: adressServicesList){
-            Services service = adressServices.getService();
-            serviceListJsonBuilder.addInfo(new ServiceListEntity(service.getServiceName(),service.getLink()));
-        }
         try {
-            result = serviceListJsonBuilder.createJson();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            if (tokenService.authChek(authToken)) {
+            } else throw new AuthException();
+
+            String result = null;
+            ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
+
+            serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
+            Adress adress = adressService.findAdressById(Integer.valueOf(id));
+            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail())|| adress==null) {
+                throw new WrongDataExc();
+            }
+
+            List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
+            for (AdressServices adressServices : adressServicesList) {
+                Services service = adressServices.getService();
+                serviceListJsonBuilder.addInfo(new ServiceListEntity(service.getServiceName(), service.getLink()));
+            }
+            try {
+                result = serviceListJsonBuilder.createJson();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+            //TODO условие проверке токена авторизации и выдача 401 в случае чего -> редирект
+            response.setStatus(200);
+            response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
+            return result;
+
+        } catch (AuthException e) {
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Unauthorized\"}";
+        } catch (WrongDataExc e) {
+            response.setStatus(402);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Wrong objectID\"}";
         }
 
-        //TODO условие проверке токена авторизации и выдача 401 в случае чего -> редирект
-        response.setStatus(200);
-        response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
 
-        return result;
     }
 
     // if objectID == null
     @RequestMapping(value = "/serviceList", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String responseBody(HttpServletResponse response) {
-
-        String result = null;
-        ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
-        serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
-        List<Services> servicesList = servicesService.findAll();
-        for(Services service: servicesList){
-            serviceListJsonBuilder.addInfo(new ServiceListEntity(service.getServiceName(),service.getLink()));
-        }
-
+    public String responseBody(
+            @RequestHeader(value = "Content-Type") String contentType,
+            @RequestHeader(value = "Authorization") String authToken,
+            HttpServletResponse response) {
         try {
-            result = serviceListJsonBuilder.createJson();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        //TODO условие проверке токена авторизации и выдача 401 в случае чего ->редирект
-        response.setStatus(200);
-        response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-        return result;
-    }
+            if (tokenService.authChek(authToken)) {}
+            else throw new AuthException();
 
+            String result = null;
+            ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
+            serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
+
+            try {
+                result = serviceListJsonBuilder.createJson();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            response.setStatus(200);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return result;
+
+        } catch (AuthException e) {
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Unauthorized\"}";
+        }
+    }
 
 }
