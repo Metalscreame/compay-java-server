@@ -19,9 +19,7 @@ public class MailSender {
             javaMailSender.setPort(587);
             javaMailSender.setUsername("compayhillel@gmail.com");
             javaMailSender.setPassword("compayHillelcompayHillel");
-
             javaMailSender.setJavaMailProperties(getMailProperties());
-
             return javaMailSender;
         }
 

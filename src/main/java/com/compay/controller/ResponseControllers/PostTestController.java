@@ -2,6 +2,7 @@ package com.compay.controller.ResponseControllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,7 +14,7 @@ public class PostTestController {
 
     @RequestMapping(value = "/testPost", method = RequestMethod.POST)
     @ResponseBody
-    public String  poster(HttpServletResponse response){
+    public String  poster(@RequestHeader(value = "Content-Type") String contentType, HttpServletResponse response){
         response.setStatus(200);
         response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
         return "{\"message\": \"Test success!\"}";
