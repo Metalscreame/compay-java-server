@@ -5,7 +5,6 @@ public class MethodFlat {
     public int id;
     public String name;
     public String view;
-    public Formula formula;
 
 
     public int getId() {
@@ -32,18 +31,9 @@ public class MethodFlat {
         this.view = view;
     }
 
-    public Formula getFormula() {
-        return formula;
-    }
-
-    public void setFormula(Formula formula) {
-        this.formula = formula;
-    }
-
-    public MethodFlat(int id, String name, String view, Formula formula) {
+    public MethodFlat(int id, String name, String view) {
         this.id = id;
         this.name = name;
         this.view = view;
-        this.formula = formula;
     }
 }

@@ -18,7 +18,7 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
     List<Calculations> findAllByUser(User user);
 
 
-    @Query(value = "SELECT ADS.ADRESSID, CALC.COUNTCURRENT, CALC.COUNTLAST, CALC.PERIOD, CALC.SUM, ADS.SERVICEID, CALC.USER_ID, R.FORMULA, R.MAINRATE, R.METHODID, M.NAME, M.VIEW, R.USERSCALE " +
+    @Query(value = "SELECT ADS.ADRESSID, CALC.COUNTCURRENT, CALC.COUNTLAST, CALC.PERIOD, CALC.SUM, ADS.SERVICEID, CALC.USER_ID, R.FORMULA, R.MAINRATE, R.METHODID, M.NAME, M.VIEW, R.USERSCALE, R.Id AS RATES_ID " +
             "            FROM ADRESSSERVICES AS ADS " +
             "            LEFT JOIN RATES AS R ON ADS.id = R.ADRESSSERVICE_ID " +
             "            LEFT JOIN METHODS AS M ON R.METHODID = M.id " +

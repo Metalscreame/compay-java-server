@@ -280,7 +280,7 @@
                 <version>9.4.8.v20171121</version>
                 <configuration>
                     <httpConnector>
-                        <port>9999</port>
+                        <port>9998</port>
                     </httpConnector>
                 </configuration>
             </plugin>
