@@ -30,7 +30,7 @@ public class RateList {
     @Autowired
     private TokenService tokenService;
 
-    @RequestMapping(value = "/admin/userList", method = RequestMethod.GET,produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/admin/rateList", method = RequestMethod.GET,produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String  returnUserList(@RequestHeader(value = "Content-Type") String contentType,
                                   @RequestHeader(value = "Authorization")  String authToken,
