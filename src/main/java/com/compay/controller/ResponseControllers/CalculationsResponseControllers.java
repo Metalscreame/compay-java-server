@@ -36,6 +36,20 @@ public class CalculationsResponseControllers {
 
         List<Object[]> results = calculationsRepository.findAllByUserAdressPeriod(Integer.parseInt(id), period);
 
+        /*result[0] ADRESSID
+        result[1] COUNTCURRENT
+        result[2] COUNTLAST
+        result[3] PERIOD
+        result[4] SUM
+        result[5] SERVICEID
+        result[6] USER_ID
+        result[7] FORMULA
+        result[8] MAINRATE
+        result[9] METHODID
+        result[10] NAME
+        result[11] VIEW
+        result[12] USERSCALE
+        */
         for (Object[] result : results) {
             message += " " + result[0] + " " + result[1] + " - " + result[2] + " " + result[3] + " - " + result[4] + " " + result[5] + " - " + result[6] + " " + result[7] + " - " + result[8]
                     + result[9] + " " + result[10] + " - " + result[11] + " " + result[12]
