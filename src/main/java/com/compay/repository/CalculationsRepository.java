@@ -32,7 +32,7 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
             "                Max(PERIOD) AS PERIOD, " +
             "            CASE " +
             "            WHEN PERIOD =:period THEN SUM " +
-            "            ELSE 0 " +
+            "            ELSE 0.0 " +
             "            END as SUM, " +
             "            ADRESSID AS ADRESSID, " +
             "            SERVICEID AS SERVICEID, " +

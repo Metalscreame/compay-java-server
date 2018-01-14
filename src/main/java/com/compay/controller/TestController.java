@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 /*
 Controller to test the stuff
@@ -55,6 +55,9 @@ public class TestController{
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    CalculationsService calculationsService;
 
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
@@ -419,7 +422,7 @@ public class TestController{
         //rateId1.setPeriodTill();
         //rateId1.setMethodID(4);
         rateId1.setMethod(methodId4);
-        rateId1.setMainRate(0);
+        rateId1.setMainRate(0.0);
         rateId1.setAdressService(adressService1);
         rateId1.setUserScale(true);
         ratesService.create(rateId1);
@@ -474,6 +477,70 @@ public class TestController{
         scalesService.create(scale);
 
         message += " Scales;";
+
+        Calculations calculations = new Calculations();
+        calculations.setId(1);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(125);
+        calculations.setCountLast(231);
+
+        //calculations.setPeriod(System.g);
+        calculations.setSum(2);
+        calculations.setService(service1);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(2);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(120);
+        calculations.setCountLast(231);
+
+      //  calculations.setPeriod(date);
+        calculations.setSum(2);
+        calculations.setService(service1);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(3);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(510);
+        calculations.setCountLast(231);
+
+       // calculations.setPeriod(date);
+        calculations.setSum(2);
+        calculations.setService(service1);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(4);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(510);
+        calculations.setCountLast(231);
+//        String datestr4= "2017-12-01";
+//        try {
+//            date=  formatter.parse(datestr4);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        calculations.setPeriod(date);
+        calculations.setSum(58);
+        calculations.setService(service2);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(5);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(510);
+        calculations.setCountLast(231);
+
+        //calculations.setPeriod(date);
+        calculations.setSum(8);
+        calculations.setService(service3);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+
+
 
         return message;
 

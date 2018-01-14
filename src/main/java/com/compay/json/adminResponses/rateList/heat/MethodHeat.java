@@ -5,6 +5,7 @@ public class MethodHeat {
     public int id;
     public String name;
     public String view;
+    public Formula formula;
 
     public int getId() {
         return id;
@@ -46,6 +47,6 @@ public class MethodHeat {
         this.formula = formula;
     }
 
-    public Formula formula;
+
 
 }

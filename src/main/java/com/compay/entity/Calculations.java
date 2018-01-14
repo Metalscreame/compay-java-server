@@ -2,7 +2,8 @@ package com.compay.entity;
 
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Entity
@@ -16,8 +17,9 @@ public class Calculations {
     @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")
     private User user;
 
-    @Column(name = "PERIOD",columnDefinition="DATE")//"DATETIME")
-    private Date period;
+    //TODO
+    @Column(name = "PERIOD")//"DATETIME")
+    private Timestamp period;
 
     @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn(name = "ADRESSID", nullable=false, referencedColumnName="Id")
@@ -57,7 +59,7 @@ public class Calculations {
         return period;
     }
 
-    public void setPeriod(Date period) {
+    public void setPeriod(Timestamp period) {
         this.period = period;
     }
 
