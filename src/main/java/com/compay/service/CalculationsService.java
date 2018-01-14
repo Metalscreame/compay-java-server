@@ -12,5 +12,4 @@ public interface CalculationsService {
     Calculations create(Calculations calculation);
     List<Calculations> findAllByAdress(Adress adress);
     List<Calculations> findAllByUser(User user);
-    List<Calculations> findAllByUserAdressPeriod(User user, Adress adress, Date period);
 }

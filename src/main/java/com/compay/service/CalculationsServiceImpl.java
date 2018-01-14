@@ -39,9 +39,4 @@ public class CalculationsServiceImpl implements  CalculationsService{
     public List<Calculations> findAllByUser(User user) {
         return calculationsRepository.findAllByUser(user);
     }
-
-    @Override
-    public List<Calculations> findAllByUserAdressPeriod(User user, Adress adress, Date period) {
-        return calculationsRepository.findAllByUserAdressPeriod(user, adress, period);
-    }
 }

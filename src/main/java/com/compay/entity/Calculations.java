@@ -4,6 +4,7 @@ package com.compay.entity;
 import javax.persistence.*;
 import java.sql.Date;
 
+
 @Entity
 @Table(name = "CALCULATIONS")
 public class Calculations {
@@ -15,7 +16,7 @@ public class Calculations {
     @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")
     private User user;
 
-    @Column(name = "PERIOD",columnDefinition="DATETIME")
+    @Column(name = "PERIOD",columnDefinition="DATE")//"DATETIME")
     private Date period;
 
     @ManyToOne(cascade= CascadeType.ALL)
