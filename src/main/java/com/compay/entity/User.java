@@ -21,15 +21,22 @@ public class User {
     @Column(name = "EMAIL",nullable = false,unique = true)
     private String email;
 
-    @Column(name = "SURRNAME", nullable = false)
-    private String surrName;
-
-
     @Column (name = "NAME",nullable = false)
     private String name;
 
     @Column(name = "LASTNAME",nullable = false)
     private String lastName;
+
+    @Column(name = "ROLE",nullable = false)
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 
     public int getId() {
@@ -56,14 +63,6 @@ public class User {
         this.email = email;
     }
 
-    public String getSurrName() {
-        return surrName;
-    }
-
-    public void setSurrName(String surrName) {
-        this.surrName = surrName;
-    }
-
     public String getName() {
         return name;
     }
@@ -82,7 +81,21 @@ public class User {
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
     private Set<Adress> adress;
-/*
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role='" + role + '\'' +
+                ", adress=" + adress +
+                '}';
+    }
+
+    /*
     public void setAdress(Set<Adress> adress){
         this.adress = adress;
     }

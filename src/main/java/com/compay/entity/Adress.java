@@ -32,6 +32,29 @@ public class Adress {
     @Column(name = "REGION",nullable = false)
     private String region;
 
+    @Column(name = "DEFAULT_OBJ",nullable = false)
+    private boolean objectDefault;
+
+    @Column(name = "TYPE",nullable = false)
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public boolean getObjectDefault() {
+        return objectDefault;
+    }
+
+    public void setObjectDefault(boolean objectDefault) {
+        this.objectDefault = objectDefault;
+    }
+
+
     public int getId() {
         return id;
     }

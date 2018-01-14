@@ -7,6 +7,7 @@ import com.compay.entity.Services;
 import java.util.List;
 
 public interface AdressServicesService {
+    List<AdressServices> findAll();
     AdressServices findAdressServiceById(Integer id);
     AdressServices create(AdressServices adressService);
     List<AdressServices> findAllByAdress(Adress adress);

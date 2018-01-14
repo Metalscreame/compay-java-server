@@ -18,6 +18,11 @@ public class AdressServicesServiceImpl implements  AdressServicesService{
     private AdressServicesRepository adressServicesRepository;
 
     @Override
+    public List<AdressServices> findAll() {
+        return null;
+    }
+
+    @Override
     public AdressServices findAdressServiceById(Integer id) {
         return adressServicesRepository.findOne(id);
     }

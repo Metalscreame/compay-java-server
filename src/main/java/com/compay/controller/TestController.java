@@ -3,6 +3,7 @@ package com.compay.controller;
 import com.compay.entity.*;
 import com.compay.service.*;
 import com.google.gson.Gson;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +14,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+/*
+Controller to test the stuff
+ */
+
 
 @Controller
 public class TestController{
@@ -46,6 +53,8 @@ public class TestController{
     @Autowired
     ScalesService scalesService;
 
+    @Autowired
+    TokenService tokenService;
 
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
@@ -58,7 +67,7 @@ public class TestController{
         user.setPassword("040593");
         user.setEmail("test"+rand+"@test.test");
         user.setLastName("Kosiy");
-        user.setSurrName("Stanislavovich");
+        user.setRole("user");
         svc.create(user);
         return "User " + user.getName() + "with " + user.getEmail() + " email has been saved";
     }
@@ -92,8 +101,7 @@ public class TestController{
     @ResponseBody
     public String testEmailFind() {
 
-        List testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
-        User firstUserWithMail = (User) testList.get(0);//Возвращает первую запись
+        User firstUserWithMail = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
 
         return "The user with " + firstUserWithMail.getEmail()+ " has ID: "+ firstUserWithMail.getId() + ", Name : "  + firstUserWithMail.getName()  + ", Password :  " + firstUserWithMail.getPassword();
     }
@@ -110,14 +118,56 @@ public class TestController{
         return "status 200"+str;
     }
 
+    //Find all users
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllUsers(){
+        String result="";
+        List<User> users = new ArrayList<>();
+
+        users=svc.findAll();
+        for (User ob: users) {
+            result =result+ob.getId()+" "+ ob.getName() + " " + ob.getLastName() + " " + ob.getEmail() +" " + ob.getPassword() + "\r\n";
+        }
+        return result;
+    }
+
+
+
     @RequestMapping(value = "/testInitializeDataBase",method = RequestMethod.GET)
     @ResponseBody
     public String testInitializeDataBase(){
+        User root = new User();//root test user
 
+        root.setName("root");
+        root.setPassword("root");
+        root.setEmail("root@root.root");
+        root.setLastName("rootLname");
+        root.setRole("admin");
+        svc.create(root);
+        User newUsr= new User();
+        newUsr.setEmail("dima@dima.dima");
+        newUsr.setName("Дмитрий");
+        newUsr.setRole("user");
+        newUsr.setLastName("Павлочич");
+        newUsr.setPassword("040593");
+        svc.create(newUsr);
 
         String message = "Initial filling of tables:";
-        ///////////////////////////////////////////////Adress
         User user = svc.findUserById(1);
+
+        //Token - root
+
+        message+= "Admin acc; User acc; Token;";
+        Token token = new Token();
+        token.setId(1);
+        token.setUser(user);
+        String sha = DigestUtils.sha1Hex(user.getEmail()+user.getPassword());
+        token.setUserPlusPassHash(sha);
+        token.setTokenCreateDate();
+        token.setToken();
+        tokenService.create(token);
+        ///////////////////////////////////////////////Adress
         //Flat
         Adress adressId1 = new Adress();
         adressId1.setId(1);
@@ -126,7 +176,9 @@ public class TestController{
         adressId1.setCity("Днепр");
         adressId1.setHouseNumber((short) 15);
         adressId1.setRegion("");
+        adressId1.setType("Квартира");
         adressId1.setStreet("Гагарина");
+        adressId1.setObjectDefault(true);
         adressService.create(adressId1);
         //Garage
         Adress adressId2 = new Adress();
@@ -134,9 +186,11 @@ public class TestController{
         adressId2.setUser(user);
         adressId2.setAppartmentNumber("");
         adressId2.setCity("Днепр");
-        adressId2.setHouseNumber((short) 0);
+        adressId2.setHouseNumber((short) 100);
         adressId2.setRegion("");
-        adressId2.setStreet("Гараж");
+        adressId2.setType("Гараж");
+        adressId2.setStreet("Гаражная");
+        adressId2.setObjectDefault(false);
         adressService.create(adressId2);
         //Country house
         Adress adressId3 = new Adress();
@@ -144,9 +198,11 @@ public class TestController{
         adressId3.setUser(user);
         adressId3.setAppartmentNumber("");
         adressId3.setCity("Днепр");
-        adressId3.setHouseNumber((short) 0);
+        adressId3.setHouseNumber((short) 100);
         adressId3.setRegion("");
-        adressId3.setStreet("Дача");
+        adressId3.setType("Дача");
+        adressId3.setStreet("Суворова");
+        adressId3.setObjectDefault(false);
         adressService.create(adressId3);
 
         message += " Adress;";

@@ -4,6 +4,5 @@ package com.compay.json;
 
 public class Views {
     public static class Public {
-
     }
 }
