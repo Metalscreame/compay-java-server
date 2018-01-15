@@ -58,7 +58,14 @@ public class RegistrationController {
            user.setRole("user");
            service.create(user);
 
-           mailSender.sendEmail(user);
+            //because email sends for too long
+           Thread thread1 = new Thread () {
+               public void run () {
+                   mailSender.sendEmail(user);
+               }
+           };
+           thread1.start();
+
            response.setStatus(200);
            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
 
@@ -70,4 +77,7 @@ public class RegistrationController {
        }
     }
 
+
 }
+
+

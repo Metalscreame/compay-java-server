@@ -86,6 +86,7 @@ public class CalculationController {
             ArrayList services = new ArrayList();
             CalculationEntity entity = new CalculationEntity(period, services);
             CalculationBuilder builder = new CalculationBuilder();
+
              /*rQ[0] ADRESSID
             rQ[1] COUNTCURRENT
             rQ[2] COUNTLAST
@@ -121,8 +122,7 @@ public class CalculationController {
                         calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodElectricity, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
                         break;
                     case 2: //Wate
-                        BigDecimal bigDecimal = (BigDecimal) rQ[8];
-                        MethodWater methodWater = new MethodWater((int) rQ[9], methods.getName(), methods.getView(),bigDecimal.floatValue ());
+                        MethodWater methodWater = new MethodWater((int) rQ[9], methods.getName(), methods.getView(),(int)rQ[8]);
                         calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodWater, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
                         break;
                     case 3: //Gas
@@ -144,10 +144,10 @@ public class CalculationController {
                         MethodHeat methodHeat = new MethodHeat((int) rQ[9], methods.getName(), methods.getView(), formula);
                         calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodHeat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
                         break;
-                    case 5: //Flat
-                        MethodFlat methodFlat = new MethodFlat((int) rQ[9], methods.getName(), methods.getView());
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodFlat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
+//                    case 5: //Flat
+//                        MethodFlat methodFlat = new MethodFlat((int) rQ[9], methods.getName(), methods.getView());
+//                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodFlat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
+//                        break;
 
                     case 6: //Garbage
                         MethodGarbage methodGarbage = new MethodGarbage((int) rQ[9], methods.getName(), methods.getView(), (float) rQ[4]);
