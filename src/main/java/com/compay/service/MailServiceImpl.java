@@ -2,6 +2,7 @@ package com.compay.service;
 
 import com.compay.entity.User;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -33,7 +34,7 @@ public class MailServiceImpl implements MailService {
     private MimeMessagePreparator getMessagePreparator(final User user) {
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
-                mimeMessage.setFrom("compayhillel@gmail.com");
+                mimeMessage.setFrom();
                 mimeMessage.setRecipient(Message.RecipientType.TO,
                         new InternetAddress(user.getEmail()));
                 mimeMessage.setText("Дорогой " + user.getName()
