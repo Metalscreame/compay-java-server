@@ -18,7 +18,15 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
     List<Calculations> findAllByUser(User user);
 
 
-    @Query(value = "SELECT ADS.ADRESSID, CALC.COUNTCURRENT, CALC.COUNTLAST, CALC.PERIOD, CALC.SUM, ADS.SERVICEID, CALC.USER_ID, R.FORMULA, R.MAINRATE, R.METHODID, M.NAME, M.VIEW, R.USERSCALE, R.Id AS RATES_ID " +
+    @Query(value = "SELECT ADS.ADRESSID, " +
+            "CASE WHEN CALC.COUNTCURRENT IS NULL THEN 0 ELSE CALC.COUNTCURRENT END AS COUNTCURRENT, " +
+            "CASE WHEN CALC.COUNTLAST IS NULL THEN 0 ELSE CALC.COUNTLAST END AS COUNTLAST, " +
+            "CASE WHEN CALC.PERIOD IS NULL THEN 0 ELSE CALC.PERIOD END AS PERIOD, " +
+            "CASE WHEN SUM IS NULL THEN 0 ELSE SUM END AS SUM, " +
+            "ADS.SERVICEID, " +
+            "CASE WHEN CALC.USER_ID IS NULL THEN :user_id ELSE CALC.USER_ID END AS USER_ID, " +
+            "CASE WHEN R.FORMULA IS NULL THEN '' ELSE R.FORMULA END AS FORMULA, " +
+            "R.MAINRATE, R.METHODID, M.NAME, M.VIEW, R.USERSCALE, R.Id AS RATES_ID " +
             "            FROM ADRESSSERVICES AS ADS " +
             "            LEFT JOIN RATES AS R ON ADS.id = R.ADRESSSERVICE_ID " +
             "            LEFT JOIN METHODS AS M ON R.METHODID = M.id " +
@@ -44,6 +52,6 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
             "            ) AS CALC " +
             "            ON ADS.ADRESSID = CALC.ADRESSID AND ADS.SERVICEID = CALC.SERVICEID " +
             "            WHERE ADS.ADRESSID = :id ", nativeQuery = true)
-    List<Object[]> findAllByUserAdressPeriod(@Param("id") Integer id, @Param("period") String period);
+    List<Object[]> findAllByUserAdressPeriod(@Param("id") Integer id, @Param("period") String period, @Param("user_id") Integer userId);
 
 }

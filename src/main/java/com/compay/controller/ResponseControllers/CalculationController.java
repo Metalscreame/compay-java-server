@@ -81,7 +81,7 @@ public class CalculationController {
                 throw new WrongDataExc();
             }
 
-            List<Object[]> resultQuery = calculationsRepository.findAllByUserAdressPeriod(objectID, period);
+            List<Object[]> resultQuery = calculationsRepository.findAllByUserAdressPeriod(objectID, period, adress.getUser().getId());
 
             ArrayList services = new ArrayList();
             CalculationEntity entity = new CalculationEntity(period, services);
@@ -110,12 +110,9 @@ public class CalculationController {
                     case 1:
                         List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne((int) rQ[13]));
                         ArrayList<ScaleElectr> scaleArrayList = new ArrayList<ScaleElectr>();
-                        ScaleElectr scaleElectr = new ScaleElectr();
+
                         for (Scales scalesEntity : scalesEntityList) {
-                            scaleElectr.setMainRate(scalesEntity.getMinValue());
-                            scaleElectr.setMaxValue(scalesEntity.getMaxValue());
-                            scaleElectr.setMainRate(scalesEntity.getMainRate());
-                            scaleArrayList.add(scaleElectr);
+                            scaleArrayList.add(new ScaleElectr(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
                         }
                         MethodElectricity methodElectricity = new MethodElectricity((int) rQ[9], methods.getName(), methods.getView(), scaleArrayList);
 
@@ -144,10 +141,10 @@ public class CalculationController {
                         MethodHeat methodHeat = new MethodHeat((int) rQ[9], methods.getName(), methods.getView(), formula);
                         calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodHeat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
                         break;
-//                    case 5: //Flat
-//                        MethodFlat methodFlat = new MethodFlat((int) rQ[9], methods.getName(), methods.getView());
-//                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodFlat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-//                        break;
+                    case 5: //Flat
+                        MethodFlat methodFlat = new MethodFlat((int) rQ[9], methods.getName(), methods.getView());
+                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodFlat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
+                        break;
 
                     case 6: //Garbage
                         MethodGarbage methodGarbage = new MethodGarbage((int) rQ[9], methods.getName(), methods.getView(), (float) rQ[4]);
