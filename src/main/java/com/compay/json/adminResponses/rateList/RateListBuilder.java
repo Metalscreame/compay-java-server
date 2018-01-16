@@ -17,6 +17,6 @@ public class RateListBuilder implements JsonBuilder {
 
     public String createJson(RateListEntity entity) throws JsonProcessingException {
         String serialized = new ObjectMapper().writeValueAsString(entity);
-                return "["+serialized.substring(4);
+                return "["+serialized.substring(4,serialized.length()-1)+"]";
     }
 }

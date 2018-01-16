@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 /*
 Controller to test the stuff
@@ -55,6 +55,9 @@ public class TestController{
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    CalculationsService calculationsService;
 
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
@@ -136,7 +139,7 @@ public class TestController{
 
     @RequestMapping(value = "/testInitializeDataBase",method = RequestMethod.GET)
     @ResponseBody
-    public String testInitializeDataBase(){
+    public String testInitializeDataBase() throws ParseException {
         User root = new User();//root test user
 
         root.setName("root");
@@ -415,18 +418,18 @@ public class TestController{
         ///////////////////////////////////////////////Rates
         Rates rateId1 = new Rates();
         rateId1.setId(1);
-        rateId1.setPeriodFrom(new Date(2017, 1, 1));
+        rateId1.setPeriodFrom(new java.sql.Date(2017, 1, 1));
         //rateId1.setPeriodTill();
         //rateId1.setMethodID(4);
         rateId1.setMethod(methodId4);
-        rateId1.setMainRate(0);
+        rateId1.setMainRate(0.0);
         rateId1.setAdressService(adressService1);
         rateId1.setUserScale(true);
         ratesService.create(rateId1);
 
         Rates rateId2 = new Rates();
         rateId2.setId(2);
-        rateId2.setPeriodFrom(new Date(2017, 1, 1));
+        rateId2.setPeriodFrom(new java.sql.Date(2017, 1, 1));
         //rates.setPeriodTill();
         //rateId2.setMethodID(3);
         rateId2.setMethod(methodId3);
@@ -437,7 +440,7 @@ public class TestController{
 
         Rates rateId3 = new Rates();
         rateId3.setId(3);
-        rateId3.setPeriodFrom(new Date(2017, 5, 1));
+        rateId3.setPeriodFrom(new java.sql.Date(2017, 5, 1));
         //rates.setPeriodTill();
         rateId3.setMethod(methodId2);
         rateId3.setMainRate(12.30);
@@ -474,6 +477,81 @@ public class TestController{
         scalesService.create(scale);
 
         message += " Scales;";
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calculations calculations = new Calculations();
+        calculations.setId(1);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(125);
+        calculations.setCountLast(231);
+
+
+        String datestr1= "2017-09-01";
+        Date parsedDate1 = dateFormat.parse(datestr1);
+        Timestamp timestamp = new java.sql.Timestamp(parsedDate1.getTime());
+        calculations.setPeriod(timestamp);
+        calculations.setSum(2);
+        calculations.setService(service1);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(2);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(120);
+        calculations.setCountLast(231);
+        String datestr2= "2017-11-01";
+        Date parsedDate2 = dateFormat.parse(datestr2);
+        Timestamp timestamp2 = new java.sql.Timestamp(parsedDate2.getTime());
+        calculations.setPeriod(timestamp2);
+        calculations.setSum(2);
+        calculations.setService(service1);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(3);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(510);
+        calculations.setCountLast(231);
+
+        String datestr3= "2017-12-01";
+        Date parsedDate3 = dateFormat.parse(datestr3);
+        Timestamp timestamp3 = new java.sql.Timestamp(parsedDate3.getTime());
+        calculations.setPeriod(timestamp3);
+        calculations.setSum(2);
+        calculations.setService(service1);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(4);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(510);
+        calculations.setCountLast(231);
+        String datestr4= "2018-01-01";
+
+        Date parsedDate = dateFormat.parse(datestr4);
+        Timestamp timestamp4 = new java.sql.Timestamp(parsedDate.getTime());
+        calculations.setPeriod(timestamp4);
+        calculations.setSum(58);
+        calculations.setService(service2);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+        calculations.setId(5);
+        calculations.setAdress(adressId1);
+        calculations.setCountCurrent(510);
+        calculations.setCountLast(231);
+
+        String datestr5= "2017-10-01";
+        Date parsedDate5 = dateFormat.parse(datestr5);
+        Timestamp timestamp5 = new java.sql.Timestamp(parsedDate5.getTime());
+        calculations.setPeriod(timestamp5);
+        calculations.setSum(8);
+        calculations.setService(service3);
+        calculations.setUser(user);
+        calculationsService.create(calculations);
+
+
+
 
         return message;
 

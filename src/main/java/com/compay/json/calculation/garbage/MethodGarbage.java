@@ -1,17 +1,10 @@
-package com.compay.json.calculation.water;
+package com.compay.json.calculation.garbage;
 
-public class MethodWater {
+public class MethodGarbage {
     public int id;
     public String name;
     public String view;
     public double mainRate;
-
-    public MethodWater(int id, String name, String view, double mainRate) {
-        this.id = id;
-        this.name = name;
-        this.view = view;
-        this.mainRate = mainRate;
-    }
 
     public int getId() {
         return id;
@@ -42,6 +35,14 @@ public class MethodWater {
     }
 
     public void setMainRate(double mainRate) {
+        this.mainRate = mainRate;
+    }
+
+    public MethodGarbage(int id, String name, String view, double mainRate) {
+
+        this.id = id;
+        this.name = name;
+        this.view = view;
         this.mainRate = mainRate;
     }
 }
