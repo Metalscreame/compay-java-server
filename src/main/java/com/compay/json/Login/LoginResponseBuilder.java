@@ -16,6 +16,6 @@ public class LoginResponseBuilder implements JsonBuilder {
     @Override
     public String createJson() throws JsonProcessingException {
         String serialized = new ObjectMapper().writeValueAsString(list);
-        return serialized.substring(8,serialized.length()-1);
+        return serialized.substring(9,serialized.length()-2);
     }
 }
