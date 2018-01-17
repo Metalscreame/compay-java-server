@@ -60,12 +60,8 @@ public class RegistrationController {
            service.create(user);
 
             //because email sends for too long
-           Thread thread1 = new Thread () {
-               public void run () {
-                   mailSender.sendEmail(user);
-               }
-           };
-           thread1.start();
+            new Thread (() -> mailSender.sendEmail(user)).start();
+
 
            response.setStatus(200);
            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
