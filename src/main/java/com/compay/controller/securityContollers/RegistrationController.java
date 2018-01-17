@@ -3,6 +3,7 @@ package com.compay.controller.securityContollers;
 
 import com.compay.entity.User;
 
+import com.compay.exception.AuthException;
 import com.compay.json.jsonReceive.register.PersonToRegisterEntity;
 import com.compay.service.MailService;
 import com.compay.service.TokenService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 
@@ -31,13 +33,20 @@ public class RegistrationController {
                                    HttpServletResponse response) {
        try {
            User user = new User();
-           PersonToRegisterEntity newUser = new ObjectMapper().readValue(body, PersonToRegisterEntity.class);
+           PersonToRegisterEntity newUser;
+           try{
+               newUser = new ObjectMapper().readValue(body, PersonToRegisterEntity.class);
+           }catch (IOException e){
+               response.setStatus(402);
+               response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+               return "{\"info\":\"Wrong data format!\"}";
+           }
 
            //check for unique email
            User checkerUser = service.findByEmail(newUser.getEmail());
            if(checkerUser!=null){
                if(checkerUser.getEmail().equals(newUser.getEmail()))
-                   throw new Exception();
+                   throw new AuthException();
            }
 
 
@@ -62,7 +71,7 @@ public class RegistrationController {
            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
 
            return "{\"info\":\"New User Registered!\"}";
-       }catch (Exception e){
+       }catch (AuthException e){
            response.setStatus(401);
            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
            return "{\"info\":\"Email is already in use!\"}";
