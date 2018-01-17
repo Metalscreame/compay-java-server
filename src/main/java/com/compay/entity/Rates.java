@@ -3,6 +3,7 @@ package com.compay.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.Set;
 
@@ -20,25 +21,25 @@ public class Rates {
     @JoinColumn(name = "ADRESSSERVICE_ID", nullable=false, referencedColumnName="Id")
     private AdressServices adressServices;
 
-    @Column(name = "PERIOD_FROM",columnDefinition="DATETIME")
-    private Date periodFrom;
+    @Column(name = "PERIOD_FROM")//,columnDefinition="DATETIME")
+    private Timestamp periodFrom;
 
-    @Column(name = "PERIOD_TILL",columnDefinition="DATETIME")
-    private Date periodTill;
+    @Column(name = "PERIOD_TILL")//,columnDefinition="DATETIME")
+    private Timestamp periodTill;
 
-    public Date getPeriodFrom() {
+    public Timestamp getPeriodFrom() {
         return periodFrom;
     }
 
-    public void setPeriodFrom(Date periodFrom) {
+    public void setPeriodFrom(Timestamp periodFrom) {
         this.periodFrom = periodFrom;
     }
 
-    public Date getPeriodTill() {
+    public Timestamp getPeriodTill() {
         return periodTill;
     }
 
-    public void setPeriodTill(Date periodTill) {
+    public void setPeriodTill(Timestamp periodTill) {
         this.periodTill = periodTill;
     }
 

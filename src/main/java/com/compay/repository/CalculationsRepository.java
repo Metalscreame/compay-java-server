@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,10 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
             "CASE WHEN R.FORMULA IS NULL THEN '' ELSE R.FORMULA END AS FORMULA, " +
             "R.MAINRATE, R.METHODID, M.NAME, M.VIEW, R.USERSCALE, R.Id AS RATES_ID " +
             "            FROM ADRESSSERVICES AS ADS " +
-            "            LEFT JOIN RATES AS R ON ADS.id = R.ADRESSSERVICE_ID " +
+            "            LEFT JOIN (SELECT id, FORMULA, MAINRATE, MAX(PERIOD_FROM) AS PERIOD_FROM, PERIOD_TILL, USERSCALE, ADRESSSERVICE_ID, METHODID " +
+            "                       FROM RATES " +
+            "                       WHERE PERIOD_FROM <=:period AND CASE WHEN PERIOD_TILL ISNULL THEN 999504213200000 ELSE PERIOD_TILL END >=:period " +
+            "                       GROUP BY ADRESSSERVICE_ID) AS R ON ADS.id = R.ADRESSSERVICE_ID " +
             "            LEFT JOIN METHODS AS M ON R.METHODID = M.id " +
             "            LEFT JOIN ( " +
             "                SELECT id AS Id, " +
@@ -52,6 +56,6 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
             "            ) AS CALC " +
             "            ON ADS.ADRESSID = CALC.ADRESSID AND ADS.SERVICEID = CALC.SERVICEID " +
             "            WHERE ADS.ADRESSID = :id ", nativeQuery = true)
-    List<Object[]> findAllByUserAdressPeriod(@Param("id") Integer id, @Param("period") String period, @Param("user_id") Integer userId);
+    List<Object[]> findAllByUserAdressPeriod(@Param("id") Integer id, @Param("period") Timestamp period, @Param("user_id") Integer userId);
 
 }
