@@ -140,6 +140,9 @@ public class TestController{
     @RequestMapping(value = "/testInitializeDataBase",method = RequestMethod.GET)
     @ResponseBody
     public String testInitializeDataBase() throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         User root = new User();//root test user
 
         root.setName("root");
@@ -418,7 +421,7 @@ public class TestController{
         ///////////////////////////////////////////////Rates
         Rates rateId1 = new Rates();
         rateId1.setId(1);
-        rateId1.setPeriodFrom(new java.sql.Date(2017, 1, 1));
+        rateId1.setPeriodFrom(new java.sql.Timestamp(dateFormat.parse("2017-01-01").getTime()));
         //rateId1.setPeriodTill();
         //rateId1.setMethodID(4);
         rateId1.setMethod(methodId4);
@@ -429,7 +432,7 @@ public class TestController{
 
         Rates rateId2 = new Rates();
         rateId2.setId(2);
-        rateId2.setPeriodFrom(new java.sql.Date(2017, 1, 1));
+        rateId2.setPeriodFrom(new java.sql.Timestamp(dateFormat.parse("2017-01-01").getTime()));//2017-01-01
         //rates.setPeriodTill();
         //rateId2.setMethodID(3);
         rateId2.setMethod(methodId3);
@@ -440,7 +443,7 @@ public class TestController{
 
         Rates rateId3 = new Rates();
         rateId3.setId(3);
-        rateId3.setPeriodFrom(new java.sql.Date(2017, 5, 1));
+        rateId3.setPeriodFrom(new java.sql.Timestamp(dateFormat.parse("2017-05-01").getTime()));//2017-05-01
         //rates.setPeriodTill();
         rateId3.setMethod(methodId2);
         rateId3.setMainRate(12.30);
@@ -478,7 +481,7 @@ public class TestController{
 
         message += " Scales;";
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         Calculations calculations = new Calculations();
         calculations.setId(1);
         calculations.setAdress(adressId1);

@@ -26,6 +26,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +73,7 @@ public class CalculationController {
     @ResponseBody
     public String responseBody(@RequestHeader(value = "Content-Type") String type,
                                @RequestHeader(value = "Authorization") String authToken,
-                               HttpServletResponse response, @PathVariable("objectID") int objectID, @PathVariable("period") String period) throws JsonProcessingException {
+                               HttpServletResponse response, @PathVariable("objectID") int objectID, @PathVariable("period") String period) throws JsonProcessingException, ParseException {
 
         try {
             if (tokenService.authChek(authToken)) {
@@ -81,7 +86,10 @@ public class CalculationController {
                 throw new WrongDataExc();
             }
 
-            List<Object[]> resultQuery = calculationsRepository.findAllByUserAdressPeriod(objectID, period, adress.getUser().getId());
+
+            Timestamp periodTimestamp = new java.sql.Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse(period).getTime());
+
+            List<Object[]> resultQuery = calculationsRepository.findAllByUserAdressPeriod(objectID, periodTimestamp, adress.getUser().getId());
 
             ArrayList services = new ArrayList();
             CalculationEntity entity = new CalculationEntity(period, services);
