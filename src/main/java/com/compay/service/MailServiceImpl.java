@@ -31,6 +31,19 @@ public class MailServiceImpl implements MailService {
         }
     }
 
+    @Override
+    public void sendRecoveryMail(User user){
+        MimeMessagePreparator preparator = getMessagePreparatorRecovery(user);
+        try {
+            mailSender.send(preparator);
+            System.out.println("Message Send...Hurrey");
+        } catch (MailException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+    }
+
+
     private MimeMessagePreparator getMessagePreparator(final User user) {
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -39,6 +52,20 @@ public class MailServiceImpl implements MailService {
                         new InternetAddress(user.getEmail()));
                 mimeMessage.setText("Дорогой " + user.getName()
                         + ", вы были успешно зарегестрированы на сервисе Compay! ");
+                mimeMessage.setSubject("С Любовью, Ваш Hillel");
+            }
+        };
+        return preparator;
+    }
+
+    private MimeMessagePreparator getMessagePreparatorRecovery(final User user) {
+        MimeMessagePreparator preparator = new MimeMessagePreparator() {
+            public void prepare(MimeMessage mimeMessage) throws Exception {
+                mimeMessage.setFrom();
+                mimeMessage.setRecipient(Message.RecipientType.TO,
+                        new InternetAddress(user.getEmail()));
+                mimeMessage.setText("Дорогой " + user.getName()
+                        + ", ваш новый пароль: " + user.getPassword()+"\n");
                 mimeMessage.setSubject("С Любовью, Ваш Hillel");
             }
         };
