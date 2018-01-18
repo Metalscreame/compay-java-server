@@ -29,7 +29,7 @@ public class UserList {
                                   @RequestHeader(value = "Authorization")  String authToken,
                                   HttpServletResponse response) throws JsonProcessingException {
         //Token check
-        if (tokenService.authChek(authToken) && tokenService.findByToken(authToken).getUser().getRole().equals("admin")){
+        if (tokenService.authChek(authToken)){
             UserListJsonBuilder builder = new UserListJsonBuilder();
             List<User> userList;
             userList=userService.findAll();

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -53,6 +55,18 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void updateUser(String password, String email) {
+        byte[] bytes = new byte[0];
+        try {
+            bytes = password.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String encoded = Base64.getEncoder().encodeToString(bytes);
+        userRepository.updateUser(encoded,email);
     }
 
 

@@ -17,6 +17,7 @@ public interface UserService{
 //    User findByEmail(User user);
 //@Query("select e from User e")
     List<User> findAll();
+    void updateUser(String password, String email);
 //    @Query("from User p where p.email = ?")
 //    @Query("select p from User p where p.email = ?")
 //    User findByEmail(User user);
