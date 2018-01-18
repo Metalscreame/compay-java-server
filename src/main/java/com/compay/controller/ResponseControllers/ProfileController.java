@@ -96,14 +96,14 @@ public class ProfileController {
             }
 
             if(!profileEntityJSON.getPassword().isEmpty()) {
-                user.setLastName(profileEntityJSON.getPassword());
+                user.setPassword(profileEntityJSON.getPassword());
             }
 
             userService.create(user);
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
 
-            return "{\"message\": \"Данные пользователя успешно обновлены\"}";
+            return "{\"info\": \"Данные пользователя успешно обновлены\"}";
 
         } catch (AuthException e) {
             response.setStatus(401);
