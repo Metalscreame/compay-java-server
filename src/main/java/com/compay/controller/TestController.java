@@ -218,6 +218,7 @@ public class TestController{
         service1.setId(1);
         service1.setServiceName("Электроснабжение");
         service1.setLink("electric");
+        service1.setUnits("грн/(кВт*час)");
         servicesService.create(service1);
 
         Services service2 = new Services();
@@ -225,6 +226,7 @@ public class TestController{
         service2.setId(2);
         service2.setServiceName("Водоснабжение");
         service2.setLink("water");
+        service2.setUnits("грн/м3");
         servicesService.create(service2);
 
         Services service3 = new Services();
@@ -232,6 +234,7 @@ public class TestController{
         service3.setId(3);
         service3.setServiceName("Газоснабжение");
         service3.setLink("gas");
+        service3.setUnits("грн/м3");
         servicesService.create(service3);
 
         Services service4 = new Services();
@@ -239,6 +242,7 @@ public class TestController{
         service4.setId(4);
         service4.setServiceName("Теплоснабжение");
         service4.setLink("hate");
+        service4.setUnits("(грн/м2)/мес");
         servicesService.create(service4);
 
         Services service5 = new Services();
@@ -246,6 +250,7 @@ public class TestController{
         service5.setId(5);
         service5.setServiceName("Квартплата");
         service5.setLink("house");
+        service5.setUnits("(грн/м2)/мес");
         servicesService.create(service5);
 
         Services service6 = new Services();
@@ -253,6 +258,7 @@ public class TestController{
         service6.setId(6);
         service6.setServiceName("Вывоз мусора");
         service6.setLink("garbage");
+        service6.setUnits("грн/мес");
         servicesService.create(service6);
 
         Services service7 = new Services();
@@ -260,6 +266,7 @@ public class TestController{
         service7.setId(7);
         service7.setServiceName("Лифтовое хозяйство");
         service7.setLink("lift");
+        service7.setUnits("грн/мес");
         servicesService.create(service7);
 
         message += " Services;";

@@ -14,7 +14,10 @@ public class Services {
     private String serviceName;
 
     @Column(name="LINK")
+
     private String link;
+
+    private String units;
 
     public int getId() {
         return id;
@@ -38,6 +41,14 @@ public class Services {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="service")

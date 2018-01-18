@@ -1,10 +1,10 @@
 package com.compay.entity;
 
+
+
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 
 @Entity
@@ -48,7 +48,9 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        byte[] decoded = Base64.getDecoder().decode(password);
+        String str = new String(decoded, StandardCharsets.UTF_8);
+        return str;
     }
 
     public void setPassword(String password) {
@@ -78,6 +80,7 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
     private Set<Adress> adress;
