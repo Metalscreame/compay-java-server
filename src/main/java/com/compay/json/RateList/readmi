@@ -1,0 +1,7 @@
+
+RateListEntity -> Rate -> CounterScaleRate(list) -> Rate2
+                       -> History (list) -> CounterScaleRateHistory (list)-> Rate3
+
+    //when House Rate -> FixFormulaRate-> Attrs ->Rate4
+
+    //when Garbage      FixSumRate
