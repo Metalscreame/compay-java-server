@@ -35,8 +35,14 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public User create(User user) {
         //sha-1 encoding before saving to the database
-        String shaPasswordEncoded = DigestUtils.sha1Hex(user.getPassword());
-        user.setPassword(shaPasswordEncoded);
+        byte[] bytes = new byte[0];
+        try {
+            bytes = user.getPassword().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String encoded = Base64.getEncoder().encodeToString(bytes);
+        user.setPassword(encoded);
         return userRepository.save(user);
     }
 
