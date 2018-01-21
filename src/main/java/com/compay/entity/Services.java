@@ -17,6 +17,7 @@ public class Services {
 
     private String link;
 
+    @Column(name="UNITS")
     private String units;
 
     public int getId() {
