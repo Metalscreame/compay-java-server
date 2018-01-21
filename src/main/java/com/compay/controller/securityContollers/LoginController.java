@@ -29,7 +29,7 @@ public class LoginController {
     private TokenService tokenService;
 
     @ResponseBody
-    @RequestMapping(value = "/login", method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
     public String loginPage(@RequestHeader(value = "Content-Type") String contentType,
                             @RequestBody String body,
                             HttpServletResponse response) throws IOException {
@@ -46,8 +46,8 @@ public class LoginController {
             //will throw exception if not find
             User user = service.findByEmail(userToLogin.getEmail());
             //check for password
-            String shaPasswordEncoded = DigestUtils.sha1Hex(userToLogin.getPassword());
-            if (!user.getPassword().equals(shaPasswordEncoded)) {
+
+            if (!user.getPasswordDecoded().equals(userToLogin.getPassword())) {
                 throw new Exception();
             }
 
