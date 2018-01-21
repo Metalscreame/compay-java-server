@@ -46,7 +46,7 @@ public class LoginController {
             //will throw exception if not find
             User user = service.findByEmail(userToLogin.getEmail());
             //check for password
-           
+
             if (!user.getPasswordDecoded().equals(userToLogin.getPassword())) {
                 throw new Exception();
             }
