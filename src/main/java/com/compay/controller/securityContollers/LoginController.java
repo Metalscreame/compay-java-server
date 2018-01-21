@@ -1,10 +1,13 @@
 package com.compay.controller.securityContollers;
 
+import com.compay.entity.Adress;
 import com.compay.entity.Token;
 import com.compay.entity.User;
 import com.compay.json.Login.LoginResponseBuilder;
 import com.compay.json.Login.LoginResponseEntity;
+import com.compay.json.ObjectList.ObjectListEntity;
 import com.compay.json.jsonReceive.login.PersonToLoginEntity;
+import com.compay.service.AdressService;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 
@@ -27,6 +32,9 @@ public class LoginController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private AdressService adressService;
 
     @ResponseBody
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
@@ -93,8 +101,19 @@ public class LoginController {
             }
 
 
+            ObjectListEntity objectDefault = new ObjectListEntity();
+            List<Adress> adresses = adressService.findAllByUser(user);
+            List<Adress> adressesObjDefault = adresses;
+            adressesObjDefault = adresses.stream().filter(d->d.getObjectDefault()==true).collect(Collectors.toList());
 
-            builder.addInfo(new LoginResponseEntity(newToken.getToken(),  isAdmin,isUser, new ArrayList()));
+            
+            if(adressesObjDefault.size() > 0) {
+                objectDefault = new ObjectListEntity(adressesObjDefault.get(0).getId(), adressesObjDefault.get(0).getType(), adressesObjDefault.get(0).getObjectDefault());
+            }else if(adresses.size() > 0) {
+                objectDefault = new ObjectListEntity(adresses.get(0).getId(), adresses.get(0).getType(), adresses.get(0).getObjectDefault());
+            }
+
+            builder.addInfo(new LoginResponseEntity(newToken.getToken(),  isAdmin,isUser, objectDefault));
             result = builder.createJson();
             response.setStatus(200);
             response.setHeader("Headers", "{\"Content-Type\":\"application/json\"}");
