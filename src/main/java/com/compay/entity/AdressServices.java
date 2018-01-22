@@ -52,7 +52,7 @@ public class AdressServices {
     /*@Column(name = "SERVICEID",nullable = false)
     private int serviceID;*/
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne(cascade= CascadeType.MERGE)
     @JoinColumn(name = "SERVICEID", nullable=false, referencedColumnName="Id")
     private Services service;
 

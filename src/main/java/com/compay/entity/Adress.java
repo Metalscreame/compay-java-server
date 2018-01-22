@@ -13,7 +13,7 @@ public class Adress {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne(cascade= CascadeType.MERGE)
     @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")//foreignKey = @ForeignKey())
     private User user;
 
@@ -116,6 +116,10 @@ public class Adress {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
     private Set<AdressServices> adressService;
+
+    public void setAdressService(Set<AdressServices> adressService) {
+        this.adressService = adressService;
+    }
 
     @Override
     public String toString() {
