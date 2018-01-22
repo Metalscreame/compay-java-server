@@ -103,4 +103,17 @@ public class Calculations {
         this.sum = sum;
     }
 
+    @Override
+    public String toString() {
+        return "Calculations{" +
+                "id=" + id +
+                ", userId=" + user.getId() +
+                ", period=" + period +
+                ", adressId=" + adress.getId() +
+                ", serviceId=" + service.getId() +
+                ", countLast=" + countLast +
+                ", countCurrent=" + countCurrent +
+                ", sum=" + sum +
+                '}';
+    }
 }

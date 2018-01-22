@@ -52,6 +52,16 @@ public class Services {
         this.units = units;
     }
 
+    @Override
+    public String toString() {
+        return "Services{" +
+                "id=" + id +
+                ", serviceName='" + serviceName + '\'' +
+                ", link='" + link + '\'' +
+                ", units='" + units + '\'' +
+                '}';
+    }
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy="service")
     private Set<AdressServices> adressServices;
 }
