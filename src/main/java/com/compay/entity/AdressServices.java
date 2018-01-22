@@ -66,4 +66,13 @@ public class AdressServices {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="adressServices")
     private Set<Rates> rate;
+
+    @Override
+    public String toString() {
+        return "AdressServices{" +
+                "id=" + id +
+                ", adress=" + adress +
+                ", service=" + service +
+                '}';
+    }
 }

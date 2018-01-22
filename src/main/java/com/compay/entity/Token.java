@@ -69,4 +69,15 @@ public class Token {
     public void setTokenCreateDate() {
         this.tokenCreateDate = new Timestamp(System.currentTimeMillis());
     }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "id=" + id +
+                ", userId=" + user.getId() +
+                ", token='" + token + '\'' +
+                ", tokenCreateDate=" + tokenCreateDate +
+                ", userPlusPassHash='" + userPlusPassHash + '\'' +
+                '}';
+    }
 }

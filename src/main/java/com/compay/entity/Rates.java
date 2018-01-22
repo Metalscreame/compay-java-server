@@ -125,4 +125,18 @@ public class Rates {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="rate")
     private Set<Scales> scale;
+
+    @Override
+    public String toString() {
+        return "Rates{" +
+                "id=" + id +
+                ", adressServicesId=" + adressServices.getId() +
+                ", periodFrom=" + periodFrom +
+                ", periodTill=" + periodTill +
+                ", mainRate=" + mainRate +
+                ", userScale=" + userScale +
+                ", formula='" + formula + '\'' +
+                ", methodId=" + method.getId() +
+                '}';
+    }
 }

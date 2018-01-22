@@ -116,4 +116,19 @@ public class Adress {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
     private Set<AdressServices> adressService;
+
+    @Override
+    public String toString() {
+        return "Adress{" +
+                "id=" + id +
+                ", userId=" + user.getId() +
+                ", houseNumber=" + houseNumber +
+                ", street='" + street + '\'' +
+                ", appartmentNumber='" + appartmentNumber + '\'' +
+                ", city='" + city + '\'' +
+                ", region='" + region + '\'' +
+                ", objectDefault=" + objectDefault +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

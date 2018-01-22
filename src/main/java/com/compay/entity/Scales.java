@@ -73,4 +73,15 @@ public class Scales {
     public void setMainRate(double mainRate) {
         this.mainRate = mainRate;
     }
+
+    @Override
+    public String toString() {
+        return "Scales{" +
+                "id=" + id +
+                ", rate=" + rate +
+                ", minValue=" + minValue +
+                ", maxValue=" + maxValue +
+                ", mainRate=" + mainRate +
+                '}';
+    }
 }
