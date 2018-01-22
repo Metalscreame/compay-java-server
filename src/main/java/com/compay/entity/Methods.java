@@ -43,4 +43,13 @@ public class Methods {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="method")
     private Set<Methods> method;
+
+    @Override
+    public String toString() {
+        return "Methods{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", view='" + view + '\'' +
+                '}';
+    }
 }

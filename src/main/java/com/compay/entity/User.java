@@ -101,7 +101,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", role='" + role + '\'' +
-                ", adress=" + adress +
                 '}';
     }
 

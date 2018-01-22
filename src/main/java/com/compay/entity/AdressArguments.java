@@ -72,4 +72,14 @@ public class AdressArguments {
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "AdressArguments{" +
+                "id=" + id +
+                ", adressId=" + adress.getId() +
+                ", argumentId=" + argument.getId() +
+                ", value=" + value +
+                '}';
+    }
 }

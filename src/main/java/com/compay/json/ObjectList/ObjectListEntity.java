@@ -6,6 +6,8 @@ public class ObjectListEntity {
     public String name;
     public boolean objectDefault;
 
+    public ObjectListEntity(){}
+
     public ObjectListEntity(int id, String name, boolean objectDefault) {
         this.id = id;
         this.name = name;

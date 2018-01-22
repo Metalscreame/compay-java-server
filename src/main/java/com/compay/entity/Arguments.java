@@ -43,4 +43,13 @@ public class Arguments {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="argument")
     private Set<AdressArguments> argument;
+
+    @Override
+    public String toString() {
+        return "Arguments{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", view='" + view + '\'' +
+                '}';
+    }
 }
