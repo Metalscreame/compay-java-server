@@ -13,7 +13,7 @@ public class AdressServices {
 
     /*@Column(name = "ADRESSID",nullable = false)
     private int adressID;*/
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne//(cascade= CascadeType.ALL)
     @JoinColumn(name = "ADRESSID", nullable=false, referencedColumnName="Id")
     private Adress adress;
 
@@ -52,7 +52,7 @@ public class AdressServices {
     /*@Column(name = "SERVICEID",nullable = false)
     private int serviceID;*/
 
-    @ManyToOne(cascade= CascadeType.MERGE)
+    @ManyToOne//(cascade= CascadeType.ALL)
     @JoinColumn(name = "SERVICEID", nullable=false, referencedColumnName="Id")
     private Services service;
 

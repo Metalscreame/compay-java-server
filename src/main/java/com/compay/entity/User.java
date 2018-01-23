@@ -89,7 +89,7 @@ public class User {
     }
 
 
-    @OneToMany(cascade=CascadeType.MERGE, mappedBy="user")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
     private Set<Adress> adress;
 
     @Override
