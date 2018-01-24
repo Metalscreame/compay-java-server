@@ -121,6 +121,10 @@ public class Adress {
         this.adressService = adressService;
     }
 
+    public Set<AdressServices> getAdressService() {
+        return adressService;
+    }
+
     @Override
     public String toString() {
         return "Adress{" +

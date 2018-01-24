@@ -18,7 +18,6 @@ public class AccountObjectsJSON {
     @JsonProperty("services")
     private List<Integer> services;
 
-    //@JsonProperty("id")private int id;
     @JsonCreator
     public AccountObjectsJSON(@JsonProperty("name")String name, @JsonProperty("objectDefault")boolean objectDefault, @JsonProperty("services")List<Integer> services) {
         this.name = name;

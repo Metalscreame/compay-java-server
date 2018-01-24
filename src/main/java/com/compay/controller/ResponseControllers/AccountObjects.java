@@ -7,6 +7,7 @@ import com.compay.entity.User;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.json.accountObjects.AccountObjectsJSON;
+import com.compay.json.accountObjects.AccountObjectsJSONUpdate;
 import com.compay.service.AdressService;
 import com.compay.service.AdressServicesService;
 import com.compay.service.ServicesService;
@@ -15,11 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Transient;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -39,7 +38,7 @@ public class AccountObjects {
 
     @RequestMapping(value = "/accountObjects/add", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String type,
+    public String responseBodyAdd(@RequestHeader(value = "Content-Type") String type,
                                @RequestHeader(value = "Authorization") String authToken,
                                @RequestBody AccountObjectsJSON accountObjectsJSON,
                                HttpServletResponse response){
@@ -99,4 +98,73 @@ public class AccountObjects {
         }
     }
 
+    @RequestMapping(value = "/accountObjects/update", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String responseBodyUpdate(@RequestHeader(value = "Content-Type") String type,
+                               @RequestHeader(value = "Authorization") String authToken,
+                               @RequestBody AccountObjectsJSONUpdate AccountObjectsJSONUpdate,
+                               HttpServletResponse response){
+
+
+        try {
+            String result = null;
+            if(tokenService.authChek(authToken)) {
+            } else throw new AuthException();
+            if(AccountObjectsJSONUpdate == null) throw new WrongDataExc();
+            User currentUser = tokenService.findByToken(authToken).getUser();
+
+            try {
+                Adress adress = adressService.findAdressById(AccountObjectsJSONUpdate.getId());
+
+                List<AdressServices> servicesList = adressServicesService.findAllByAdress(adress);
+
+                //set mark NotActive = true all services
+                for (AdressServices adressServicesExist:servicesList) {
+                    adressServicesExist.setNotActive(true);
+                }
+                //find and update mark NotActive
+                for (Integer serviceId : AccountObjectsJSONUpdate.getServices()) {
+                    boolean newServiceId = true;
+                    for (AdressServices adressServicesExist:servicesList) {
+
+                        if(adressServicesExist.getService().getId() == serviceId){
+                            adressServicesExist.setNotActive(false);
+                            newServiceId = false;
+                        }
+                    }
+                    if(newServiceId){
+                        Services service = servicesService.findServicesById(serviceId);
+
+                        if(service == null) throw new WrongDataExc();
+
+                        AdressServices adressService = new AdressServices();
+                        adressService.setAdress(adress);
+                        adressService.setService(service);
+                        adressServicesService.create(adressService);
+                    }
+                }
+
+                //update adressServicesExist
+                for (AdressServices adressServicesExist:servicesList) {
+
+                    adressServicesService.update(adressServicesExist);
+                }
+
+                return "{\"info\": \"Объект учета успешно обновлён\"}";
+            }catch (WrongDataExc e) {
+                response.setStatus(402);
+                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+                return "{\"info\": \"Wrong data\"}";
+            }
+
+        } catch (AuthException e) {
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Unauthorized\"}";
+        } catch (WrongDataExc e) {
+            response.setStatus(402);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Wrong data\"}";
+        }
+    }
 }

@@ -1,13 +1,14 @@
 package com.compay.json.accountObjects;
 
-import com.compay.entity.AdressServices;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Map;
 
-public class AccountObjectsJSON {
+public class AccountObjectsJSONUpdate {
+
+    @JsonProperty("id")
+    private int id;
 
     @JsonProperty("name")
     private String name;
@@ -20,10 +21,15 @@ public class AccountObjectsJSON {
 
     //@JsonProperty("id")private int id;
     @JsonCreator
-    public AccountObjectsJSON(@JsonProperty("name")String name, @JsonProperty("objectDefault")boolean objectDefault, @JsonProperty("services")List<Integer> services) {
+    public AccountObjectsJSONUpdate(@JsonProperty("id")int id,@JsonProperty("name")String name, @JsonProperty("objectDefault")boolean objectDefault, @JsonProperty("services")List<Integer> services) {
+        this.id = id;
         this.name = name;
         this.objectDefault = objectDefault;
         this.services = services;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

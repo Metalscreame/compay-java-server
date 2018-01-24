@@ -1,10 +1,8 @@
 package com.compay.service;
 
 import com.compay.entity.Adress;
-import com.compay.entity.AdressArguments;
 import com.compay.entity.AdressServices;
 import com.compay.entity.Services;
-import com.compay.repository.AdressArgumentsRepository;
 import com.compay.repository.AdressServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +38,11 @@ public class AdressServicesServiceImpl implements  AdressServicesService{
     @Override
     public List<AdressServices> findAllByService(Services service) {
         return  adressServicesRepository.findAllByService(service);
+    }
+
+    @Override
+    public AdressServices update(AdressServices adressService) {
+        return adressServicesRepository.save(adressService);
     }
 
 }
