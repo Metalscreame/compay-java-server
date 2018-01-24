@@ -11,11 +11,12 @@ public class AdressServices {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    /*@Column(name = "ADRESSID",nullable = false)
-    private int adressID;*/
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne//(cascade= CascadeType.ALL)
     @JoinColumn(name = "ADRESSID", nullable=false, referencedColumnName="Id")
     private Adress adress;
+
+    @Column(name="NOTACTIVE")
+    private boolean notActive;
 
     public int getId() {
         return id;
@@ -24,37 +25,26 @@ public class AdressServices {
     public void setId(int id) {
         this.id = id;
     }
-/*
-    public int getAdressID() {
-        return adressID;
-    }
 
-    public void setAdressID(int adressID) {
-        this.adressID = adressID;
-    }
-*/
     public Adress getAdress() {
-    return adress;
-}
+        return adress;
+    }
 
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
-/*
-    public int getServiceID() {
-        return serviceID;
-    }
 
-    public void setServiceID(int serviceID) {
-        this.serviceID = serviceID;
-    }
-*/
-    /*@Column(name = "SERVICEID",nullable = false)
-    private int serviceID;*/
-
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne//(cascade= CascadeType.ALL)
     @JoinColumn(name = "SERVICEID", nullable=false, referencedColumnName="Id")
     private Services service;
+
+    public boolean isNotActive() {
+        return notActive;
+    }
+
+    public void setNotActive(boolean notActive) {
+        this.notActive = notActive;
+    }
 
     public Services getService() {
         return service;

@@ -10,6 +10,7 @@ public interface AdressServicesService {
     List<AdressServices> findAll();
     AdressServices findAdressServiceById(Integer id);
     AdressServices create(AdressServices adressService);
+    AdressServices update(AdressServices adressService);
     List<AdressServices> findAllByAdress(Adress adress);
     List<AdressServices> findAllByService(Services service);
 }

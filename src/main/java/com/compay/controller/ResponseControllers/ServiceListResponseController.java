@@ -130,6 +130,7 @@ public class ServiceListResponseController {
             else throw new AuthException();
 
             String result = null;
+
             ServiceListJsonBuilder serviceListJsonBuilder = new ServiceListJsonBuilder();
             serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
 

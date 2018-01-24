@@ -31,4 +31,10 @@ public class AdressServiceImpl implements  AdressService{
     public Adress create(Adress adress) {
         return adressRepository.save(adress);
     }
+
+    @Override
+    public void deleteById(int id) {
+        adressRepository.delete(id);
+        //adressRepository.deleteById(id);
+    }
 }
