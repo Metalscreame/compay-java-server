@@ -17,6 +17,7 @@ public class Services {
 
     private String link;
 
+    @Column(name="UNITS")
     private String units;
 
     public int getId() {
@@ -49,6 +50,16 @@ public class Services {
 
     public void setUnits(String units) {
         this.units = units;
+    }
+
+    @Override
+    public String toString() {
+        return "Services{" +
+                "id=" + id +
+                ", serviceName='" + serviceName + '\'' +
+                ", link='" + link + '\'' +
+                ", units='" + units + '\'' +
+                '}';
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="service")

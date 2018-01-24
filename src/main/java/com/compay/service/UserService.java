@@ -13,6 +13,7 @@ public interface UserService{
     List<String> findByName(String name);
     User findByEmail(String name);
 
+
 //    @Query("from User p where p.email = ?")
 //    User findByEmail(User user);
 //@Query("select e from User e")
