@@ -27,8 +27,8 @@ public class AdressServices {
     }
 
     public Adress getAdress() {
-    return adress;
-}
+        return adress;
+    }
 
     public void setAdress(Adress adress) {
         this.adress = adress;
