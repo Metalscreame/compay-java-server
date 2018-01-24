@@ -74,6 +74,4 @@ public class UserServiceImpl implements UserService{
         String encoded = Base64.getEncoder().encodeToString(bytes);
         userRepository.updateUser(encoded,email);
     }
-
-
 }

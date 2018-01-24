@@ -37,6 +37,28 @@ public class TablesResponseControllers {
         return message;
     }
 
+    @RequestMapping(value = "/get/All", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String responseTablesData(HttpServletResponse response) {
+        String message = "";
+
+        String[] nameTables = {"User", "Token", "Services", "Scales", "Rates", "Methods", "Calculations", "Arguments", "AdressServices",
+                "AdressArguments", "Adress"};
+
+        for (String name:nameTables){
+            List l = em.createQuery(
+                "SELECT t FROM " + name + " t")
+                .getResultList();
+            message += "Size: " + l.size() + "\n";
+
+            for (Object p : l) {
+                message += printResult(p);
+            }
+        }
+
+        return message;
+    }
+
     private String printResult(Object result) {
         String message = "";
         if (result == null) {
