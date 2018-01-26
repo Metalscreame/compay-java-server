@@ -43,7 +43,7 @@ public class TablesResponseControllers {
         String message = "";
 
         String[] nameTables = {"User", "Token", "Services", "Scales", "Rates", "Methods", "Calculations", "Arguments", "AdressServices",
-                "AdressArguments", "Adress"};
+                "AdressArguments", "Adress", "Faq"};
 
         for (String name:nameTables){
             List l = em.createQuery(
