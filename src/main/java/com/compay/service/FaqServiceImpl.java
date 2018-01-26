@@ -3,10 +3,12 @@ package com.compay.service;
 import com.compay.entity.Faq;
 import com.compay.repository.FaqRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class FaqServiceImpl implements FaqService{
+@Service
+public class FaqServiceImpl implements FaqService {
 
     @Autowired
     private FaqRepository faqRepository;
@@ -19,5 +21,10 @@ public class FaqServiceImpl implements FaqService{
     @Override
     public Faq create(Faq faq) {
         return faqRepository.save(faq);
+    }
+
+    @Override
+    public void deleteAll() {
+        faqRepository.deleteAll();
     }
 }

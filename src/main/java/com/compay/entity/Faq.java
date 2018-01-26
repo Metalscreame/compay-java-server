@@ -10,11 +10,11 @@ public class Faq {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column (name = "question",nullable = false)
-    private String question;
+    @Column (name = "request",nullable = false)
+    private String request;
 
-    @Column (name = "answer",nullable = false)
-    private String answer;
+    @Column (name = "response",nullable = false)
+    private String response;
 
     public int getId() {
         return id;
@@ -24,19 +24,28 @@ public class Faq {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getRequest() {
+        return request;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setRequest(String request) {
+        this.request = request;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getResponse() {
+        return response;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    @Override
+    public String toString() {
+        return "Faq{" +
+                "id=" + id +
+                ", request='" + request + '\'' +
+                ", response='" + response + '\'' +
+                '}';
     }
 }

@@ -8,5 +8,5 @@ public interface FaqService {
 
     List<Faq> findAll();
     Faq create(Faq faq);
-
+    void deleteAll();
 }
