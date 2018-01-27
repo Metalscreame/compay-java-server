@@ -44,6 +44,9 @@ public class Methods {
     @OneToMany(cascade = CascadeType.ALL, mappedBy="method")
     private Set<Methods> method;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="defaultMethod")
+    private Set<DefaultRates> defaultMethod;
+
     @Override
     public String toString() {
         return "Methods{" +

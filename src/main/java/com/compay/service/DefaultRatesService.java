@@ -7,7 +7,7 @@ import com.compay.entity.Rates;
 import java.util.List;
 
 public interface DefaultRatesService {
-    DefaultRates findDefaultRateById(Integer id);
+    DefaultRates findDefaultRatesById(Integer id);
     DefaultRates create(DefaultRates defaultRates);
     List<DefaultRates> findAll();
 }

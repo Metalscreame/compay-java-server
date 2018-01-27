@@ -3,9 +3,9 @@ package com.compay.json.adminResponses.rateList.electricity;
 public class ScaleElectr {
     public int minValue;
     public int maxValue;
-    public int mainRate;
+    public double mainRate;
 
-    public ScaleElectr(int minValue, int maxValue, int mainRate) {
+    public ScaleElectr(int minValue, int maxValue, double mainRate) {
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.mainRate = mainRate;
@@ -27,11 +27,11 @@ public class ScaleElectr {
         this.maxValue = maxValue;
     }
 
-    public int getMainRate() {
+    public double getMainRate() {
         return mainRate;
     }
 
-    public void setMainRate(int mainRate) {
+    public void setMainRate(double mainRate) {
         this.mainRate = mainRate;
     }
 }

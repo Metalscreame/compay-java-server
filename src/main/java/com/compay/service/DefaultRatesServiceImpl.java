@@ -18,7 +18,7 @@ public class DefaultRatesServiceImpl implements  DefaultRatesService{
 
     @Override
     @Transactional
-    public DefaultRates findDefaultRateById(Integer id) {
+    public DefaultRates findDefaultRatesById(Integer id) {
         return defaultRatesRepository.findOne(id);
     }
 
