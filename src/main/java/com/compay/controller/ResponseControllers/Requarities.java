@@ -33,19 +33,28 @@ public class Requarities {
         String result="";
 
         try {
-            if (tokenService.authChek(authToken)) {
-            } else throw new AuthException();
 
-                RequaritiesUpdate requaritiesUpdate;
-                try {
-                    requaritiesUpdate= new ObjectMapper().readValue(body,RequaritiesUpdate.class);
+            //auth
+            try {
+                if (tokenService.authChek(authToken)) {
+                } else throw new AuthException();
+            }catch (AuthException e){
+                response.setStatus(401);
+                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+                return "{\"message\": \"Unauthorized\"}";
+            }
+
+
+            RequaritiesUpdate requaritiesUpdate;
+            try {
+                 requaritiesUpdate= new ObjectMapper().readValue(body,RequaritiesUpdate.class);
                 }catch (Exception e){
                     response.setStatus(402);
                     response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
                     return "{\"info\": \"Wrong date\"}";
-                }
+            }
 
-
+            // всеостальное
 
 
 
@@ -60,10 +69,6 @@ public class Requarities {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\": \"Something is wrong\"}" + e;
-        } catch (AuthException e){
-        response.setStatus(401);
-        response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-        return "{\"message\": \"Unauthorized\"}";
         }
 
     }
