@@ -28,6 +28,7 @@ public class UserList {
     public String  returnUserList(@RequestHeader(value = "Content-Type") String contentType,
                                   @RequestHeader(value = "Authorization")  String authToken,
                                   HttpServletResponse response) throws JsonProcessingException {
+
         //Token check
         if (tokenService.authChek(authToken)){
             UserListJsonBuilder builder = new UserListJsonBuilder();

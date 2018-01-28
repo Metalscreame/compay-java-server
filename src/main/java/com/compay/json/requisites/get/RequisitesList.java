@@ -6,9 +6,11 @@ public class RequisitesList {
 
     private ArrayList<ReqService> requisites;
 
-    public RequisitesList(ArrayList<ReqService> requisites) {
-        this.requisites = requisites;
+    public ArrayList<ReqService> getRequisites() {
+        return requisites;
     }
 
-
+    public void setRequisites(ArrayList<ReqService> requisites) {
+        this.requisites = requisites;
+    }
 }
