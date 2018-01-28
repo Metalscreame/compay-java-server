@@ -34,7 +34,7 @@ public class UserList {
             List<User> userList;
             userList=userService.findAll();
             for (User o: userList) {
-                builder.addInfo(new Entity(o.getId(),o.getEmail(),o.getName(),o.getRole()));
+                builder.addInfo(new Entity(o.getId(),o.getEmail(),o.getName(),o.getLastName(),o.getRole()));
             }
 
             String result = builder.createJson();
