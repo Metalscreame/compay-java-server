@@ -2,7 +2,7 @@ package com.compay.controller.ResponseControllers;
 
 
 import com.compay.exception.AuthException;
-import com.compay.json.requisites.RequaritiesUpdate;
+import com.compay.json.requisites.update.RequaritiesUpdate;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,6 +45,58 @@ public class Requarities {
                     return "{\"info\": \"Wrong date\"}";
                 }
 
+                /*
+                body: {
+                objectID:'22';
+                serviceID: '1',
+                req:{
+                    persAcc:"123456",
+                    checkAcc:"260065789876890",
+                    MFO:"309802",
+                    EGRPO:"12324232"
+                    }
+                 }
+                 */
+
+
+
+
+
+
+            response.setStatus(200);
+            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
+            return "{\"info\": \"Реквизиты успешно обновлены\"}";
+
+        }catch (AuthException e){
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Unauthorized\"}";
+        }catch (Exception e)
+        {
+            response.setStatus(402);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Something is wrong\"}" + e;
+        }
+
+    }
+
+
+
+    @RequestMapping(value = "/requisites/{objectID}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String reqGet(@RequestHeader(value = "Content-Type") String type,
+                            @RequestHeader(value = "Authorization") String authToken,
+                            HttpServletResponse response,
+                            @PathVariable("objectId") int id) throws AuthException, JsonProcessingException {
+
+        String result ="";
+
+        try{
+            if (tokenService.authChek(authToken)) {
+            } else throw new AuthException();
+
+
+
 
 
 
@@ -54,18 +106,15 @@ public class Requarities {
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
             return result;
-
-        }catch (Exception e)
-        {
+        }catch (AuthException e){
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Unauthorized\"}";
+        }catch (Exception e) {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\": \"Something is wrong\"}" + e;
-        } catch (AuthException e){
-        response.setStatus(401);
-        response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-        return "{\"message\": \"Unauthorized\"}";
         }
 
     }
-
 }
