@@ -2,6 +2,7 @@ package com.compay.controller.ResponseControllers;
 
 
 import com.compay.exception.AuthException;
+import com.compay.json.requisites.get.ReqGetBuilder;
 import com.compay.json.requisites.update.RequaritiesUpdate;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
@@ -44,6 +45,9 @@ public class Requarities {
                     response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
                     return "{\"info\": \"Wrong date\"}";
                 }
+
+                ReqGetBuilder reqGetBuilder = new ReqGetBuilder();
+
 
                 /*
                 body: {
