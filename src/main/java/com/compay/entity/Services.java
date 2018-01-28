@@ -64,4 +64,7 @@ public class Services {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="service")
     private Set<AdressServices> adressServices;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="defaultServices")
+    private Set<DefaultRates> defaultRates;
 }

@@ -15,17 +15,17 @@ public class DefaultRates {
 
     @ManyToOne//(cascade= CascadeType.ALL)
     @JoinColumn(name = "SERVICEID", nullable=false, referencedColumnName="Id")
-    private Services service;
+    private Services defaultServices;
 
     @ManyToOne//(cascade= CascadeType.ALL)
     @JoinColumn(name = "METHODID", nullable=false, referencedColumnName="Id")
-    private Methods method;
+    private Methods defaultMethod;
 
     @Column(name = "MAINRATE", columnDefinition="Decimal(10,2) default '0.00'")
     private double mainRate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="rate")
-    private Set<Scales> scale;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="defaultRates")
+    private Set<DefaultScales> defaultScales;
 
     @Column(name = "USERSCALE")
     private boolean userScale;
@@ -66,19 +66,19 @@ public class DefaultRates {
     }
 
     public Methods getMethod() {
-        return method;
+        return defaultMethod;
     }
 
     public void setMethod(Methods method) {
-        this.method = method;
+        this.defaultMethod = method;
     }
 
     public Services getService() {
-        return service;
+        return defaultServices;
     }
 
     public void setService(Services service) {
-        this.service = service;
+        this.defaultServices = service;
     }
 
     public boolean isUserScale() {
@@ -89,10 +89,10 @@ public class DefaultRates {
     public String toString() {
         return "DefaultRates{" +
                 "id=" + id +
-                ", service=" + service +
-                ", method=" + method +
+                ", service=" + defaultServices +
+                ", method=" + defaultMethod +
                 ", mainRate=" + mainRate +
-                //", scale=" + scale +
+                ", defaultScales=" + defaultScales +
                 ", userScale=" + userScale +
                 ", formula='" + formula + '\'' +
                 '}';
