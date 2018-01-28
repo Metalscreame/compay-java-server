@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Random;
 
 @Controller
-public class Recovery {
+public class RecoveryController {
 
     @Autowired
     private UserService service;

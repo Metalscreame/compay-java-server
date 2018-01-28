@@ -24,4 +24,5 @@ public interface UserService{
 //    User findByEmail(User user);
 
 
+    void deleteUser(int id);
 }
