@@ -404,29 +404,32 @@ public class TestController{
         ///////////////////////////////////////////////AdressServices
         AdressServices adressService1 = new AdressServices();
         adressService1.setId(1);
-        //adressService.setAdressID(1);
-        //adressService.setServiceID(1);
         adressService1.setAdress(adressId1);
         adressService1.setService(service1);
-
+        adressService1.setPersAcc(123456);
+        adressService1.setCheckAcc(260065789876890L);
+        adressService1.setMFO(309802);
+        adressService1.setEGRPO(12324232);
         adressServicesService.create(adressService1);
 
         AdressServices adressService2 = new AdressServices();
         adressService2.setId(2);
-        //adressService.setAdressID(1);
-        //adressService.setServiceID(2);
         adressService2.setAdress(adressId1);
         adressService2.setService(service2);
-
+        adressService2.setPersAcc(123456);
+        adressService2.setCheckAcc(260065789876890L);
+        adressService2.setMFO(309802);
+        adressService2.setEGRPO(12324232);
         adressServicesService.create(adressService2);
 
         AdressServices adressService3 = new AdressServices();
         adressService3.setId(3);
-        //adressService.setAdressID(1);
-        //adressService.setServiceID(5);
         adressService3.setAdress(adressId1);
         adressService3.setService(service5);
-
+        adressService3.setPersAcc(123456);
+        adressService3.setCheckAcc(260065789876890L);
+        adressService3.setMFO(309802);
+        adressService3.setEGRPO(12324232);
         adressServicesService.create(adressService3);
 
         message += " AdressServices;";
