@@ -59,6 +59,12 @@ public class TestController{
     @Autowired
     CalculationsService calculationsService;
 
+    @Autowired
+    DefaultRatesService defaultRatesService;
+
+    @Autowired
+    DefaultScalesService defaultScalesService;
+
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
     public String saveTest(){
@@ -559,6 +565,96 @@ public class TestController{
         calculations.setService(service3);
         calculations.setUser(user);
         calculationsService.create(calculations);
+
+
+
+        ///////////////////////////////////////////////DefaultRates
+
+        DefaultRates defaultRatesId1 = new DefaultRates();
+        defaultRatesId1.setId(1);
+        defaultRatesId1.setService(service1);
+        defaultRatesId1.setMethod(methodId4);
+        defaultRatesId1.setMainRate(0.0);
+        defaultRatesId1.setUserScale(true);
+        defaultRatesService.create(defaultRatesId1);
+
+        DefaultRates defaultRatesId2 = new DefaultRates();
+        defaultRatesId2.setId(2);
+        defaultRatesId2.setService(service2);
+        defaultRatesId2.setMethod(methodId3);
+        defaultRatesId2.setMainRate(12.3);
+        defaultRatesId2.setUserScale(false);
+        defaultRatesService.create(defaultRatesId2);
+
+        DefaultRates defaultRatesId3 = new DefaultRates();
+        defaultRatesId3.setId(3);
+        defaultRatesId3.setService(service3);
+        defaultRatesId3.setMethod(methodId3);
+        defaultRatesId3.setMainRate(12.3);
+        defaultRatesId3.setUserScale(false);
+        defaultRatesService.create(defaultRatesId3);
+
+        DefaultRates defaultRatesId4 = new DefaultRates();
+        defaultRatesId4.setId(4);
+        defaultRatesId4.setService(service4);
+        defaultRatesId4.setMethod(methodId5);
+        defaultRatesId4.setMainRate(0.0);
+        defaultRatesId4.setUserScale(false);
+        defaultRatesService.create(defaultRatesId4);
+
+        DefaultRates defaultRatesId5 = new DefaultRates();
+        defaultRatesId5.setId(5);
+        defaultRatesId5.setFormula("mainRate * livingArea");
+        defaultRatesId5.setService(service5);
+        defaultRatesId5.setMethod(methodId2);
+        defaultRatesId5.setMainRate(0.0);
+        defaultRatesId5.setUserScale(false);
+        defaultRatesService.create(defaultRatesId5);
+
+        DefaultRates defaultRatesId6 = new DefaultRates();
+        defaultRatesId6.setId(6);
+        defaultRatesId6.setService(service6);
+        defaultRatesId6.setMethod(methodId1);
+        defaultRatesId6.setMainRate(16.0);
+        defaultRatesId6.setUserScale(false);
+        defaultRatesService.create(defaultRatesId6);
+
+        DefaultRates defaultRatesId7 = new DefaultRates();
+        defaultRatesId7.setId(7);
+        defaultRatesId7.setService(service7);
+        defaultRatesId7.setMethod(methodId1);
+        defaultRatesId7.setMainRate(22.5);
+        defaultRatesId7.setUserScale(false);
+        defaultRatesService.create(defaultRatesId7);
+
+        message += " DefaultRates;";
+
+
+        ///////////////////////////////////////////////Scales
+        DefaultScales defaultScale = new DefaultScales();
+
+        defaultScale.setId(1);
+        defaultScale.setMainRate(0.95);//0.95
+        defaultScale.setMaxValue(100);
+        defaultScale.setMinValue(0);
+        defaultScale.setRate(defaultRatesId1);
+        defaultScalesService.create(defaultScale);
+
+        defaultScale.setId(2);
+        defaultScale.setMainRate(1.20);//1.20
+        defaultScale.setMaxValue(600);
+        defaultScale.setMinValue(101);
+        defaultScale.setRate(defaultRatesId1);
+        defaultScalesService.create(defaultScale);
+
+        defaultScale.setId(3);
+        defaultScale.setMainRate(1.88);//1.88
+        defaultScale.setMaxValue(0);
+        defaultScale.setMinValue(601);
+        defaultScale.setRate(defaultRatesId1);
+        defaultScalesService.create(defaultScale);
+
+        message += " DefaultScales;";
 
 
 

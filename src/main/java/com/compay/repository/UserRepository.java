@@ -22,6 +22,11 @@ public interface UserRepository extends JpaRepository<User,Integer>{
     @Modifying
     @Query("UPDATE User u SET u.password=:p where u.email =:e")
     void updateUser(@Param("p")String password, @Param("e")String email);
+
+
+    @Transactional
+    @Modifying
+    void deleteById(int id);
     /*
       EXAMPLE:
 
@@ -33,9 +38,6 @@ public interface UserRepository extends JpaRepository<User,Integer>{
     @Query("SELECT p FROM Person p WHERE LOWER(p.lastName) = LOWER(:lastName)")
     public ObjectDataListList<Person> find(@Param("lastName") String lastName)
      */
-
-
-
 
 
 }
