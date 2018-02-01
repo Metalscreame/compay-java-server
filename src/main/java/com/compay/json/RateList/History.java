@@ -10,21 +10,21 @@ public class History
 
     public void setStartDate(String startDate) { this.startDate = startDate; }
 
-    private String calcMethod;
+    private Method2 method;
 
-    public String getCalcMethod() { return this.calcMethod; }
+    public Method2 getMethod() { return this.method; }
 
-    public void setCalcMethod(String calcMethod) { this.calcMethod = calcMethod; }
+    public void setMethod(Method2 method) { this.method = method; }
 
-    private ArrayList<CounterScaleRateHistory> counterScaleRate;
+    private Rate2 rate;
 
-    public ArrayList<CounterScaleRateHistory> getCounterScaleRate() { return this.counterScaleRate; }
+    public Rate2 getRate() { return this.rate; }
 
-    public void setCounterScaleRate(ArrayList<CounterScaleRateHistory> counterScaleRate) { this.counterScaleRate = counterScaleRate; }
+    public void setRate(Rate2 rate) { this.rate = rate; }
 
-    public History(String startDate, String calcMethod, ArrayList<CounterScaleRateHistory> counterScaleRate) {
+    public History(String startDate, Method2 method, Rate2 rate) {
         this.startDate = startDate;
-        this.calcMethod = calcMethod;
-        this.counterScaleRate = counterScaleRate;
+        this.method = method;
+        this.rate = rate;
     }
 }

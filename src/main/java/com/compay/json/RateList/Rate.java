@@ -4,23 +4,17 @@ import java.util.ArrayList;
 
 public class Rate
 {
-    private String servId;
+    private int serviceID;
 
-    public String getServId() { return this.servId; }
+    public int getServiceID() { return this.serviceID; }
 
-    public void setServId(String servId) { this.servId = servId; }
+    public void setServiceID(int serviceID) { this.serviceID = serviceID; }
 
-    private String name;
+    private String serviceName;
 
-    public String getName() { return this.name; }
+    public String getServiceName() { return this.serviceName; }
 
-    public void setName(String name) { this.name = name; }
-
-    private String link;
-
-    public String getLink() { return this.link; }
-
-    public void setLink(String link) { this.link = link; }
+    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
 
     private String startDate;
 
@@ -28,52 +22,39 @@ public class Rate
 
     public void setStartDate(String startDate) { this.startDate = startDate; }
 
-    private String calcMethod;
+    private Method2 method;
 
-    public String getCalcMethod() { return this.calcMethod; }
+    public Method2 getMethod() { return this.method; }
 
-    public void setCalcMethod(String calcMethod) { this.calcMethod = calcMethod; }
+    public void setMethod(Method2 method) { this.method = method; }
 
-    private ArrayList<CounterScaleRate> counterScaleRate;
+    private Rate2 rate;
 
-    public ArrayList<CounterScaleRate> getCounterScaleRate() { return this.counterScaleRate; }
+    public Rate2 getRate() { return this.rate; }
 
-    public void setCounterScaleRate(ArrayList<CounterScaleRate> counterScaleRate) { this.counterScaleRate = counterScaleRate; }
+    public void setRate(Rate2 rate) { this.rate = rate; }
 
     private ArrayList<History> history;
+
+    public Rate(int serviceID, String serviceName, String startDate, Method2 method, Rate2 rate, ArrayList<History> history) {
+        this.serviceID = serviceID;
+        this.serviceName = serviceName;
+        this.startDate = startDate;
+        this.method = method;
+        this.rate = rate;
+        this.history = history;
+    }
+
+
+    public Rate(int serviceID, String serviceName, String startDate, Method2 method, Rate2 rate) {
+        this.serviceID = serviceID;
+        this.serviceName = serviceName;
+        this.startDate = startDate;
+        this.method = method;
+        this.rate = rate;
+    }
 
     public ArrayList<History> getHistory() { return this.history; }
 
     public void setHistory(ArrayList<History> history) { this.history = history; }
-
-    private CounterRate counterRate;
-
-    public CounterRate getCounterRate() { return this.counterRate; }
-
-    public void setCounterRate(CounterRate counterRate) { this.counterRate = counterRate; }
-
-    private FixFormulaRate fixFormulaRate;
-
-    public FixFormulaRate getFixFormulaRate() { return this.fixFormulaRate; }
-
-    public void setFixFormulaRate(FixFormulaRate fixFormulaRate) { this.fixFormulaRate = fixFormulaRate; }
-
-    private FixSumRate fixSumRate;
-
-    public FixSumRate getFixSumRate() { return this.fixSumRate; }
-
-    public void setFixSumRate(FixSumRate fixSumRate) { this.fixSumRate = fixSumRate; }
-
-    public Rate(String servId, String name, String link, String startDate, String calcMethod, ArrayList<CounterScaleRate> counterScaleRate, ArrayList<History> history, CounterRate counterRate, FixFormulaRate fixFormulaRate, FixSumRate fixSumRate) {
-        this.servId = servId;
-        this.name = name;
-        this.link = link;
-        this.startDate = startDate;
-        this.calcMethod = calcMethod;
-        this.counterScaleRate = counterScaleRate;
-        this.history = history;
-        this.counterRate = counterRate;
-        this.fixFormulaRate = fixFormulaRate;
-        this.fixSumRate = fixSumRate;
-    }
 }

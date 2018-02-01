@@ -1,10 +1,11 @@
-package com.compay.json.adminResponses.rateList.gas;
+package com.compay.json.adminResponses.rateList;
 
-public class MethodGas {
+public class Method {
+
     public int id;
     public String name;
     public String view;
-    public double mainRate;
+
 
     public int getId() {
         return id;
@@ -30,19 +31,10 @@ public class MethodGas {
         this.view = view;
     }
 
-    public double getMainRate() {
-        return mainRate;
-    }
-
-    public void setMainRate(double mainRate) {
-        this.mainRate = mainRate;
-    }
-
-    public MethodGas(int id, String name, String view, double mainRate) {
-
+    public Method(int id, String name, String view) {
         this.id = id;
         this.name = name;
         this.view = view;
-        this.mainRate = mainRate;
+
     }
 }

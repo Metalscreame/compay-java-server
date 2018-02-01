@@ -2,20 +2,20 @@ package com.compay.json.RateList;
 
 public class Attrs
 {
-    private Rate4ForAttrs rate;
+    private MainRate mainRate;
 
-    public Rate4ForAttrs getRate() { return this.rate; }
+    public MainRate getMainRate() { return this.mainRate; }
 
-    public Attrs(Rate4ForAttrs rate, LivingSpace livingSpace) {
-        this.rate = rate;
-        this.livingSpace = livingSpace;
+    public void setMainRate(MainRate mainRate) { this.mainRate = mainRate; }
+
+    private LivingArea livingArea;
+
+    public LivingArea getLivingArea() { return this.livingArea; }
+
+    public void setLivingArea(LivingArea livingArea) { this.livingArea = livingArea; }
+
+    public Attrs(MainRate mainRate, LivingArea livingArea) {
+        this.mainRate = mainRate;
+        this.livingArea = livingArea;
     }
-
-    public void setRate(Rate4ForAttrs rate) { this.rate = rate; }
-
-    private LivingSpace livingSpace;
-
-    public LivingSpace getLivingSpace() { return this.livingSpace; }
-
-    public void setLivingSpace(LivingSpace livingSpace) { this.livingSpace = livingSpace; }
 }

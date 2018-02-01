@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+<<<<<<< HEAD
+=======
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration />
@@ -20,6 +22,7 @@
       </configuration>
     </facet>
   </component>
+>>>>>>> 0721fdf26d37d12a7dc25e2c2f24e177c327208e
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
