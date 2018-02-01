@@ -54,8 +54,10 @@
                 </property>
             </activation>
             <build>
-                <!-- This holds the properties for the Spring context file.
-                     Database values will be changes to development. -->
+                <!--
+					This holds the properties for the Spring context file.
+                    Database values will be changes to development.
+				-->
                 <resources>
                     <!-- This is the directory that holds the Spring context
                          file.  The entire folder is searched, so either no
