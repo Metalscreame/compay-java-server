@@ -1,19 +1,22 @@
 package com.compay.json.calculation;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Map;
 
 //obj to add to arraylist in calcEntity
 public class CalcServicesArrList {
+
     public int serviceID;
     public String serviceName;
-    public Object method;
+    public Method method;
     //different methods
 
     public int lastCounter;
     public int currentCounter;
     public double currentSum;
 
-    public CalcServicesArrList(int serviceID, String serviceName, Object method, int lastCounter, int currentCounter, double currentSum) {
+    public CalcServicesArrList(int serviceID, String serviceName, Method method, int lastCounter, int currentCounter, double currentSum) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.method = method;
@@ -38,11 +41,11 @@ public class CalcServicesArrList {
         this.serviceName = serviceName;
     }
 
-    public Object getMethod() {
+    public Method getMethod() {
         return method;
     }
 
-    public void setMethod(Object method) {
+    public void setMethod(Method method) {
         this.method = method;
     }
 

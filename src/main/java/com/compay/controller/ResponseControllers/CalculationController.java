@@ -3,32 +3,24 @@ package com.compay.controller.ResponseControllers;
 import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
-import com.compay.json.calculation.CalcServicesArrList;
-import com.compay.json.calculation.CalculationBuilder;
-import com.compay.json.calculation.CalculationEntity;
+import com.compay.json.calculation.*;
 import com.compay.json.calculation.electricity.MethodElectricity;
 import com.compay.json.calculation.electricity.ScaleElectr;
 import com.compay.json.calculation.flatPay.MethodFlat;
 import com.compay.json.calculation.garbage.MethodGarbage;
 import com.compay.json.calculation.gas.MethodGas;
-import com.compay.json.calculation.heat.Formula;
 import com.compay.json.calculation.heat.MethodHeat;
 import com.compay.json.calculation.lift.MethodLift;
 import com.compay.json.calculation.water.MethodWater;
 import com.compay.repository.*;
-import com.compay.service.AdressService;
-import com.compay.service.TokenService;
-import com.compay.service.UserService;
+import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +38,11 @@ public class CalculationController {
     @Autowired
     private AdressService adressService;
 
+    @Autowired
+    private ArgumentsService argumentsService;
+
+    @Autowired
+    private AdressArgumentsService adressArgumentsService;
 
     @Autowired
     private CalculationsRepository calculationsRepository;
@@ -114,56 +111,49 @@ public class CalculationController {
 
             for (Object[] rQ : resultQuery) {
                 Methods methods = methodsRepository.findOne((int) rQ[9]);
-                switch ((int) rQ[5]) { //Electricity
-                    case 1:
-                        List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne((int) rQ[13]));
-                        ArrayList<ScaleElectr> scaleArrayList = new ArrayList<ScaleElectr>();
 
-                        for (Scales scalesEntity : scalesEntityList) {
-                            scaleArrayList.add(new ScaleElectr(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
-                        }
-                        MethodElectricity methodElectricity = new MethodElectricity((int) rQ[9], methods.getName(), methods.getView(), scaleArrayList);
+                List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne((int) rQ[13]));
+                ArrayList<ScaleElectr> scaleArrayList = new ArrayList<ScaleElectr>();
 
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodElectricity, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
-                    case 2: //Wate
-                        MethodWater methodWater = new MethodWater((int) rQ[9], methods.getName(), methods.getView(),(int)rQ[8]);
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodWater, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
-                    case 3: //Gas
-                        MethodGas methodGas = new MethodGas((int) rQ[9], methods.getName(), methods.getView(), (float) rQ[8]);
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodGas, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
-                    case 4: //Heat
-                        Arguments arguments = argumentsRepository.findByName("livingArea");
-                        List<AdressArguments> adressArgumentsList = adressArgumentsRepository.findAllByArgument(arguments);
-                        Double livingAreaValue = 0.0;
-                        for (AdressArguments adressArg : adressArgumentsList) {
-                            if (adressArg.getAdress().equals(adressRepository.findOne((int) rQ[0]))) {
-                                livingAreaValue = adressArg.getValue();
-                                break;
+                for (Scales scalesEntity : scalesEntityList) {
+                    scaleArrayList.add(new ScaleElectr(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
+                }
+
+                Method method = new Method((int) rQ[9], methods.getName(), methods.getView(), scaleArrayList, (float)rQ[8]);
+
+                String formulaView = (String) rQ[7];
+
+                if(formulaView != null && !formulaView.isEmpty()){
+                    String[] strings = formulaView.split(" ");
+
+                    formulaView = convertFormula(formulaView);
+
+                    List<AdressArguments> adressArgumentsList = adressArgumentsService.findAllByAdress(adress);
+                    Formula formula = new Formula();
+                    for (AdressArguments adressArguments: adressArgumentsList){
+
+                        String nameArgument = adressArguments.getArgument().getName();
+                        String viewArgument = adressArguments.getArgument().getView();
+
+                        for (String t : strings){
+                            if (nameArgument.equals(t)){
+                                switch (t){
+                                    case "livingArea":
+                                        formula.setLivingArea(adressArguments.getValue());
+                                        formula.setMainRate((float)rQ[8]);
+                                        formula.setValue((String) rQ[7]);
+                                        formula.setView(formulaView);
+                                        break;
+                                    case "registeredPersons":
+
+                                    break;
+                                }
                             }
                         }
-
-                        Formula formula = new Formula((String) rQ[7], "", livingAreaValue, (float) rQ[8]);
-                        MethodHeat methodHeat = new MethodHeat((int) rQ[9], methods.getName(), methods.getView(), formula);
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodHeat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
-                    case 5: //Flat
-                        MethodFlat methodFlat = new MethodFlat((int) rQ[9], methods.getName(), methods.getView());
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodFlat, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
-
-                    case 6: //Garbage
-                        MethodGarbage methodGarbage = new MethodGarbage((int) rQ[9], methods.getName(), methods.getView(), (float) rQ[4]);
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodGarbage, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
-                    case 7: //Lift MethodLift
-                        MethodLift methodLift = new MethodLift((int) rQ[9], methods.getName(), methods.getView(), (float) rQ[4]);
-                        calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodLift, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
-                        break;
+                    }
                 }
-                //arrayList.add(calcServicesArrList);
+                //Formula formula = new Formula((String) rQ[7], "", livingAreaValue, (float) rQ[8]);
+                calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], method, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
             }
 
             result = builder.createJson(new CalculationEntity(period, calcServicesArrayList));
@@ -181,5 +171,15 @@ public class CalculationController {
             return "{\"message\": \"Wrong objectID\"}";
         }
 
+    }
+
+    public String convertFormula(String formula){
+
+        List<Arguments> argumentsList = argumentsService.findAll();
+
+        for (Arguments arguments: argumentsList){
+            formula = formula.replaceAll(arguments.getName(), "[" + arguments.getView() + "]");
+        }
+        return formula;
     }
 }

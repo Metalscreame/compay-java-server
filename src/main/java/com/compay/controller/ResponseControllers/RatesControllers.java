@@ -4,7 +4,6 @@ import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.json.RateList.*;
-import com.compay.json.calculation.CalculationEntity;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
 import com.compay.service.*;

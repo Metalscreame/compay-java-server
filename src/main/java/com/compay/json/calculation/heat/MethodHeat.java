@@ -1,5 +1,7 @@
 package com.compay.json.calculation.heat;
 
+import com.compay.json.calculation.Formula;
+
 public class MethodHeat {
 
     public int id;
