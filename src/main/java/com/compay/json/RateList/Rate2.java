@@ -1,20 +1,54 @@
 package com.compay.json.RateList;
 
-public class Rate2 {
-    private String val;
 
-    public String getVal() { return this.val; }
+import java.util.ArrayList;
 
-    public void setVal(String val) { this.val = val; }
+public class Rate2
+{
+    private ArrayList<Scale> scale;
 
-    private String units;
+    public ArrayList<Scale> getScale() { return this.scale; }
 
-    public String getUnits() { return this.units; }
+    public void setScale(ArrayList<Scale> scale) { this.scale = scale; }
 
-    public void setUnits(String units) { this.units = units; }
+    private Double mainRate;
 
-    public Rate2(String val, String units) {
-        this.val = val;
-        this.units = units;
+    public Double getMainRate() { return this.mainRate; }
+
+    public void setMainRate(Double mainRate) { this.mainRate = mainRate; }
+
+    private String value;
+
+    public String getValue() { return this.value; }
+
+    public void setValue(String value) { this.value = value; }
+
+    private String view;
+
+    public String getView() { return this.view; }
+
+    public void setView(String view) { this.view = view; }
+
+    private Attrs attrs;
+
+    public Attrs getAttrs() { return this.attrs; }
+
+
+    public Rate2(ArrayList<Scale> scale) {
+        this.scale = scale;
     }
+
+    //теплоснабжение
+    public Rate2(String value, String view, Attrs attrs) {
+        this.value = value;
+        this.view = view;
+        this.attrs = attrs;
+    }
+
+    public Rate2(Double mainRate) {
+        this.mainRate = mainRate;
+    }
+
+    public void setAttrs(Attrs attrs) { this.attrs = attrs; }
 }
+

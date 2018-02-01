@@ -1,7 +1,15 @@
+я создал разные конструкторы, чтобы проще было инфу загонять, ибо кое где рейтс чутка другое, или где-то нет истории
 
-RateListEntity -> Rate -> CounterScaleRate(list) -> Rate2
-                       -> History (list) -> CounterScaleRateHistory (list)-> Rate3
+RateListEntity -> Rate -> Method2
+                        -> Rate2    -> Scale
+                       -> History  -> Method2 ->Rate2 -> Scale2
+
+                  Rate //и по новой дальше
+
+
 
     //when House Rate -> FixFormulaRate-> Attrs ->Rate4
 
     //when Garbage      FixSumRate
+
+    method2 if водоснобжение

@@ -48,9 +48,6 @@ public class User {
     }
 
     public String getPassword() {
-//        byte[] decoded = Base64.getDecoder().decode(password);
-//        String str = new String(decoded, StandardCharsets.UTF_8);
-//        return str;
         return password;
     }
 
