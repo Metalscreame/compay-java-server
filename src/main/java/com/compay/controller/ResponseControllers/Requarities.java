@@ -2,6 +2,7 @@ package com.compay.controller.ResponseControllers;
 
 
 import com.compay.exception.AuthException;
+import com.compay.global.Constants;
 import com.compay.json.requisites.get.ReqGetBuilder;
 import com.compay.json.requisites.update.RequaritiesUpdate;
 import com.compay.service.TokenService;
@@ -10,9 +11,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class Requarities {
@@ -24,41 +33,39 @@ public class Requarities {
     private UserService userService;
 
 
-
-    @RequestMapping(value = "/requisites/update", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/requisites/update", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String reqUpdate(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
-                               @RequestBody String body,
-                               HttpServletResponse response) throws AuthException, JsonProcessingException {
-        String result="";
+    public String reqUpdate(
+            @RequestHeader(value = CONTENT_TYPE) String type,
+            @RequestHeader(value = AUTHORIZATION) String authToken,
+            @RequestBody String body,
+            HttpServletResponse response) throws AuthException, JsonProcessingException {
+        String result = "";
 
+//        try {
+
+        //auth
         try {
-
-            //auth
-            try {
-                if (tokenService.authChek(authToken)) {
-                } else throw new AuthException();
-            }catch (AuthException e){
-                response.setStatus(401);
-                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-                return "{\"message\": \"Unauthorized\"}";
-            }
+            if (tokenService.authChek(authToken)) {
+            } else throw new AuthException();
+        } catch (AuthException e) {
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Unauthorized\"}";
+        }
 
 
-            RequaritiesUpdate requaritiesUpdate;
-            try {
-                 requaritiesUpdate= new ObjectMapper().readValue(body,RequaritiesUpdate.class);
-                }catch (Exception e){
-                    response.setStatus(402);
-                    response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-                    return "{\"info\": \"Wrong date\"}";
-<<<<<<< HEAD
-            }
-=======
-                }
+        RequaritiesUpdate requaritiesUpdate;
+        try {
+            requaritiesUpdate = new ObjectMapper().readValue(body, RequaritiesUpdate.class);
+        } catch (Exception e) {
+            response.setStatus(402);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Wrong date\"}";
+        }
 
-                ReqGetBuilder reqGetBuilder = new ReqGetBuilder();
+
+        ReqGetBuilder reqGetBuilder = new ReqGetBuilder();
 
 
                 /*
@@ -73,62 +80,48 @@ public class Requarities {
                     }
                  }
                  */
->>>>>>> 8fb6e18f027a488dba5eafd9d96acccf3990f7b0
 
-            // всеостальное
+        // всеостальное
 
+        response.setStatus(200);
+        response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
+        return "{\"info\": \"Реквизиты успешно обновлены\"}";
 
-
-
-
-            response.setStatus(200);
-            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
-            return "{\"info\": \"Реквизиты успешно обновлены\"}";
-
-        }catch (AuthException e){
-            response.setStatus(401);
-            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"message\": \"Unauthorized\"}";
-        }catch (Exception e)
-        {
-            response.setStatus(402);
-            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"info\": \"Something is wrong\"}" + e;
-        }
+//        }catch (AuthException e){
+//            response.setStatus(401);
+//            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+//            return "{\"message\": \"Unauthorized\"}";
+//        }catch (Exception e)
+//        {
+//            response.setStatus(402);
+//            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+//            return "{\"info\": \"Something is wrong\"}" + e;
+//        }
 
     }
 
-
-
-    @RequestMapping(value = "/requisites/{objectID}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/requisites/{objectID}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String reqGet(@RequestHeader(value = "Content-Type") String type,
-                            @RequestHeader(value = "Authorization") String authToken,
-                            HttpServletResponse response,
-                            @PathVariable("objectId") int id) throws AuthException, JsonProcessingException {
+    public String reqGet(
+            @RequestHeader(value = CONTENT_TYPE) String type,
+            @RequestHeader(value = AUTHORIZATION) String authToken,
+            HttpServletResponse response,
+            @PathVariable("objectId") int id) throws AuthException, JsonProcessingException {
 
-        String result ="";
+        String result = "";
 
-        try{
+        try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
-
-
-
-
-
-
-
-
 
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
             return result;
-        }catch (AuthException e){
+        } catch (AuthException e) {
             response.setStatus(401);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"message\": \"Unauthorized\"}";
-        }catch (Exception e) {
+        } catch (Exception e) {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\": \"Something is wrong\"}" + e;

@@ -1,8 +1,13 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.*;
+import com.compay.entity.Adress;
+import com.compay.entity.AdressArguments;
+import com.compay.entity.Arguments;
+import com.compay.entity.Methods;
+import com.compay.entity.Scales;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
+import com.compay.global.Constants;
 import com.compay.json.calculation.CalcServicesArrList;
 import com.compay.json.calculation.CalculationBuilder;
 import com.compay.json.calculation.CalculationEntity;
@@ -15,24 +20,34 @@ import com.compay.json.calculation.heat.Formula;
 import com.compay.json.calculation.heat.MethodHeat;
 import com.compay.json.calculation.lift.MethodLift;
 import com.compay.json.calculation.water.MethodWater;
-import com.compay.repository.*;
+import com.compay.repository.AdressArgumentsRepository;
+import com.compay.repository.AdressRepository;
+import com.compay.repository.ArgumentsRepository;
+import com.compay.repository.CalculationsRepository;
+import com.compay.repository.MethodsRepository;
+import com.compay.repository.RatesRepository;
+import com.compay.repository.ScalesRepository;
 import com.compay.service.AdressService;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class CalculationController {
@@ -69,10 +84,10 @@ public class CalculationController {
     private AdressArgumentsRepository adressArgumentsRepository;
 
 
-    @RequestMapping(value = "/calculations/{objectID}/{period}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/calculations/{objectID}/{period}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response, @PathVariable("objectID") int objectID, @PathVariable("period") String period) throws JsonProcessingException, ParseException {
 
         try {
@@ -82,7 +97,7 @@ public class CalculationController {
 
             //checking for correct objectID
             Adress adress = adressService.findAdressById(objectID);
-            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail())|| adress==null) {
+            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail()) || adress == null) {
                 throw new WrongDataExc();
             }
 
@@ -127,7 +142,7 @@ public class CalculationController {
                         calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodElectricity, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
                         break;
                     case 2: //Wate
-                        MethodWater methodWater = new MethodWater((int) rQ[9], methods.getName(), methods.getView(),(int)rQ[8]);
+                        MethodWater methodWater = new MethodWater((int) rQ[9], methods.getName(), methods.getView(), (int) rQ[8]);
                         calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], methodWater, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
                         break;
                     case 3: //Gas

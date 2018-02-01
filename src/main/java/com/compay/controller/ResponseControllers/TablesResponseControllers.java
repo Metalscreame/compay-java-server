@@ -3,6 +3,7 @@ package com.compay.controller.ResponseControllers;
 
 
 import com.compay.entity.User;
+import com.compay.global.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class TablesResponseControllers {
     @PersistenceContext
     private EntityManager em;
 
-    @RequestMapping(value = "/get{name_table}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/get{name_table}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseTableData(HttpServletResponse response, @PathVariable("name_table") String name_table) {
         String message = "";
@@ -37,7 +38,7 @@ public class TablesResponseControllers {
         return message;
     }
 
-    @RequestMapping(value = "/get/All", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/get/All", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseTablesData(HttpServletResponse response) {
         String message = "";

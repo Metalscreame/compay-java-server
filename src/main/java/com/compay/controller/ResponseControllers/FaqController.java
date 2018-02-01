@@ -4,6 +4,7 @@ import com.compay.entity.Faq;
 import com.compay.entity.User;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
+import com.compay.global.Constants;
 import com.compay.json.faq.FaqEntity;
 import com.compay.json.faq.FaqEntityListJSON;
 import com.compay.json.faq.FaqJsonBuilder;
@@ -12,10 +13,17 @@ import com.compay.service.TokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class FaqController {
@@ -26,20 +34,20 @@ public class FaqController {
     @Autowired
     private FaqService faqService;
 
-    @RequestMapping(value = "/faq", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/faq", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String type,
-                                  @RequestHeader(value = "Authorization") String authToken,
-                                  HttpServletResponse response){
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
+                               HttpServletResponse response) {
 
         try {
             String result = null;
-            if(tokenService.authChek(authToken)) {
+            if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
 
             User currentUser = tokenService.findByToken(authToken).getUser();
 
-            if(currentUser == null) throw new WrongDataExc();
+            if (currentUser == null) throw new WrongDataExc();
 
             List<Faq> faqList = faqService.findAll();
 
@@ -69,21 +77,21 @@ public class FaqController {
         }
     }
 
-    @RequestMapping(value = "/faqUpdate", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/faqUpdate", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBodyUpdate(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBodyUpdate(@RequestHeader(value = CONTENT_TYPE) String type,
+                                     @RequestHeader(value = AUTHORIZATION) String authToken,
                                      @RequestBody FaqEntityListJSON faqEntityListJSON,
-                               HttpServletResponse response){
+                                     HttpServletResponse response) {
 
         try {
             String result = null;
-            if(tokenService.authChek(authToken)) {
+            if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
 
             User currentUser = tokenService.findByToken(authToken).getUser();
 
-            if(currentUser == null) throw new WrongDataExc();
+            if (currentUser == null) throw new WrongDataExc();
 
             //List<Faq> faqList = faqService.findAll();
             faqService.deleteAll();

@@ -4,11 +4,12 @@ import com.compay.entity.DefaultRates;
 import com.compay.entity.DefaultScales;
 import com.compay.entity.User;
 import com.compay.exception.WrongDataExc;
+import com.compay.global.Constants;
+import com.compay.json.adminResponses.rateList.Method;
 import com.compay.json.adminResponses.rateList.RateListBuilder;
 import com.compay.json.adminResponses.rateList.Service;
-import com.compay.json.adminResponses.rateList.electricity.ServiceElectricity;
 import com.compay.json.adminResponses.rateList.electricity.ScaleElectr;
-import com.compay.json.adminResponses.rateList.Method;
+import com.compay.json.adminResponses.rateList.electricity.ServiceElectricity;
 import com.compay.json.adminResponses.rateList.flatPay.Arguments;
 import com.compay.json.adminResponses.rateList.flatPay.Formula;
 import com.compay.json.adminResponses.rateList.flatPay.ServiceFlat;
@@ -34,8 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+
 @Controller
 public class RateList {
+
 
     @Autowired
     private UserService userService;
@@ -52,18 +57,19 @@ public class RateList {
     @Autowired
     private DefaultRatesRepository defaultRatesRepository;
 
-    @RequestMapping(value = "/admin/rateList", method = RequestMethod.GET,produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/admin/rateList", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String  returnUserList(@RequestHeader(value = "Content-Type") String contentType,
-                                  @RequestHeader(value = "Authorization")  String authToken,
-                                  HttpServletResponse response) throws JsonProcessingException {
+    public String returnUserList(
+            @RequestHeader(value = CONTENT_TYPE) String contentType,
+            @RequestHeader(value = AUTHORIZATION) String authToken,
+            HttpServletResponse response) throws JsonProcessingException {
 
-        if (tokenService.authChek(authToken)){
-            String result ="";
+        if (tokenService.authChek(authToken)) {
+            String result;
 
             User currentUser = tokenService.findByToken(authToken).getUser();
 
-            if(currentUser == null) {
+            if (currentUser == null) {
                 try {
                     throw new WrongDataExc();
                 } catch (WrongDataExc wrongDataExc) {
@@ -71,15 +77,15 @@ public class RateList {
                 }
             }
 
-            List<DefaultRates> defaultRatesList =  defaultRatesService.findAll();
+            List<DefaultRates> defaultRatesList = defaultRatesService.findAll();
 
             ArrayList<Object> arrayList = new ArrayList<>();
 
-            for(DefaultRates defaultRates: defaultRatesList) {
+            for (DefaultRates defaultRates : defaultRatesList) {
 
-                switch (defaultRates.getService().getId()){
+                switch (defaultRates.getService().getId()) {
                     case 1: //Electricity
-                        ArrayList<ScaleElectr> defaultScaleArrayList = new ArrayList<ScaleElectr>();
+                        ArrayList<ScaleElectr> defaultScaleArrayList = new ArrayList<>();
                         List<DefaultScales> defaultScalesList = defaultScalesRepository.findAllByDefaultRates(defaultRates);
                         //Set<DefaultScales> defaultScalesList = defaultRates.getDefaultScales();
 
@@ -150,7 +156,7 @@ public class RateList {
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
             return result;
-        }else {
+        } else {
             response.setStatus(401);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"message\": \"Unauthorized\"}";

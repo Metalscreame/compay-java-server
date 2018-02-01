@@ -6,16 +6,16 @@ import com.compay.entity.AdressServices;
 import com.compay.entity.Services;
 import com.compay.entity.User;
 import com.compay.exception.AuthException;
-import com.compay.json.ObjectList.ObjectListEntity;
-import com.compay.json.ObjectList.ObjectListJsonBuilder;
+import com.compay.global.Constants;
 import com.compay.json.ObjectsDataList.ObjectsDataListEntity;
 import com.compay.json.ObjectsDataList.ObjectsDataListJsonBuilder;
-import com.compay.json.ServiceListResponse.ServiceListEntity;
-import com.compay.json.ServiceListResponse.ServiceListJsonBuilder;
-import com.compay.service.*;
+import com.compay.service.AdressService;
+import com.compay.service.AdressServicesService;
+import com.compay.service.ServicesService;
+import com.compay.service.TokenService;
+import com.compay.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class ObjectDataListResponseContoller {
@@ -43,10 +49,10 @@ public class ObjectDataListResponseContoller {
     private ServicesService servicesService;
 
 
-    @RequestMapping(value = "/objectsDataList", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/objectsDataList", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response) throws AuthException {
         try {
             //Token check

@@ -1,7 +1,31 @@
 package com.compay.controller;
 
-import com.compay.entity.*;
-import com.compay.service.*;
+import com.compay.entity.Adress;
+import com.compay.entity.AdressArguments;
+import com.compay.entity.AdressServices;
+import com.compay.entity.Arguments;
+import com.compay.entity.Calculations;
+import com.compay.entity.DefaultRates;
+import com.compay.entity.DefaultScales;
+import com.compay.entity.Methods;
+import com.compay.entity.Rates;
+import com.compay.entity.Scales;
+import com.compay.entity.Services;
+import com.compay.entity.Token;
+import com.compay.entity.User;
+import com.compay.service.AdressArgumentsService;
+import com.compay.service.AdressService;
+import com.compay.service.AdressServicesService;
+import com.compay.service.ArgumentsService;
+import com.compay.service.CalculationsService;
+import com.compay.service.DefaultRatesService;
+import com.compay.service.DefaultScalesService;
+import com.compay.service.MethodsService;
+import com.compay.service.RatesService;
+import com.compay.service.ScalesService;
+import com.compay.service.ServicesService;
+import com.compay.service.TokenService;
+import com.compay.service.UserService;
 import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +34,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import static com.compay.global.Constants.ADMIN;
 
 /*
 Controller to test the stuff
@@ -25,7 +50,7 @@ Controller to test the stuff
 
 
 @Controller
-public class TestController{
+public class TestController {
     @Autowired
     UserService svc;
 
@@ -65,23 +90,23 @@ public class TestController{
     @Autowired
     DefaultScalesService defaultScalesService;
 
-    @RequestMapping(value = "/save",method = RequestMethod.GET)
+    @RequestMapping(value = "/save", method = RequestMethod.GET)
     @ResponseBody
-    public String saveTest(){
+    public String saveTest() {
         User user = new User();
 
         Random random = new Random();
-        int rand=random.nextInt();
+        int rand = random.nextInt();
         user.setName("romka");
         user.setPassword("040593");
-        user.setEmail("test"+rand+"@test.test");
+        user.setEmail("test" + rand + "@test.test");
         user.setLastName("Kosiy");
         user.setRole("user");
         svc.create(user);
         return "User " + user.getName() + "with " + user.getEmail() + " email has been saved";
     }
 
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public String test() {
 
@@ -90,13 +115,13 @@ public class TestController{
 //        try (Stream<User> stream = svc.findAll()) {
 //            stream.forEach((k)->buffer.add("User : " + k));
 //        }
-        return "The first user in the database is : "+svc.findUserById(1).getEmail();
+        return "The first user in the database is : " + svc.findUserById(1).getEmail();
 
         //return "redirect:index.jsp/";
 //        return buffer.get(1);
     }
 
-    @RequestMapping(value = "/testName",method = RequestMethod.GET)
+    @RequestMapping(value = "/testName", method = RequestMethod.GET)
     @ResponseBody
     public String testNameFinder() {
 
@@ -106,44 +131,42 @@ public class TestController{
         return firstUserWIthName.getName();
     }
 
-    @RequestMapping(value = "/testEmail",method = RequestMethod.GET)
+    @RequestMapping(value = "/testEmail", method = RequestMethod.GET)
     @ResponseBody
     public String testEmailFind() {
 
         User firstUserWithMail = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
 
-        return "The user with " + firstUserWithMail.getEmail()+ " has ID: "+ firstUserWithMail.getId() + ", Name : "  + firstUserWithMail.getName()  + ", Password :  " + firstUserWithMail.getPassword();
+        return "The user with " + firstUserWithMail.getEmail() + " has ID: " + firstUserWithMail.getId() + ", Name : " + firstUserWithMail.getName() + ", Password :  " + firstUserWithMail.getPassword();
     }
 
 
-
-    @RequestMapping(value = "/testJson",method = RequestMethod.GET)
+    @RequestMapping(value = "/testJson", method = RequestMethod.GET)
     @ResponseBody
     public String testJson() {
         List testList = svc.findByName("romka");
         User firstUserWIthName = (User) testList.get(0);//Возвращает первую запись
         Gson gs = new Gson();
         String str = gs.toJson(firstUserWIthName);
-        return "status 200"+str;
+        return "status 200" + str;
     }
 
     //Find all users
-    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
-    public String getAllUsers(){
-        String result="";
+    public String getAllUsers() {
+        String result = "";
         List<User> users = new ArrayList<>();
 
-        users=svc.findAll();
-        for (User ob: users) {
-            result =result+ob.getId()+" "+ ob.getName() + " " + ob.getLastName() + " " + ob.getEmail() +" " + ob.getPassword() + "\r\n";
+        users = svc.findAll();
+        for (User ob : users) {
+            result = result + ob.getId() + " " + ob.getName() + " " + ob.getLastName() + " " + ob.getEmail() + " " + ob.getPassword() + "\r\n";
         }
         return result;
     }
 
 
-
-    @RequestMapping(value = "/testInitializeDataBase",method = RequestMethod.GET)
+    @RequestMapping(value = "/testInitializeDataBase", method = RequestMethod.GET)
     @ResponseBody
     public String testInitializeDataBase() throws ParseException {
 
@@ -155,9 +178,9 @@ public class TestController{
         root.setPassword("root");
         root.setEmail("root@root.root");
         root.setLastName("rootLname");
-        root.setRole("admin");
+        root.setRole(ADMIN);
         svc.create(root);
-        User newUsr= new User();
+        User newUsr = new User();
         newUsr.setEmail("dima@dima.dima");
         newUsr.setName("Дмитрий");
         newUsr.setRole("user");
@@ -170,11 +193,11 @@ public class TestController{
 
         //Token - root
 
-        message+= "Admin acc; User acc; Token;";
+        message += "Admin acc; User acc; Token;";
         Token token = new Token();
         token.setId(1);
         token.setUser(user);
-        String sha = DigestUtils.sha1Hex(user.getEmail()+user.getPassword());
+        String sha = DigestUtils.sha1Hex(user.getEmail() + user.getPassword());
         token.setUserPlusPassHash(sha);
         token.setTokenCreateDate();
         token.setToken();
@@ -502,7 +525,7 @@ public class TestController{
         calculations.setCountLast(231);
 
 
-        String datestr1= "2017-09-01";
+        String datestr1 = "2017-09-01";
         Date parsedDate1 = dateFormat.parse(datestr1);
         Timestamp timestamp = new java.sql.Timestamp(parsedDate1.getTime());
         calculations.setPeriod(timestamp);
@@ -515,7 +538,7 @@ public class TestController{
         calculations.setAdress(adressId1);
         calculations.setCountCurrent(120);
         calculations.setCountLast(231);
-        String datestr2= "2017-11-01";
+        String datestr2 = "2017-11-01";
         Date parsedDate2 = dateFormat.parse(datestr2);
         Timestamp timestamp2 = new java.sql.Timestamp(parsedDate2.getTime());
         calculations.setPeriod(timestamp2);
@@ -529,7 +552,7 @@ public class TestController{
         calculations.setCountCurrent(510);
         calculations.setCountLast(231);
 
-        String datestr3= "2017-12-01";
+        String datestr3 = "2017-12-01";
         Date parsedDate3 = dateFormat.parse(datestr3);
         Timestamp timestamp3 = new java.sql.Timestamp(parsedDate3.getTime());
         calculations.setPeriod(timestamp3);
@@ -542,7 +565,7 @@ public class TestController{
         calculations.setAdress(adressId1);
         calculations.setCountCurrent(510);
         calculations.setCountLast(231);
-        String datestr4= "2018-01-01";
+        String datestr4 = "2018-01-01";
 
         Date parsedDate = dateFormat.parse(datestr4);
         Timestamp timestamp4 = new java.sql.Timestamp(parsedDate.getTime());
@@ -557,7 +580,7 @@ public class TestController{
         calculations.setCountCurrent(510);
         calculations.setCountLast(231);
 
-        String datestr5= "2017-10-01";
+        String datestr5 = "2017-10-01";
         Date parsedDate5 = dateFormat.parse(datestr5);
         Timestamp timestamp5 = new java.sql.Timestamp(parsedDate5.getTime());
         calculations.setPeriod(timestamp5);
@@ -565,7 +588,6 @@ public class TestController{
         calculations.setService(service3);
         calculations.setUser(user);
         calculationsService.create(calculations);
-
 
 
         ///////////////////////////////////////////////DefaultRates
@@ -655,8 +677,6 @@ public class TestController{
         defaultScalesService.create(defaultScale);
 
         message += " DefaultScales;";
-
-
 
 
         return message;
