@@ -1,18 +1,13 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.Adress;
-import com.compay.entity.Methods;
-import com.compay.entity.Scales;
+import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.json.RateList.*;
 import com.compay.json.calculation.CalculationEntity;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
-import com.compay.service.AdressService;
-import com.compay.service.MethodsService;
-import com.compay.service.TokenService;
-import com.compay.service.UserService;
+import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hibernate.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +40,12 @@ public class RatesControllers {
 
     @Autowired
     private MethodsService methodsService;
+
+    @Autowired
+    private AdressArgumentsService adressArgumentsService;
+
+    @Autowired
+    private ArgumentsService argumentsService;
 
     @Autowired
     private ScalesRepository scalesRepository;
@@ -107,10 +108,43 @@ public class RatesControllers {
                         scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue()));
                     }
 
+                    //Attrs
+                    String formulaView = (String)rQ[6];
+                    Attrs attrs = new Attrs();
+                    if (!formulaView.isEmpty()){
+
+                        String[] strings = formulaView.split(" ");
+
+                        formulaView = convertFormula(formulaView);
+
+                        List<AdressArguments> adressArgumentsList = adressArgumentsService.findAllByAdress(adress);
+                        for (AdressArguments adressArguments: adressArgumentsList){
+
+                            String nameArgument = adressArguments.getArgument().getName();
+                            String viewArgument = adressArguments.getArgument().getView();
+
+                            for (String t : strings){
+                                if (nameArgument.equals(t)){
+                                    switch (t){
+                                        case "livingArea":
+                                            attrs.setLivingArea(new LivingArea(viewArgument, adressArguments.getValue()));
+                                            attrs.setMainRate(new MainRate(viewArgument, (Float)rQ[9]));
+                                            break;
+                                        case "registeredPersons":
+
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     Rate2 rate2  = new Rate2();
                     rate2.setMainRate((Float) rQ[9]);
                     rate2.setScale(scaleArrayList);
-                    rate2.setView((String)rQ[6]);
+                    rate2.setView(formulaView);
+                    rate2.setValue((String)rQ[6]);
+                    rate2.setAttrs(attrs);
 
 
                     //History
@@ -168,7 +202,7 @@ public class RatesControllers {
                 response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
 
                 return result;
-            }catch (RuntimeException e){
+            }catch (MappingException e){
                 response.setStatus(402);
                 response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
                 return "{\"message\": \"Wrong objectID\"}";
@@ -183,5 +217,15 @@ public class RatesControllers {
             return "{\"message\": \"Wrong objectID\"}";
         }
 
+    }
+
+    public String convertFormula(String formula){
+
+        List<Arguments> argumentsList = argumentsService.findAll();
+
+        for (Arguments arguments: argumentsList){
+            formula = formula.replaceAll(arguments.getName(), "[" + arguments.getView() + "]");
+        }
+        return formula;
     }
 }

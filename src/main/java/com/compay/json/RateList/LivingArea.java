@@ -8,13 +8,13 @@ public class LivingArea
 
     public void setView(String view) { this.view = view; }
 
-    private int value;
+    private double value;
 
-    public int getValue() { return this.value; }
+    public double getValue() { return this.value; }
 
-    public void setValue(int value) { this.value = value; }
+    public void setValue(double value) { this.value = value; }
 
-    public LivingArea(String view, int value) {
+    public LivingArea(String view, double value) {
         this.view = view;
         this.value = value;
     }
