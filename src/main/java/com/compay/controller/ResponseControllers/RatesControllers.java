@@ -97,55 +97,11 @@ public class RatesControllers {
 
                 for (Object[] rQ : resultQuery){
 
+                    //createRate2(int methodId, int rates_id, float mainRate, String formula);
+                    Rate2 rate2  = createRate2(adress, (int) rQ[12], (Float)rQ[9], ((String)rQ[6]));
+
                     Methods methods = methodsService.findMethodById((int) rQ[10]);
                     Method2 method2 = new Method2(methods.getId(), methods.getName(), methods.getView());
-
-                    //Scales
-                    List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne((int) rQ[12]));
-                    ArrayList<Scale> scaleArrayList = new ArrayList<Scale>();
-
-                    for (Scales scalesEntity : scalesEntityList) {
-                        scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue()));
-                    }
-
-                    //Attrs
-                    String formulaView = (String)rQ[6];
-                    Attrs attrs = new Attrs();
-                    if (!formulaView.isEmpty()){
-
-                        String[] strings = formulaView.split(" ");
-
-                        formulaView = convertFormula(formulaView);
-
-                        List<AdressArguments> adressArgumentsList = adressArgumentsService.findAllByAdress(adress);
-                        for (AdressArguments adressArguments: adressArgumentsList){
-
-                            String nameArgument = adressArguments.getArgument().getName();
-                            String viewArgument = adressArguments.getArgument().getView();
-
-                            for (String t : strings){
-                                if (nameArgument.equals(t)){
-                                    switch (t){
-                                        case "livingArea":
-                                            attrs.setLivingArea(new LivingArea(viewArgument, adressArguments.getValue()));
-                                            attrs.setMainRate(new MainRate(viewArgument, (Float)rQ[9]));
-                                            break;
-                                        case "registeredPersons":
-
-                                            break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    Rate2 rate2  = new Rate2();
-                    rate2.setMainRate((Float) rQ[9]);
-                    rate2.setScale(scaleArrayList);
-                    rate2.setView(formulaView);
-                    rate2.setValue((String)rQ[6]);
-                    rate2.setAttrs(attrs);
-
 
                     //History
                     ArrayList<History> historyList = new ArrayList<>();
@@ -163,28 +119,17 @@ public class RatesControllers {
                         rQH[6] METHODID
                         */
                         for (Object[] rQH : resultQueryHistory) {
+                            //createRate2(methodId, rates_id, mainRate, formula);
+                            Rate2 rate2History = createRate2(adress, (int)rQH[0], (Float)rQH[2], (String)rQH[1]);
+
                             Methods methodsHistory = methodsService.findMethodById((int)rQH[6]);
                             Method2 method2History = new Method2(methodsHistory.getId(), methodsHistory.getName(), methodsHistory.getView());
-
-                            //Scales
-                            List<Scales> scalesEntityHistoryList = scalesRepository.findAllByRate(ratesRepository.findOne((int) rQH[0]));
-                            ArrayList<Scale> scaleArrayHistoryList = new ArrayList<Scale>();
-
-                            for (Scales scalesEntityHistory : scalesEntityHistoryList) {
-                                scaleArrayHistoryList.add(new Scale(scalesEntityHistory.getMinValue(), scalesEntityHistory.getMaxValue()));
-                            }
-
-                            Rate2 rate2History = new Rate2();
-                            rate2History.setMainRate((Float) rQH[2]);
-                            rate2History.setScale(scaleArrayHistoryList);
-                            rate2History.setView((String)rQH[1]);
 
                             timestamp.setTime(Long.parseLong((String)rQH[3]));
                             History history = new History(sdfDate.format(timestamp), method2History, rate2History);
 
                             historyList.add(history);
                         }
-
                     }catch (RuntimeException e){}
 
                     timestamp.setTime(Long.parseLong((String)rQ[7]));
@@ -217,6 +162,57 @@ public class RatesControllers {
             return "{\"message\": \"Wrong objectID\"}";
         }
 
+    }
+
+    public Rate2 createRate2(Adress adress, int rates_id, float mainRate, String formula){
+
+        //Scales
+        List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne(rates_id));
+        ArrayList<Scale> scaleArrayList = new ArrayList<Scale>();
+
+        for (Scales scalesEntity : scalesEntityList) {
+            scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue()));
+        }
+
+        //Attrs
+        String formulaView = formula;
+        Attrs attrs = new Attrs();
+        if (formulaView != null && !formulaView.isEmpty()){
+
+            String[] strings = formulaView.split(" ");
+
+            formulaView = convertFormula(formulaView);
+
+            List<AdressArguments> adressArgumentsList = adressArgumentsService.findAllByAdress(adress);
+            for (AdressArguments adressArguments: adressArgumentsList){
+
+                String nameArgument = adressArguments.getArgument().getName();
+                String viewArgument = adressArguments.getArgument().getView();
+
+                for (String t : strings){
+                    if (nameArgument.equals(t)){
+                        switch (t){
+                            case "livingArea":
+                                attrs.setLivingArea(new LivingArea(viewArgument, adressArguments.getValue()));
+                                attrs.setMainRate(new MainRate(viewArgument, mainRate));
+                                break;
+                            case "registeredPersons":
+
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        Rate2 rate2  = new Rate2();
+        rate2.setMainRate(mainRate);
+        rate2.setScale(scaleArrayList);
+        rate2.setView(formulaView);
+        rate2.setValue(formula);
+        rate2.setAttrs(attrs);
+
+        return rate2;
     }
 
     public String convertFormula(String formula){
