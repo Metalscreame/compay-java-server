@@ -11,5 +11,6 @@ public interface AdressService {
     Adress findAdressById(Integer id);
     Adress create(Adress adress);
     void deleteById(int id);
+    Adress findDefaultAdressByUsrId(int id);
 
 }
