@@ -30,6 +30,11 @@ public class CalculationsServiceImpl implements  CalculationsService{
     }
 
     @Override
+    public void delete(Calculations calculation) {
+        calculationsRepository.delete(calculation);
+    }
+
+    @Override
     @Transactional
     public List<Calculations> findAllByAdress(Adress adress) {
         return calculationsRepository.findAllByAdress(adress);

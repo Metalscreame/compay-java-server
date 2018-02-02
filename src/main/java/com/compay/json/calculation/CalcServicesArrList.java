@@ -1,10 +1,7 @@
 package com.compay.json.calculation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Map;
 
 //obj to add to arraylist in calcEntity
 public class CalcServicesArrList {
@@ -32,7 +29,7 @@ public class CalcServicesArrList {
     }
 
     @JsonCreator
-    public CalcServicesArrList(@JsonProperty("serviceID")int serviceID, @JsonProperty("lastCounter")int lastCounter, @JsonProperty("currentCounter")int currentCounter, @JsonProperty("currentSum")double currentSum) {
+    public CalcServicesArrList(@JsonProperty("serviceID") int serviceID, @JsonProperty("lastCounter") int lastCounter, @JsonProperty("currentCounter") int currentCounter, @JsonProperty("currentSum") double currentSum) {
         this.serviceID = serviceID;
         this.lastCounter = lastCounter;
         this.currentCounter = currentCounter;

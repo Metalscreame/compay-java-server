@@ -1,12 +1,10 @@
 package com.compay.controller;
 
-import com.compay.entity.User;
 import com.compay.json.AjaxResponseBody;
 import com.compay.json.SearchCriteria;
 import com.compay.json.UserJSON;
 import com.compay.json.Views;
 import com.compay.service.UserService;
-import com.compay.service.UserServiceImpl;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -15,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 public class AjaxController {
-    List<UserJSON> userJSONS =new ArrayList<>();
+    private final List<UserJSON> userJSONS = new ArrayList<>();
 
     @Autowired
     UserService svc;
@@ -36,11 +34,11 @@ public class AjaxController {
         if (isValidSearchCriteria(search)) {
             List<UserJSON> userJSONS = findByUserNameOrEmail(search.getName(), search.getEmail());
             if (userJSONS.size() > 0) {
-                result.setCode("200");
+                result.setCode(String.valueOf(HttpServletResponse.SC_OK));
                 result.setMsg("SomeMessage... HELLO FROM UKRAINE");
                 result.setResult(userJSONS);
             } else {
-                result.setCode("204");
+                result.setCode(String.valueOf(HttpServletResponse.SC_NO_CONTENT));
                 result.setMsg("No user!");
             }
 
@@ -78,7 +76,7 @@ public class AjaxController {
 //        svc.create(user);
 //        userJSONS = new ArrayList<UserJSON>();
 
-       // ObjectDataListList testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
+        // ObjectDataListList testList = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
 
         //TODO генерирует ошибку (контейнер не стартует!!), т.к. не всегда существует вервая запись
         //TODO комментировать перед заливанием в мастер.
@@ -89,13 +87,14 @@ public class AjaxController {
 //        String password = firstUserWithMail.getPassword();
 //        //--- скорее всего сюда сетаить то, что будем брать с базы , чтобы потом оно шло на json
 //        UserJSON userJSONS1 = new UserJSON(password, email, name);
-       UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
+        UserJSON userJSONS2 = new UserJSON("root", "mkyong2@yahoo.com", "root2");
         UserJSON userJSONS3 = new UserJSON("root", "mkyong3@yahoo.com", "root3");
 //
 //        userJSONS.add(userJSONS1);
-       userJSONS.add(userJSONS2);
-       userJSONS.add(userJSONS3);
+        userJSONS.add(userJSONS2);
+        userJSONS.add(userJSONS3);
     }
+
     // Simulate the search function
     private List<UserJSON> findByUserNameOrEmail(String username, String email) {
         List<UserJSON> result = new ArrayList<UserJSON>();

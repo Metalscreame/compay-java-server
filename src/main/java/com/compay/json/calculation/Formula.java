@@ -44,7 +44,8 @@ public class Formula {
         this.mainRate = mainRate;
     }
 
-    public Formula(){}
+    public Formula() {
+    }
 
     public Formula(String value, String view, double livingArea, Float mainRate) {
 

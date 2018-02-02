@@ -4,10 +4,10 @@ package com.compay.controller.ResponseControllers;
 import com.compay.entity.Adress;
 import com.compay.entity.AdressServices;
 import com.compay.exception.AuthException;
+import com.compay.global.Constants;
 import com.compay.json.requisites.Req;
 import com.compay.json.requisites.get.ReqGetBuilder;
 import com.compay.json.requisites.get.ReqService;
-import com.compay.json.requisites.get.RequisitesList;
 import com.compay.json.requisites.update.RequaritiesUpdate;
 import com.compay.service.AdressService;
 import com.compay.service.AdressServicesService;
@@ -20,8 +20,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class Requarities {
@@ -39,29 +41,39 @@ public class Requarities {
     private AdressService adressService;
 
 
-
-    @RequestMapping(value = "/requisites/update", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/requisites/update", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String reqUpdate(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
-                               @RequestBody String body,
-                               HttpServletResponse response) throws AuthException, JsonProcessingException {
-        String result="";
+    public String reqUpdate(
+            @RequestHeader(value = CONTENT_TYPE) String type,
+            @RequestHeader(value = AUTHORIZATION) String authToken,
+            @RequestBody String body,
+            HttpServletResponse response) throws AuthException, JsonProcessingException {
+        String result = "";
 
+//        try {
+
+        //auth
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
+        } catch (AuthException e) {
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Unauthorized\"}";
+        }
 
-                RequaritiesUpdate requaritiesUpdate;
-                try {
-                    requaritiesUpdate= new ObjectMapper().readValue(body,RequaritiesUpdate.class);
-                }catch (Exception e){
-                    response.setStatus(402);
-                    response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-                    return "{\"info\": \"Wrong date\"}";
-                }
 
-                ReqGetBuilder reqGetBuilder = new ReqGetBuilder();
+        RequaritiesUpdate requaritiesUpdate;
+        try {
+            requaritiesUpdate = new ObjectMapper().readValue(body, RequaritiesUpdate.class);
+        } catch (Exception e) {
+            response.setStatus(402);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Wrong date\"}";
+        }
+
+
+        ReqGetBuilder reqGetBuilder = new ReqGetBuilder();
 
 
                 /*
@@ -77,44 +89,38 @@ public class Requarities {
                  }
                  */
 
+        // всеостальное
 
+        response.setStatus(200);
+        response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
+        return "{\"info\": \"Реквизиты успешно обновлены\"}";
 
-
-
-
-            response.setStatus(200);
-            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
-            return "{\"info\": \"Реквизиты успешно обновлены\"}";
-
-        }catch (AuthException e){
-            response.setStatus(401);
-            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"message\": \"Unauthorized\"}";
-        }catch (Exception e)
-        {
-            response.setStatus(402);
-            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"info\": \"Something is wrong\"}" + e;
-        }
+//        }catch (AuthException e){
+//            response.setStatus(401);
+//            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+//            return "{\"message\": \"Unauthorized\"}";
+//        }catch (Exception e)
+//        {
+//            response.setStatus(402);
+//            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+//            return "{\"info\": \"Something is wrong\"}" + e;
+//        }
 
     }
 
-
-
-    @RequestMapping(value = "/requisites/{objectID}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/requisites/{objectID}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String reqGet(@RequestHeader(value = "Content-Type") String type,
-                            @RequestHeader(value = "Authorization") String authToken,
-                            HttpServletResponse response,
-                            @PathVariable("objectID") int id) throws AuthException, JsonProcessingException {
+    public String reqGet(
+            @RequestHeader(value = CONTENT_TYPE) String type,
+            @RequestHeader(value = AUTHORIZATION) String authToken,
+            HttpServletResponse response,
+            @PathVariable("objectId") int id) throws AuthException, JsonProcessingException {
 
-        String result ="";
+        String result = "";
 
-        try{
+        try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
-
-
 
             Adress adress = adressService.findAdressById(id);
 
@@ -122,11 +128,11 @@ public class Requarities {
 
             ReqGetBuilder builder = new ReqGetBuilder();
 
-            for(AdressServices adressService: adressServicesList){
+            for (AdressServices adressService : adressServicesList) {
 
                 Req req = new Req(adressService.getPersAcc(), adressService.getCheckAcc(), adressService.getMFO(), adressService.getEGRPO());
 
-                ReqService reqService = new ReqService((byte)adressService.getService().getId(), adressService.getService().getServiceName(), req);
+                ReqService reqService = new ReqService((byte) adressService.getService().getId(), adressService.getService().getServiceName(), req);
                 builder.addInfo(reqService);
             }
 
@@ -135,15 +141,14 @@ public class Requarities {
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
             return result;
-        }catch (AuthException e){
+        } catch (AuthException e) {
             response.setStatus(401);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"message\": \"Unauthorized\"}";
-        }catch (Exception e) {
+        } catch (Exception e) {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\": \"Something is wrong\"}" + e;
         }
-
     }
 }

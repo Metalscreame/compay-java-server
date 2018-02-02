@@ -12,7 +12,7 @@ public class CalculationEntity {
     @JsonProperty("objectID")
     private Integer objectID;
     @JsonProperty("services")
-    public ArrayList services;
+    public ArrayList<CalcServicesArrList> services;
 
     public CalculationEntity(String period, ArrayList services) {
         this.period = period;
@@ -20,7 +20,7 @@ public class CalculationEntity {
     }
 
     @JsonCreator
-    public CalculationEntity(@JsonProperty("period")String period, @JsonProperty("services")ArrayList services, @JsonProperty("objectID")Integer objectID) {
+    public CalculationEntity(@JsonProperty("period") String period, @JsonProperty("services") ArrayList<CalcServicesArrList> services, @JsonProperty("objectID") Integer objectID) {
         this.period = period;
         this.services = services;
         this.objectID = objectID;
@@ -37,12 +37,12 @@ public class CalculationEntity {
     }
 
     @JsonProperty("services")
-    public ArrayList getServices() {
+    public ArrayList<CalcServicesArrList> getServices() {
         return services;
     }
 
     @JsonProperty("services")
-    public void setServices(ArrayList services) {
+    public void setServices(ArrayList<CalcServicesArrList> services) {
         this.services = services;
     }
 

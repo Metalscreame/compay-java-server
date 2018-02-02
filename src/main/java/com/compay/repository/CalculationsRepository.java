@@ -2,6 +2,7 @@ package com.compay.repository;
 
 import com.compay.entity.Adress;
 import com.compay.entity.Calculations;
+import com.compay.entity.Services;
 import com.compay.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,8 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
     List<Calculations> findAllByAdress(Adress adressCalculations);
     List<Calculations> findAllByUser(User user);
 
+    @Query("select c from Calculations c where c.adress =:adress AND c.period = :period")
+    List<Calculations> findAllByAdressPeriod(@Param("adress")Adress adress, @Param("period")Timestamp period);
 
     @Query(value = "SELECT ADS.ADRESSID, " +
             "CASE WHEN CALC.COUNTCURRENT IS NULL THEN 0 ELSE CALC.COUNTCURRENT END AS COUNTCURRENT, " +

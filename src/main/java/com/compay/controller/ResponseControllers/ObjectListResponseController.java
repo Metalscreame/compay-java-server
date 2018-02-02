@@ -1,17 +1,17 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.*;
+import com.compay.entity.Adress;
+import com.compay.entity.User;
 import com.compay.exception.AuthException;
+import com.compay.global.Constants;
 import com.compay.json.ObjectList.ObjectListEntity;
 import com.compay.json.ObjectList.ObjectListJsonBuilder;
-import com.compay.json.ServiceListResponse.ServiceListEntity;
 import com.compay.service.AdressService;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class ObjectListResponseController {
@@ -32,10 +35,10 @@ public class ObjectListResponseController {
     @Autowired
     AdressService adressService;
 
-    @RequestMapping(value = "/objectList", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/objectList", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String contentType,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String contentType,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response) {
         try {
             String result = null;

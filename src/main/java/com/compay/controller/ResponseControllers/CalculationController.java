@@ -3,21 +3,12 @@ package com.compay.controller.ResponseControllers;
 import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
+import com.compay.global.Constants;
 import com.compay.json.calculation.*;
-import com.compay.json.calculation.electricity.MethodElectricity;
 import com.compay.json.calculation.electricity.ScaleElectr;
-import com.compay.json.calculation.flatPay.MethodFlat;
-import com.compay.json.calculation.garbage.MethodGarbage;
-import com.compay.json.calculation.gas.MethodGas;
-import com.compay.json.calculation.heat.MethodHeat;
-import com.compay.json.calculation.lift.MethodLift;
-import com.compay.json.calculation.water.MethodWater;
 import com.compay.repository.*;
 import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +19,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class CalculationController {
@@ -68,70 +62,55 @@ public class CalculationController {
     @Autowired
     private AdressArgumentsRepository adressArgumentsRepository;
 
-//    @Autowired
-//    private SessionFactory sessionFactory;
+    @Autowired
+    private ServicesService servicesService;
 
-    @RequestMapping(value = "/calculation", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @Autowired
+    private CalculationsService calculationsService;
+
+    @RequestMapping(value = "/calculation", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBodyAdd(@RequestHeader(value = "Content-Type") String type,
-                                  @RequestHeader(value = "Authorization") String authToken,
-                                  @RequestBody  CalculationEntity calculationEntity,
-                                  HttpServletResponse response){
-
-
+    public String responseBodyAdd(@RequestHeader(value = CONTENT_TYPE) String type,
+                                  @RequestHeader(value = AUTHORIZATION) String authToken,
+                                  @RequestBody CalculationEntity calculationEntity,
+                                  HttpServletResponse response) throws ParseException {
         try {
             String result = null;
-            if(tokenService.authChek(authToken)) {
+            if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
-            if(calculationEntity == null) throw new WrongDataExc();
+            if (calculationEntity == null) throw new WrongDataExc();
             User currentUser = tokenService.findByToken(authToken).getUser();
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            //Session session = sessionFactory.getCurrentSession();
+            Adress adress = adressRepository.findOne(calculationEntity.getObjectID());
 
-            //String hql = "from Calculations where ADRESSID =:ADRESSID AND SERVICEID = :SERVICEID AND PERIOD = :PERIOD";
-           // String hql = "from Calculations where ADRESSID =:ADRESSID AND SERVICEID = :SERVICEID AND PERIOD = :PERIOD";
-            //Query query = session.createQuery(hql);
-            //List<Calculations> listCalculations = query.list();
+            Timestamp timestamp = new java.sql.Timestamp(dateFormat.parse(calculationEntity.getPeriod()).getTime());
 
-            //for (Calculations calculations : listCalculations) {
-            //    System.out.println(calculations.toString());
-            //}
-            /*try {
-                Adress adress = new Adress();
-                //adress.setId(999999999);
-                adress.setType(accountObjectsJSON.getName());
-                adress.setObjectDefault(accountObjectsJSON.isObjectDefault());
-                adress.setUser(currentUser);
-                adress.setAppartmentNumber("");
-                adress.setCity("");
-                adress.setHouseNumber((short)0);
-                adress.setRegion("");
-                adress.setStreet("");
+            List<Calculations> listCalculations = calculationsRepository.findAllByAdressPeriod(adress, timestamp);
 
-                Set<AdressServices> adressServSet = new HashSet<>();
-                for (Integer serviceId : accountObjectsJSON.getServices()) {
+            for (Calculations calculations : listCalculations) {
+                calculationsRepository.delete(calculations);
+            }
 
-                    Services service = servicesService.findServicesById(serviceId);
+            for (CalcServicesArrList calcServ : calculationEntity.getServices()) {
 
-                    if(service == null) throw new WrongDataExc();
+                Services service = servicesService.findServicesById(calcServ.getServiceID());
 
-                    AdressServices adressService = new AdressServices();
-                    adressService.setAdress(adress);
-                    adressService.setService(service);
-                    adressServSet.add(adressService);
-                }
-                adress.setAdressService(adressServSet);
-                adressService.create(adress);*/
+                Calculations calculations = new Calculations();
+                calculations.setAdress(adress);
+                calculations.setCountLast(calcServ.getLastCounter());
+                calculations.setCountCurrent(calcServ.currentCounter);
+                calculations.setSum(calcServ.currentSum);
+                calculations.setPeriod(timestamp);
+                calculations.setService(service);
+                calculations.setUser(currentUser);
+                calculationsService.create(calculations);
+            }
 
-                response.setStatus(200);
-                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-                return "{\"info\": \"Данные учета успешно добавлены\"}";
-            //}catch (WrongDataExc e) {
-            //    response.setStatus(402);
-            //    response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            //    return "{\"info\": \"Wrong data\"}";
-            //}
+            response.setStatus(200);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Данные учета успешно добавлены\"}";
 
         } catch (AuthException e) {
             response.setStatus(401);
@@ -145,10 +124,10 @@ public class CalculationController {
     }
 
 
-    @RequestMapping(value = "/calculations/{objectID}/{period}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/calculations/{objectID}/{period}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response, @PathVariable("objectID") int objectID, @PathVariable("period") String period) throws JsonProcessingException, ParseException {
 
         try {
@@ -158,10 +137,9 @@ public class CalculationController {
 
             //checking for correct objectID
             Adress adress = adressService.findAdressById(objectID);
-            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail())|| adress==null) {
+            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail()) || adress == null) {
                 throw new WrongDataExc();
             }
-
 
             Timestamp periodTimestamp = new java.sql.Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse(period).getTime());
 
@@ -198,34 +176,34 @@ public class CalculationController {
                     scaleArrayList.add(new ScaleElectr(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
                 }
 
-                Method method = new Method((int) rQ[9], methods.getName(), methods.getView(), scaleArrayList, (float)rQ[8]);
+                Method method = new Method((int) rQ[9], methods.getName(), methods.getView(), scaleArrayList, (float) rQ[8]);
 
                 String formulaView = (String) rQ[7];
 
-                if(formulaView != null && !formulaView.isEmpty()){
+                if (formulaView != null && !formulaView.isEmpty()) {
                     String[] strings = formulaView.split(" ");
 
                     formulaView = convertFormula(formulaView);
 
                     List<AdressArguments> adressArgumentsList = adressArgumentsService.findAllByAdress(adress);
                     Formula formula = new Formula();
-                    for (AdressArguments adressArguments: adressArgumentsList){
+                    for (AdressArguments adressArguments : adressArgumentsList) {
 
                         String nameArgument = adressArguments.getArgument().getName();
                         String viewArgument = adressArguments.getArgument().getView();
 
-                        for (String t : strings){
-                            if (nameArgument.equals(t)){
-                                switch (t){
+                        for (String t : strings) {
+                            if (nameArgument.equals(t)) {
+                                switch (t) {
                                     case "livingArea":
                                         formula.setLivingArea(adressArguments.getValue());
-                                        formula.setMainRate((float)rQ[8]);
+                                        formula.setMainRate((float) rQ[8]);
                                         formula.setValue((String) rQ[7]);
                                         formula.setView(formulaView);
                                         break;
                                     case "registeredPersons":
 
-                                    break;
+                                        break;
                                 }
                             }
                         }
@@ -252,11 +230,11 @@ public class CalculationController {
 
     }
 
-    public String convertFormula(String formula){
+    public String convertFormula(String formula) {
 
         List<Arguments> argumentsList = argumentsService.findAll();
 
-        for (Arguments arguments: argumentsList){
+        for (Arguments arguments : argumentsList) {
             formula = formula.replaceAll(arguments.getName(), "[" + arguments.getView() + "]");
         }
         return formula;

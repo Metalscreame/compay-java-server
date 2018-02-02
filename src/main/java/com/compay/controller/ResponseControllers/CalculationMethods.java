@@ -1,14 +1,21 @@
 package com.compay.controller.ResponseControllers;
 
 import com.compay.exception.AuthException;
+import com.compay.global.Constants;
 import com.compay.service.TokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class CalculationMethods {
@@ -17,10 +24,10 @@ public class CalculationMethods {
     TokenService tokenService;
 
 
-    @RequestMapping(value = "/calculationMethods", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/calculationMethods", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response) throws JsonProcessingException, ParseException {
         try {
             if (tokenService.authChek(authToken)) {
@@ -39,10 +46,10 @@ public class CalculationMethods {
         }
     }
 
-    @RequestMapping(value = "/fixFormulas", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/fixFormulas", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody2(@RequestHeader(value = "Content-Type") String type,
-                                @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody2(@RequestHeader(value = CONTENT_TYPE) String type,
+                                @RequestHeader(value = AUTHORIZATION) String authToken,
                                 HttpServletResponse response) throws JsonProcessingException, ParseException {
         try {
             if (tokenService.authChek(authToken)) {

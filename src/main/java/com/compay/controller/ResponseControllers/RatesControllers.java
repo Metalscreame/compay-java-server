@@ -1,12 +1,32 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.*;
+import com.compay.entity.Adress;
+import com.compay.entity.AdressArguments;
+import com.compay.entity.Methods;
+import com.compay.entity.Scales;
+import com.compay.entity.Arguments;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
-import com.compay.json.RateList.*;
+
+import com.compay.json.RateList.Method2;
+import com.compay.json.RateList.Rate2;
+import com.compay.json.RateList.RateListEntity;
+import com.compay.json.RateList.RatesBuilder;
+import com.compay.json.RateList.History;
+import com.compay.json.RateList.Rate;
+import com.compay.json.RateList.Attrs;
+import com.compay.json.RateList.Scale;
+import com.compay.json.RateList.LivingArea;
+import com.compay.json.RateList.MainRate;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
-import com.compay.service.*;
+
+import com.compay.service.AdressService;
+import com.compay.service.MethodsService;
+import com.compay.service.TokenService;
+import com.compay.service.UserService;
+import com.compay.service.AdressArgumentsService;
+import com.compay.service.ArgumentsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hibernate.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -63,7 +81,7 @@ public class RatesControllers {
 
             //checking for correct objectID
             Adress adress = adressService.findAdressById(objectID);
-            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail())|| adress==null) {
+            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail()) || adress == null) {
                 throw new WrongDataExc();
             }
 
@@ -163,7 +181,7 @@ public class RatesControllers {
 
     }
 
-    public Rate2 createRate2(Adress adress, int rates_id, float mainRate, String formula){
+    public Rate2 createRate2(Adress adress, int rates_id, float mainRate, String formula) {
 
         //Scales
         List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne(rates_id));
@@ -176,21 +194,21 @@ public class RatesControllers {
         //Attrs
         String formulaView = formula;
         Attrs attrs = new Attrs();
-        if (formulaView != null && !formulaView.isEmpty()){
+        if (formulaView != null && !formulaView.isEmpty()) {
 
             String[] strings = formulaView.split(" ");
 
             formulaView = convertFormula(formulaView);
 
             List<AdressArguments> adressArgumentsList = adressArgumentsService.findAllByAdress(adress);
-            for (AdressArguments adressArguments: adressArgumentsList){
+            for (AdressArguments adressArguments : adressArgumentsList) {
 
                 String nameArgument = adressArguments.getArgument().getName();
                 String viewArgument = adressArguments.getArgument().getView();
 
-                for (String t : strings){
-                    if (nameArgument.equals(t)){
-                        switch (t){
+                for (String t : strings) {
+                    if (nameArgument.equals(t)) {
+                        switch (t) {
                             case "livingArea":
                                 attrs.setLivingArea(new LivingArea(viewArgument, adressArguments.getValue()));
                                 attrs.setMainRate(new MainRate(viewArgument, mainRate));
@@ -204,7 +222,7 @@ public class RatesControllers {
             }
         }
 
-        Rate2 rate2  = new Rate2();
+        Rate2 rate2 = new Rate2();
         rate2.setMainRate(mainRate);
         rate2.setScale(scaleArrayList);
         rate2.setView(formulaView);
@@ -214,11 +232,11 @@ public class RatesControllers {
         return rate2;
     }
 
-    public String convertFormula(String formula){
+    public String convertFormula(String formula) {
 
         List<Arguments> argumentsList = argumentsService.findAll();
 
-        for (Arguments arguments: argumentsList){
+        for (Arguments arguments : argumentsList) {
             formula = formula.replaceAll(arguments.getName(), "[" + arguments.getView() + "]");
         }
         return formula;
