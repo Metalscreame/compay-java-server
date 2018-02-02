@@ -15,6 +15,9 @@ import com.compay.json.calculation.water.MethodWater;
 import com.compay.repository.*;
 import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +67,82 @@ public class CalculationController {
 
     @Autowired
     private AdressArgumentsRepository adressArgumentsRepository;
+
+//    @Autowired
+//    private SessionFactory sessionFactory;
+
+    @RequestMapping(value = "/calculation", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String responseBodyAdd(@RequestHeader(value = "Content-Type") String type,
+                                  @RequestHeader(value = "Authorization") String authToken,
+                                  @RequestBody  CalculationEntity calculationEntity,
+                                  HttpServletResponse response){
+
+
+        try {
+            String result = null;
+            if(tokenService.authChek(authToken)) {
+            } else throw new AuthException();
+            if(calculationEntity == null) throw new WrongDataExc();
+            User currentUser = tokenService.findByToken(authToken).getUser();
+
+
+            //Session session = sessionFactory.getCurrentSession();
+
+            //String hql = "from Calculations where ADRESSID =:ADRESSID AND SERVICEID = :SERVICEID AND PERIOD = :PERIOD";
+           // String hql = "from Calculations where ADRESSID =:ADRESSID AND SERVICEID = :SERVICEID AND PERIOD = :PERIOD";
+            //Query query = session.createQuery(hql);
+            //List<Calculations> listCalculations = query.list();
+
+            //for (Calculations calculations : listCalculations) {
+            //    System.out.println(calculations.toString());
+            //}
+            /*try {
+                Adress adress = new Adress();
+                //adress.setId(999999999);
+                adress.setType(accountObjectsJSON.getName());
+                adress.setObjectDefault(accountObjectsJSON.isObjectDefault());
+                adress.setUser(currentUser);
+                adress.setAppartmentNumber("");
+                adress.setCity("");
+                adress.setHouseNumber((short)0);
+                adress.setRegion("");
+                adress.setStreet("");
+
+                Set<AdressServices> adressServSet = new HashSet<>();
+                for (Integer serviceId : accountObjectsJSON.getServices()) {
+
+                    Services service = servicesService.findServicesById(serviceId);
+
+                    if(service == null) throw new WrongDataExc();
+
+                    AdressServices adressService = new AdressServices();
+                    adressService.setAdress(adress);
+                    adressService.setService(service);
+                    adressServSet.add(adressService);
+                }
+                adress.setAdressService(adressServSet);
+                adressService.create(adress);*/
+
+                response.setStatus(200);
+                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+                return "{\"info\": \"Данные учета успешно добавлены\"}";
+            //}catch (WrongDataExc e) {
+            //    response.setStatus(402);
+            //    response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            //    return "{\"info\": \"Wrong data\"}";
+            //}
+
+        } catch (AuthException e) {
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Unauthorized\"}";
+        } catch (WrongDataExc e) {
+            response.setStatus(402);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Wrong data\"}";
+        }
+    }
 
 
     @RequestMapping(value = "/calculations/{objectID}/{period}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
