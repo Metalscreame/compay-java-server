@@ -12,7 +12,8 @@ public class ReqGetBuilder  implements JsonBuilder{
     @Override
     public void addInfo(Object o) {
         ReqService req = (ReqService) o;
-        requisitesList.getRequisites().add(req);
+        //requisitesList.getRequisites().add(req);
+        requisitesList.addReqService(req);
     }
 
     @Override

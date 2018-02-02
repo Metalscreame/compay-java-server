@@ -1,24 +1,26 @@
 package com.compay.controller.ResponseControllers;
 
 
+import com.compay.entity.Adress;
+import com.compay.entity.AdressServices;
 import com.compay.exception.AuthException;
 import com.compay.global.Constants;
+import com.compay.json.requisites.Req;
 import com.compay.json.requisites.get.ReqGetBuilder;
+import com.compay.json.requisites.get.ReqService;
 import com.compay.json.requisites.update.RequaritiesUpdate;
+import com.compay.service.AdressService;
+import com.compay.service.AdressServicesService;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -31,6 +33,12 @@ public class Requarities {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AdressServicesService adressServicesService;
+
+    @Autowired
+    private AdressService adressService;
 
 
     @RequestMapping(value = "/requisites/update", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
@@ -114,6 +122,22 @@ public class Requarities {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
 
+            Adress adress = adressService.findAdressById(id);
+
+            List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
+
+            ReqGetBuilder builder = new ReqGetBuilder();
+
+            for (AdressServices adressService : adressServicesList) {
+
+                Req req = new Req(adressService.getPersAcc(), adressService.getCheckAcc(), adressService.getMFO(), adressService.getEGRPO());
+
+                ReqService reqService = new ReqService((byte) adressService.getService().getId(), adressService.getService().getServiceName(), req);
+                builder.addInfo(reqService);
+            }
+
+            result = builder.createJson();
+
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
             return result;
@@ -126,6 +150,5 @@ public class Requarities {
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\": \"Something is wrong\"}" + e;
         }
-
     }
 }

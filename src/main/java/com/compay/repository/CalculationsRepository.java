@@ -2,6 +2,7 @@ package com.compay.repository;
 
 import com.compay.entity.Adress;
 import com.compay.entity.Calculations;
+import com.compay.entity.Services;
 import com.compay.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,8 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
     List<Calculations> findAllByAdress(Adress adressCalculations);
     List<Calculations> findAllByUser(User user);
 
+    @Query("select c from Calculations c where c.adress =:adress AND c.period = :period")
+    List<Calculations> findAllByAdressPeriod(@Param("adress")Adress adress, @Param("period")Timestamp period);
 
     @Query(value = "SELECT ADS.ADRESSID, " +
             "CASE WHEN CALC.COUNTCURRENT IS NULL THEN 0 ELSE CALC.COUNTCURRENT END AS COUNTCURRENT, " +
@@ -27,9 +30,9 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
             "ADS.SERVICEID, " +
             "CASE WHEN CALC.USER_ID IS NULL THEN :user_id ELSE CALC.USER_ID END AS USER_ID, " +
             "CASE WHEN R.FORMULA IS NULL THEN '' ELSE R.FORMULA END AS FORMULA, " +
-            "R.MAINRATE, R.METHODID, M.NAME, M.VIEW, R.USERSCALE, R.Id AS RATES_ID " +
+            "CAST(R.MAINRATE AS FLOAT) AS MAINRATE, R.METHODID, M.NAME, M.VIEW, R.USERSCALE, R.Id AS RATES_ID " +
             "            FROM ADRESSSERVICES AS ADS " +
-            "            LEFT JOIN (SELECT id, FORMULA, MAINRATE, MAX(PERIOD_FROM) AS PERIOD_FROM, PERIOD_TILL, USERSCALE, ADRESSSERVICE_ID, METHODID " +
+            "            LEFT JOIN (SELECT id, FORMULA, CAST(MAINRATE AS FLOAT) AS MAINRATE, MAX(PERIOD_FROM) AS PERIOD_FROM, PERIOD_TILL, USERSCALE, ADRESSSERVICE_ID, METHODID " +
             "                       FROM RATES " +
             "                       WHERE PERIOD_FROM <=:period AND CASE WHEN PERIOD_TILL ISNULL THEN 999504213200000 ELSE PERIOD_TILL END >=:period " +
             "                       GROUP BY ADRESSSERVICE_ID) AS R ON ADS.id = R.ADRESSSERVICE_ID " +

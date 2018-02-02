@@ -18,6 +18,18 @@ public class AdressServices {
     @Column(name="NOTACTIVE")
     private boolean notActive;
 
+    @Column(name="PERSACC")
+    private int persAcc;
+
+    @Column(name="CHECKACC")
+    private long checkAcc;
+
+    @Column(name="MFO")
+    private int MFO;
+
+    @Column(name="EGRPO")
+    private int EGRPO;
+
     public int getId() {
         return id;
     }
@@ -57,12 +69,48 @@ public class AdressServices {
     @OneToMany(cascade = CascadeType.ALL, mappedBy="adressServices")
     private Set<Rates> rate;
 
+    public int getPersAcc() {
+        return persAcc;
+    }
+
+    public void setPersAcc(int persAcc) {
+        this.persAcc = persAcc;
+    }
+
+    public long getCheckAcc() {
+        return checkAcc;
+    }
+
+    public void setCheckAcc(long checkAcc) {
+        this.checkAcc = checkAcc;
+    }
+
+    public int getMFO() {
+        return MFO;
+    }
+
+    public void setMFO(int MFO) {
+        this.MFO = MFO;
+    }
+
+    public int getEGRPO() {
+        return EGRPO;
+    }
+
+    public void setEGRPO(int EGRPO) {
+        this.EGRPO = EGRPO;
+    }
+
     @Override
     public String toString() {
         return "AdressServices{" +
                 "id=" + id +
                 ", adress=" + adress +
                 ", service=" + service +
+                ", persAcc=" + persAcc +
+                ", checkAcc=" + checkAcc +
+                ", MFO=" + MFO +
+                ", EGRPO=" + EGRPO +
                 '}';
     }
 }
