@@ -45,7 +45,6 @@ public class Requarities {
                 return "{\"message\": \"Unauthorized\"}";
             }
 
-
             RequaritiesUpdate requaritiesUpdate;
             try {
                  requaritiesUpdate= new ObjectMapper().readValue(body,RequaritiesUpdate.class);
@@ -53,13 +52,9 @@ public class Requarities {
                     response.setStatus(402);
                     response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
                     return "{\"info\": \"Wrong date\"}";
-<<<<<<< HEAD
             }
-=======
-                }
 
                 ReqGetBuilder reqGetBuilder = new ReqGetBuilder();
-
 
                 /*
                 body: {
@@ -73,9 +68,8 @@ public class Requarities {
                     }
                  }
                  */
->>>>>>> 8fb6e18f027a488dba5eafd9d96acccf3990f7b0
-
             // всеостальное
+
 
 
 
@@ -85,15 +79,11 @@ public class Requarities {
             response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
             return "{\"info\": \"Реквизиты успешно обновлены\"}";
 
-        }catch (AuthException e){
-            response.setStatus(401);
-            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"message\": \"Unauthorized\"}";
         }catch (Exception e)
         {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"info\": \"Something is wrong\"}" + e;
+            return "{\"info\": \" "+ e +" \"}" ;
         }
 
     }
@@ -110,8 +100,16 @@ public class Requarities {
         String result ="";
 
         try{
-            if (tokenService.authChek(authToken)) {
-            } else throw new AuthException();
+
+            try {
+                if (tokenService.authChek(authToken)) {
+                } else throw new AuthException();
+            }
+            catch (AuthException e){
+                response.setStatus(401);
+                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+                return "{\"message\": \"Unauthorized\"}";
+            }
 
 
 
@@ -124,10 +122,6 @@ public class Requarities {
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
             return result;
-        }catch (AuthException e){
-            response.setStatus(401);
-            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"message\": \"Unauthorized\"}";
         }catch (Exception e) {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
