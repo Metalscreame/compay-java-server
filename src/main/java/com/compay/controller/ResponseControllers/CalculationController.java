@@ -16,7 +16,7 @@ import com.compay.json.calculation.CalcServicesArrList;
 import com.compay.json.calculation.CalculationBuilder;
 import com.compay.json.calculation.CalculationEntity;
 import com.compay.json.calculation.Method;
-import com.compay.json.calculation.electricity.ScaleElectr;
+import com.compay.json.calculation.ScaleElectr;
 import com.compay.json.calculation.Formula;
 import com.compay.repository.AdressArgumentsRepository;
 import com.compay.repository.AdressRepository;
