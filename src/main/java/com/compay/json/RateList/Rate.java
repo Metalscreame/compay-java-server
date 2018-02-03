@@ -28,15 +28,15 @@ public class Rate
 
     public void setMethod(Method2 method) { this.method = method; }
 
-    private Rate2 rate;
+    private Object rate;
 
-    public Rate2 getRate() { return this.rate; }
+    public Object getRate() { return this.rate; }
 
-    public void setRate(Rate2 rate) { this.rate = rate; }
+    public void setRate(Object rate) { this.rate = rate; }
 
     private ArrayList<History> history;
 
-    public Rate(int serviceID, String serviceName, String startDate, Method2 method, Rate2 rate, ArrayList<History> history) {
+    public Rate(int serviceID, String serviceName, String startDate, Method2 method, Object rate, ArrayList<History> history) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.startDate = startDate;
@@ -46,7 +46,7 @@ public class Rate
     }
 
 
-    public Rate(int serviceID, String serviceName, String startDate, Method2 method, Rate2 rate) {
+    public Rate(int serviceID, String serviceName, String startDate, Method2 method, Object rate) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.startDate = startDate;

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class ArgumentsServiceImpl implements  ArgumentsService{
@@ -19,6 +20,11 @@ public class ArgumentsServiceImpl implements  ArgumentsService{
     @Transactional
     public Arguments findArgumentById(Integer id) {
         return argumentsRepository.findOne(id);
+    }
+
+    @Override
+    public List<Arguments> findAll() {
+        return argumentsRepository.findAll();
     }
 
     @Override

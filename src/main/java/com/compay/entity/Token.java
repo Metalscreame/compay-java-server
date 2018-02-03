@@ -5,6 +5,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Table(name = "TOKENS")
@@ -69,6 +70,9 @@ public class Token {
     public void setTokenCreateDate() {
         this.tokenCreateDate = new Timestamp(System.currentTimeMillis());
     }
+
+
+
 
     @Override
     public String toString() {

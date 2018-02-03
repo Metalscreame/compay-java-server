@@ -1,22 +1,36 @@
 package com.compay.json.calculation;
 
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 //obj to add to arraylist in calcEntity
 public class CalcServicesArrList {
+
+    @JsonProperty("serviceID")
     public int serviceID;
     public String serviceName;
-    public Object method;
+    public Method method;
     //different methods
 
+    @JsonProperty("lastCounter")
     public int lastCounter;
+    @JsonProperty("currentCounter")
     public int currentCounter;
+    @JsonProperty("currentSum")
     public double currentSum;
 
-    public CalcServicesArrList(int serviceID, String serviceName, Object method, int lastCounter, int currentCounter, double currentSum) {
+    public CalcServicesArrList(int serviceID, String serviceName, Method method, int lastCounter, int currentCounter, double currentSum) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.method = method;
+        this.lastCounter = lastCounter;
+        this.currentCounter = currentCounter;
+        this.currentSum = currentSum;
+    }
+
+    @JsonCreator
+    public CalcServicesArrList(@JsonProperty("serviceID") int serviceID, @JsonProperty("lastCounter") int lastCounter, @JsonProperty("currentCounter") int currentCounter, @JsonProperty("currentSum") double currentSum) {
+        this.serviceID = serviceID;
         this.lastCounter = lastCounter;
         this.currentCounter = currentCounter;
         this.currentSum = currentSum;
@@ -38,11 +52,11 @@ public class CalcServicesArrList {
         this.serviceName = serviceName;
     }
 
-    public Object getMethod() {
+    public Method getMethod() {
         return method;
     }
 
-    public void setMethod(Object method) {
+    public void setMethod(Method method) {
         this.method = method;
     }
 

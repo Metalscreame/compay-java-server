@@ -427,29 +427,32 @@ public class TestController {
         ///////////////////////////////////////////////AdressServices
         AdressServices adressService1 = new AdressServices();
         adressService1.setId(1);
-        //adressService.setAdressID(1);
-        //adressService.setServiceID(1);
         adressService1.setAdress(adressId1);
         adressService1.setService(service1);
-
+        adressService1.setPersAcc(123456);
+        adressService1.setCheckAcc(260065789876890L);
+        adressService1.setMFO(309802);
+        adressService1.setEGRPO(12324232);
         adressServicesService.create(adressService1);
 
         AdressServices adressService2 = new AdressServices();
         adressService2.setId(2);
-        //adressService.setAdressID(1);
-        //adressService.setServiceID(2);
         adressService2.setAdress(adressId1);
         adressService2.setService(service2);
-
+        adressService2.setPersAcc(123456);
+        adressService2.setCheckAcc(260065789876890L);
+        adressService2.setMFO(309802);
+        adressService2.setEGRPO(12324232);
         adressServicesService.create(adressService2);
 
         AdressServices adressService3 = new AdressServices();
         adressService3.setId(3);
-        //adressService.setAdressID(1);
-        //adressService.setServiceID(5);
         adressService3.setAdress(adressId1);
         adressService3.setService(service5);
-
+        adressService3.setPersAcc(123456);
+        adressService3.setCheckAcc(260065789876890L);
+        adressService3.setMFO(309802);
+        adressService3.setEGRPO(12324232);
         adressServicesService.create(adressService3);
 
         message += " AdressServices;";
@@ -461,7 +464,7 @@ public class TestController {
         //rateId1.setPeriodTill();
         //rateId1.setMethodID(4);
         rateId1.setMethod(methodId4);
-        rateId1.setMainRate(0.0);
+        rateId1.setMainRate(0.0d);
         rateId1.setAdressService(adressService1);
         rateId1.setUserScale(true);
         ratesService.create(rateId1);
@@ -470,7 +473,6 @@ public class TestController {
         rateId2.setId(2);
         rateId2.setPeriodFrom(new java.sql.Timestamp(dateFormat.parse("2017-01-01").getTime()));//2017-01-01
         //rates.setPeriodTill();
-        //rateId2.setMethodID(3);
         rateId2.setMethod(methodId3);
         rateId2.setMainRate(8.50);
         rateId2.setAdressService(adressService2);
@@ -487,6 +489,25 @@ public class TestController {
         rateId3.setUserScale(false);
         rateId3.setFormula("mainRate * livingArea");
         ratesService.create(rateId3);
+
+        Rates rateId4 = new Rates();
+        rateId4.setId(4);
+        rateId4.setPeriodFrom(new java.sql.Timestamp(dateFormat.parse("2016-11-01").getTime()));
+        rateId4.setMethod(methodId4);
+        rateId4.setMainRate(0.0d);
+        rateId4.setAdressService(adressService1);
+        rateId4.setUserScale(true);
+        ratesService.create(rateId4);
+
+        Rates rateId5 = new Rates();
+        rateId5.setId(5);
+        rateId5.setPeriodFrom(new java.sql.Timestamp(dateFormat.parse("2016-11-01").getTime()));//2016-11-01
+        //rates.setPeriodTill();
+        rateId5.setMethod(methodId3);
+        rateId5.setMainRate(6.90);
+        rateId5.setAdressService(adressService2);
+        rateId5.setUserScale(false);
+        ratesService.create(rateId5);
 
         message += " Rates;";
 
@@ -513,6 +534,27 @@ public class TestController {
         scale.setMaxValue(0);
         scale.setMinValue(601);
         scale.setRate(rateId1);
+        scalesService.create(scale);
+
+        scale.setId(4);
+        scale.setMainRate(0.95);//0.95
+        scale.setMaxValue(100);
+        scale.setMinValue(0);
+        scale.setRate(rateId4);
+        scalesService.create(scale);
+
+        scale.setId(5);
+        scale.setMainRate(1.20);//1.20
+        scale.setMaxValue(600);
+        scale.setMinValue(101);
+        scale.setRate(rateId4);
+        scalesService.create(scale);
+
+        scale.setId(6);
+        scale.setMainRate(1.88);//1.88
+        scale.setMaxValue(0);
+        scale.setMinValue(601);
+        scale.setRate(rateId4);
         scalesService.create(scale);
 
         message += " Scales;";

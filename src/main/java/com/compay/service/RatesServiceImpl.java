@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 
 @Service
 public class RatesServiceImpl implements  RatesService{
@@ -23,5 +24,10 @@ public class RatesServiceImpl implements  RatesService{
     @Transactional
     public Rates create(Rates rate) {
         return ratesRepository.save(rate);
+    }
+
+    @Override
+    public Rates findByAddIdAndStartDateAndMethod(int adressId, Timestamp startDate, int methodId) {
+        return ratesRepository.findByAddIdAndStartDateAndMethod(adressId,startDate,methodId);
     }
 }
