@@ -5,6 +5,7 @@ import com.compay.entity.AdressServices;
 import com.compay.entity.Services;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
+import com.compay.global.Constants;
 import com.compay.json.ServiceListResponse.ServiceListEntity;
 import com.compay.json.ServiceListResponse.ServiceListJsonBuilder;
 import com.compay.service.AdressService;
@@ -13,12 +14,19 @@ import com.compay.service.ServicesService;
 import com.compay.service.TokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+
 
 /*
 Example
@@ -66,10 +74,10 @@ public class ServiceListResponseController {
     @Autowired
     private TokenService tokenService;
 
-    @RequestMapping(value = "/serviceList/{objectId}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/serviceList/{objectId}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String contentType,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String contentType,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response, @PathVariable("objectId") String id) {
         /*
         Это ID из другой таблицы: Address. По нему определяется объект учета (домохозяйство).
@@ -85,7 +93,7 @@ public class ServiceListResponseController {
 
             serviceListJsonBuilder.addInfo(new ServiceListEntity("Все услуги", "all"));
             Adress adress = adressService.findAdressById(Integer.valueOf(id));
-            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail())|| adress==null) {
+            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail()) || adress == null) {
                 throw new WrongDataExc();
             }
 
@@ -119,15 +127,15 @@ public class ServiceListResponseController {
     }
 
     // if objectID == null
-    @RequestMapping(value = "/serviceList", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/serviceList", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBody(
-            @RequestHeader(value = "Content-Type") String contentType,
-            @RequestHeader(value = "Authorization") String authToken,
+            @RequestHeader(value = CONTENT_TYPE) String contentType,
+            @RequestHeader(value = AUTHORIZATION) String authToken,
             HttpServletResponse response) {
         try {
-            if (tokenService.authChek(authToken)) {}
-            else throw new AuthException();
+            if (tokenService.authChek(authToken)) {
+            } else throw new AuthException();
 
             String result = null;
 

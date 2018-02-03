@@ -3,6 +3,7 @@ package com.compay.controller.securityContollers;
 import com.compay.entity.Adress;
 import com.compay.entity.Token;
 import com.compay.entity.User;
+import com.compay.global.Constants;
 import com.compay.json.Login.LoginResponseBuilder;
 import com.compay.json.Login.LoginResponseEntity;
 import com.compay.json.ObjectList.ObjectListEntity;
@@ -14,15 +15,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.compay.global.Constants.ADMIN;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 
@@ -37,8 +43,8 @@ public class LoginController {
     private AdressService adressService;
 
     @ResponseBody
-    @RequestMapping(value = "/auth/login", method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
-    public String loginPage(@RequestHeader(value = "Content-Type") String contentType,
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
+    public String loginPage(@RequestHeader(value = CONTENT_TYPE) String contentType,
                             @RequestBody String body,
                             HttpServletResponse response) throws IOException {
         boolean isUser, isAdmin;
@@ -59,8 +65,8 @@ public class LoginController {
                 throw new Exception();
             }
 
-           //check if admin
-            if (user.getRole().equals("admin")) {
+            //check if admin
+            if (user.getRole().equals(ADMIN)) {
                 isAdmin = true;
                 isUser = false;
             } else {
@@ -69,17 +75,17 @@ public class LoginController {
             }
 
             String usrPassHash = DigestUtils.sha1Hex(user.getEmail() + user.getPassword());
-            try{
+            try {
                 //will throw an exception if not found
-                Token currentUsrToken=tokenService.findByUsrPssHash(usrPassHash);//eqls to findbyid
-                if (currentUsrToken.getUser().getRole().equals("admin")){
+                Token currentUsrToken = tokenService.findByUsrPssHash(usrPassHash);//eqls to findbyid
+                if (currentUsrToken.getUser().getRole().equals(ADMIN)) {
                     newToken.setId(Integer.MAX_VALUE);
                     newToken.setUser(user);
                     newToken.setTokenCreateDate();
-                    newToken.setUserPlusPassHash(user.getEmail()+user.getPassword());
+                    newToken.setUserPlusPassHash(user.getEmail() + user.getPassword());
                     newToken.setToken();
                     tokenService.create(newToken);
-                }else {
+                } else {
                     //if users token was in da base -> delets old and creates new
                     tokenService.delete(currentUsrToken.getToken());
                     newToken.setId(Integer.MAX_VALUE);
@@ -90,7 +96,7 @@ public class LoginController {
                     tokenService.create(newToken);
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 //first time Login
                 newToken.setId(Integer.MAX_VALUE);
                 newToken.setUser(user);
@@ -104,19 +110,19 @@ public class LoginController {
             ObjectListEntity objectDefault = new ObjectListEntity();
             List<Adress> adresses = adressService.findAllByUser(user);
             List<Adress> adressesObjDefault = adresses;
-            adressesObjDefault = adresses.stream().filter(d->d.getObjectDefault()==true).collect(Collectors.toList());
+            adressesObjDefault = adresses.stream().filter(d -> d.getObjectDefault() == true).collect(Collectors.toList());
 
 
-            if(adressesObjDefault.size() > 0) {
+            if (adressesObjDefault.size() > 0) {
                 objectDefault = new ObjectListEntity(adressesObjDefault.get(0).getId(),
-                                                    adressesObjDefault.get(0).getType() + ", " + adressesObjDefault.get(0).getStreet() + " " + adressesObjDefault.get(0).getHouseNumber(),
-                                                            adressesObjDefault.get(0).getObjectDefault());
-                builder.addInfo(new LoginResponseEntity(newToken.getToken(),  isAdmin,isUser, objectDefault));
-            }else if(adresses.size() > 0) {
+                        adressesObjDefault.get(0).getType() + ", " + adressesObjDefault.get(0).getStreet() + " " + adressesObjDefault.get(0).getHouseNumber(),
+                        adressesObjDefault.get(0).getObjectDefault());
+                builder.addInfo(new LoginResponseEntity(newToken.getToken(), isAdmin, isUser, objectDefault));
+            } else if (adresses.size() > 0) {
                 objectDefault = new ObjectListEntity(adresses.get(0).getId(), adresses.get(0).getType(), adresses.get(0).getObjectDefault());
-                builder.addInfo(new LoginResponseEntity(newToken.getToken(),  isAdmin,isUser, objectDefault));
-            }else {
-                builder.addInfo(new LoginResponseEntity(newToken.getToken(),  isAdmin,isUser, new ArrayList()));
+                builder.addInfo(new LoginResponseEntity(newToken.getToken(), isAdmin, isUser, objectDefault));
+            } else {
+                builder.addInfo(new LoginResponseEntity(newToken.getToken(), isAdmin, isUser, new ArrayList()));
             }
 
 

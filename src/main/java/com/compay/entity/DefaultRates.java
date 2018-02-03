@@ -92,7 +92,6 @@ public class DefaultRates {
                 ", service=" + defaultServices +
                 ", method=" + defaultMethod +
                 ", mainRate=" + mainRate +
-                ", defaultScales=" + defaultScales +
                 ", userScale=" + userScale +
                 ", formula='" + formula + '\'' +
                 '}';

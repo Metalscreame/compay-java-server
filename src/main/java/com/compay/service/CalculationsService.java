@@ -10,6 +10,8 @@ import java.util.List;
 public interface CalculationsService {
     Calculations findCalculationsById(Integer id);
     Calculations create(Calculations calculation);
+    void delete(Calculations calculation);
+
     List<Calculations> findAllByAdress(Adress adress);
     List<Calculations> findAllByUser(User user);
 }

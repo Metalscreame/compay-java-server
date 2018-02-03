@@ -1,13 +1,11 @@
 package com.compay.service;
 
 import com.compay.entity.Token;
-import com.compay.entity.User;
 import com.compay.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.List;
+import static com.compay.global.Constants.ADMIN;
 
 @Service
 public class TokenServiceImpl implements TokenService {
@@ -37,15 +35,15 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public boolean authChek(String authTokenToCheck) {
-        Token tokenObj= tokenRepository.findByToken(authTokenToCheck);
-        if (tokenObj==null) return false;
+        Token tokenObj = tokenRepository.findByToken(authTokenToCheck);
+        if (tokenObj == null) return false;
         else {
-            if (tokenObj.getUser().getRole().equals("admin")) return true;
+            if (tokenObj.getUser().getRole().equals(ADMIN)) return true;
             else {
                 //expired check, 8.64 == 24 hrs
-                if ((System.currentTimeMillis() - tokenObj.getTokenCreateDate().getTime())>= 8.64e7){
+                if ((System.currentTimeMillis() - tokenObj.getTokenCreateDate().getTime()) >= 8.64e7) {
                     return false;
-                }else return true;
+                } else return true;
             }
         }
 

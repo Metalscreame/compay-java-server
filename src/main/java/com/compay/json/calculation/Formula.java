@@ -1,10 +1,16 @@
-package com.compay.json.calculation.heat;
+package com.compay.json.calculation;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Formula {
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String value;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String view;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public double livingArea;
-    public double mainRate;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Float mainRate;
 
     public String getValue() {
         return value;
@@ -30,15 +36,18 @@ public class Formula {
         this.livingArea = livingArea;
     }
 
-    public double getMainRate() {
+    public Float getMainRate() {
         return mainRate;
     }
 
-    public void setMainRate(double mainRate) {
+    public void setMainRate(Float mainRate) {
         this.mainRate = mainRate;
     }
 
-    public Formula(String value, String view, double livingArea, double mainRate) {
+    public Formula() {
+    }
+
+    public Formula(String value, String view, double livingArea, Float mainRate) {
 
         this.value = value;
         this.view = view;

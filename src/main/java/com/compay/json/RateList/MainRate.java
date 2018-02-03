@@ -8,13 +8,13 @@ public class MainRate
 
     public void setView(String view) { this.view = view; }
 
-    private int value;
+    private Float value;
 
-    public int getValue() { return this.value; }
+    public Float getValue() { return this.value; }
 
-    public void setValue(int value) { this.value = value; }
+    public void setValue(Float value) { this.value = value; }
 
-    public MainRate(String view, int value) {
+    public MainRate(String view, Float value) {
         this.view = view;
         this.value = value;
     }
