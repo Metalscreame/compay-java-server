@@ -33,4 +33,8 @@ public interface RatesRepository extends JpaRepository<Rates, Integer> {
             "                 WHERE ADRESSSERVICE_ID = :ADRESSSERVICE_ID AND PERIOD_FROM <:period " +
             "                 ORDER BY PERIOD_FROM ", nativeQuery = true)
     List<Object[]> findAllHistoryByAdressServices(@Param("ADRESSSERVICE_ID") Integer adressService_id, @Param("period") long period);
+
+    @Query("SELECT r from Rates r where r.adressServices.id=:aId and r.periodFrom=:sDate and r.method.id=:methodId")
+    Rates findByAddIdAndStartDateAndMethod(@Param("aId") int adressId, @Param("sDate") Timestamp startDate,@Param("methodId") int methodId);
+
 }

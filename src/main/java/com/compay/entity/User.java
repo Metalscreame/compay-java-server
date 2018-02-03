@@ -89,6 +89,11 @@ public class User {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
     private Set<Adress> adress;
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+    private Set<Token> tokens;
+
+
     @Override
     public String toString() {
         return "User{" +
