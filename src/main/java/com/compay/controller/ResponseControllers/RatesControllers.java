@@ -305,10 +305,10 @@ public class RatesControllers {
 
         try {
             ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
-            ArrayList<Scales> scalesToupd = scalesService.findAllByRate(rateToUpdt);
+            ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
 
             int i=0;
-            for (Scales s:scalesToupd) {
+            for (Scales s:scalesToUpd) {
                 com.compay.json.RatesUpdate.Scale scaleToSet=scalesReceived.get(i);
                 s.setMainRate(scaleToSet.getMainRate());
                 s.setMaxValue(scaleToSet.getMaxValue());
@@ -316,7 +316,7 @@ public class RatesControllers {
                 scalesService.update(s);
                 ++i;
             }
-            
+
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
             return "{\"info\":\"Тариф на ServiceId"+updateBody.getServiceID()+" c "+updateBody.getStartDate()+"  успешно обновлен\"}";
