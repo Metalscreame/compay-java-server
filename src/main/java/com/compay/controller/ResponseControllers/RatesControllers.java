@@ -8,6 +8,7 @@ import com.compay.entity.Arguments;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 
+import com.compay.global.Constants;
 import com.compay.json.RateList.Method2;
 import com.compay.json.RateList.Rate2;
 import com.compay.json.RateList.RateListEntity;
@@ -40,6 +41,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Controller
 public class RatesControllers {
 
@@ -67,10 +71,10 @@ public class RatesControllers {
     @Autowired
     private ScalesRepository scalesRepository;
 
-    @RequestMapping(value = "/rates/{objectID}", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/rates/{objectID}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
-    public String responseBody(@RequestHeader(value = "Content-Type") String type,
-                               @RequestHeader(value = "Authorization") String authToken,
+    public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
+                               @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response, @PathVariable("objectID") int objectID) throws JsonProcessingException, ParseException {
 
 

@@ -14,12 +14,11 @@ import java.util.List;
 @Repository
 public interface AdressRepository extends JpaRepository<Adress, Integer> {
     List<Adress> findAllByUser(User user);
+
     @Transactional
     @Modifying
     void deleteById(int id);
 
     @Query(value = "select a from Adress a where a.user.id= :userId and a.objectDefault=true")
     List<Adress> findDefaultAdressByUsrId(@Param("userId") int userId);
-
-
 }

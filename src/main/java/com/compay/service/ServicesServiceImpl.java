@@ -31,9 +31,4 @@ public class ServicesServiceImpl implements  ServicesService{
         return servicesRepository.findAll();
     }
 
-//    @Override
-//    @Transactional
-//    public ObjectDataListList<String> findByName(String name) {
-//        return servicesRepository.findByName(name);
-//    }
 }
