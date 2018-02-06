@@ -119,10 +119,10 @@ public class RatesControllers {
                 RateListEntity rateListEntity = new RateListEntity();
                 SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
 
-                for (Object[] rQ : resultQuery){
+                for (Object[] rQ : resultQuery) {
 
                     //createRate2(int methodId, int rates_id, float mainRate, String formula);
-                    Rate2 rate2  = createRate2(adress, (int) rQ[12], (Float)rQ[9], ((String)rQ[6]));
+                    Rate2 rate2 = createRate2(adress, (int) rQ[12], (Float) rQ[9], ((String) rQ[6]));
 
                     Methods methods = methodsService.findMethodById((int) rQ[10]);
                     Method2 method2 = new Method2(methods.getId(), methods.getName(), methods.getView());
@@ -132,7 +132,7 @@ public class RatesControllers {
                     List<Object[]> resultQueryHistory;
 
                     try {
-                        resultQueryHistory = ratesRepository.findAllHistoryByAdressServices((int)rQ[13], Long.parseLong((String)rQ[7]));
+                        resultQueryHistory = ratesRepository.findAllHistoryByAdressServices((int) rQ[13], Long.parseLong((String) rQ[7]));
                         /*
                         rQH[0] id
                         rQH[1] FORMULA
@@ -144,20 +144,21 @@ public class RatesControllers {
                         */
                         for (Object[] rQH : resultQueryHistory) {
                             //createRate2(methodId, rates_id, mainRate, formula);
-                            Rate2 rate2History = createRate2(adress, (int)rQH[0], (Float)rQH[2], (String)rQH[1]);
+                            Rate2 rate2History = createRate2(adress, (int) rQH[0], (Float) rQH[2], (String) rQH[1]);
 
-                            Methods methodsHistory = methodsService.findMethodById((int)rQH[6]);
+                            Methods methodsHistory = methodsService.findMethodById((int) rQH[6]);
                             Method2 method2History = new Method2(methodsHistory.getId(), methodsHistory.getName(), methodsHistory.getView());
 
-                            timestamp.setTime(Long.parseLong((String)rQH[3]));
+                            timestamp.setTime(Long.parseLong((String) rQH[3]));
                             History history = new History(sdfDate.format(timestamp), method2History, rate2History);
 
                             historyList.add(history);
                         }
-                    }catch (RuntimeException e){}
+                    } catch (RuntimeException e) {
+                    }
 
-                    timestamp.setTime(Long.parseLong((String)rQ[7]));
-                    Rate rate = new Rate((int)rQ[2], (String)rQ[4], sdfDate.format(timestamp), method2, rate2, historyList);
+                    timestamp.setTime(Long.parseLong((String) rQ[7]));
+                    Rate rate = new Rate((int) rQ[2], (String) rQ[4], sdfDate.format(timestamp), method2, rate2, historyList);
 
                     rateListEntity.addRates(rate);
                 }
@@ -171,7 +172,7 @@ public class RatesControllers {
                 response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
 
                 return result;
-            }catch (MappingException e){
+            } catch (MappingException e) {
                 response.setStatus(402);
                 response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
                 return "{\"message\": \"Wrong objectID\"}";
@@ -281,21 +282,21 @@ public class RatesControllers {
 
 
         //first - find adressServiceId by objid and serv Id
-        AdressServices addrSvcToFind= adressServicesService.findByAdressIdandServiceId(updateBody.getObjectID(),updateBody.getServiceID());
+        AdressServices addrSvcToFind = adressServicesService.findByAdressIdandServiceId(updateBody.getObjectID(), updateBody.getServiceID());
 
-        try{
-        if (addrSvcToFind == null) throw new WrongDataExc();
-    } catch (WrongDataExc e) {
-        response.setStatus(400);
-        response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
-        return "{\"info\": \"Такого ObjectId или ServiceId не существует\"}";
-    }
+        try {
+            if (addrSvcToFind == null) throw new WrongDataExc();
+        } catch (WrongDataExc e) {
+            response.setStatus(400);
+            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
+            return "{\"info\": \"Такого ObjectId или ServiceId не существует\"}";
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Timestamp startDateMS=new java.sql.Timestamp(dateFormat.parse(updateBody.getStartDate()).getTime());
+        Timestamp startDateMS = new java.sql.Timestamp(dateFormat.parse(updateBody.getStartDate()).getTime());
 
-        Rates rateToUpdt=ratesService.findByAddIdAndStartDateAndMethod(addrSvcToFind.getId(),startDateMS,updateBody.getMethod());
+        Rates rateToUpdt = ratesService.findByAddIdAndStartDateAndMethod(addrSvcToFind.getId(), startDateMS, updateBody.getMethod());
 
-        try{
+        try {
             if (rateToUpdt == null) throw new WrongDataExc();
         } catch (WrongDataExc e) {
             response.setStatus(400);
@@ -307,9 +308,9 @@ public class RatesControllers {
             ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
             ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
 
-            int i=0;
-            for (Scales s:scalesToUpd) {
-                com.compay.json.RatesUpdate.Scale scaleToSet=scalesReceived.get(i);
+            int i = 0;
+            for (Scales s : scalesToUpd) {
+                com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
                 s.setMainRate(scaleToSet.getMainRate());
                 s.setMaxValue(scaleToSet.getMaxValue());
                 s.setMinValue(scaleToSet.getMinValue());
@@ -319,11 +320,11 @@ public class RatesControllers {
 
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
-            return "{\"info\":\"Тариф на ServiceId"+updateBody.getServiceID()+" c "+updateBody.getStartDate()+"  успешно обновлен\"}";
-        }catch (Exception e){
+            return "{\"info\":\"Тариф на ServiceId" + updateBody.getServiceID() + " c " + updateBody.getStartDate() + "  успешно обновлен\"}";
+        } catch (Exception e) {
             response.setStatus(400);
             response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
-            return "{\"info\": \""+e+"\"}";
+            return "{\"info\": \"" + e + "\"}";
         }
     }
 

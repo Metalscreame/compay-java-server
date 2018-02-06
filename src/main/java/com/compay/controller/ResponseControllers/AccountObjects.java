@@ -204,6 +204,7 @@ public class AccountObjects {
                     return "{\"info\":\"Wrong data format!\"}";
                 }
 
+
                 Adress adress = adressService.findAdressById(Integer.parseInt(entity.getId()));
                 adress.getId();
                 adressService.deleteById(Integer.parseInt(entity.getId()));
@@ -221,7 +222,7 @@ public class AccountObjects {
         } catch (Exception e) {
             response.setStatus(401);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"message\": \"Что-то пошло не так\"}" + e;
+            return "{\"message\": \"" + e + "\"}";
         }
 
     }
