@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -39,6 +40,6 @@ public interface RatesRepository extends JpaRepository<Rates, Integer> {
     List<Object[]> findAllHistoryByAdressServices(@Param("ADRESSSERVICE_ID") Integer adressService_id, @Param("period") long period);
 
     @Query("SELECT r from Rates r where r.adressServices.id=:aId and r.periodFrom=:sDate and r.method.id=:methodId")
-    Rates findByAddIdAndStartDateAndMethod(@Param("aId") int adressId, @Param("sDate") Timestamp startDate,@Param("methodId") int methodId);
+    Rates findByAddIdAndStartDateAndMethod(@Param("aId") int adressId, @Param("sDate") Timestamp startDate, @Param("methodId") int methodId);
 
 }
