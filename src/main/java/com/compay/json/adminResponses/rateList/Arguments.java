@@ -1,4 +1,4 @@
-package com.compay.json.adminResponses.rateList.flatPay;
+package com.compay.json.adminResponses.rateList;
 
 public class Arguments {
     public Double mainRate;

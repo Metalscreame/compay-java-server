@@ -1,5 +1,6 @@
 package com.compay.repository;
 
+import com.compay.entity.AdressServices;
 import com.compay.entity.Rates;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,10 @@ import java.util.List;
 
 @Repository
 public interface RatesRepository extends JpaRepository<Rates, Integer> {
+
+    @Query("select r from Rates r where r.adressServices =:adressServices order by r.periodFrom DESC")
+    List<Rates> findAllByAdressService(@Param("adressServices") AdressServices adressServices);
+
     @Query(value = "SELECT ADS.ADRESSID, AD.TYPE, " +
             "                        ADS.SERVICEID,  SERVICES.LINK, SERVICES.SERVICE_NAME, SERVICES.UNITS, " +
             "                        CASE WHEN R.FORMULA IS NULL THEN '' ELSE R.FORMULA END AS FORMULA, " +
@@ -35,6 +40,6 @@ public interface RatesRepository extends JpaRepository<Rates, Integer> {
     List<Object[]> findAllHistoryByAdressServices(@Param("ADRESSSERVICE_ID") Integer adressService_id, @Param("period") long period);
 
     @Query("SELECT r from Rates r where r.adressServices.id=:aId and r.periodFrom=:sDate and r.method.id=:methodId")
-    Rates findByAddIdAndStartDateAndMethod(@Param("aId") int adressId, @Param("sDate") Timestamp startDate,@Param("methodId") int methodId);
+    Rates findByAddIdAndStartDateAndMethod(@Param("aId") int adressId, @Param("sDate") Timestamp startDate, @Param("methodId") int methodId);
 
 }

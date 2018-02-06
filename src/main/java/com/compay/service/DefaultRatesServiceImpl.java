@@ -32,4 +32,14 @@ public class DefaultRatesServiceImpl implements  DefaultRatesService{
     public List<DefaultRates> findAll() {
         return defaultRatesRepository.findAll();
     }
+
+    @Override
+    public void deleteAll() {
+        defaultRatesRepository.deleteAll();
+    }
+
+    @Override
+    public void save(DefaultRates defaultRates) {
+        defaultRatesRepository.save(defaultRates);
+    }
 }

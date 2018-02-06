@@ -17,7 +17,6 @@ public class CalculationBuilder implements JsonBuilder {
 
 
     public String createJson(CalculationEntity entity) throws JsonProcessingException {
-        String serialized = new ObjectMapper().writeValueAsString(entity);
-                return serialized;
+        return new ObjectMapper().writeValueAsString(entity);
     }
 }

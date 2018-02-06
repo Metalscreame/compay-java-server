@@ -8,11 +8,12 @@ public class ObjectListJsonBuilder implements JsonBuilder {
     private ObjectListEntityList list = new ObjectListEntityList();
 
     @Override
-    public void addInfo(Object o) { list.getAccountObjects().add(o); }
+    public void addInfo(Object o) {
+        list.getAccountObjects().add(o);
+    }
 
     @Override
     public String createJson() throws JsonProcessingException {
-        String serialized = new ObjectMapper().writeValueAsString(list);
-        return serialized;
+        return new ObjectMapper().writeValueAsString(list);
     }
 }

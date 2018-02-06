@@ -10,4 +10,6 @@ public interface DefaultRatesService {
     DefaultRates findDefaultRatesById(Integer id);
     DefaultRates create(DefaultRates defaultRates);
     List<DefaultRates> findAll();
+    void deleteAll();
+    void save(DefaultRates defaultRates);
 }
