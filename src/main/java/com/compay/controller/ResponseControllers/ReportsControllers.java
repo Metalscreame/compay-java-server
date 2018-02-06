@@ -1,6 +1,10 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.*;
+import com.compay.entity.Adress;
+import com.compay.entity.AdressServices;
+import com.compay.entity.Calculations;
+import com.compay.entity.Services;
+import com.compay.entity.Rates;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.global.Constants;
@@ -16,7 +20,11 @@ import com.compay.service.TokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
@@ -71,8 +79,8 @@ public class ReportsControllers {
             List<Calculations> calculationsList;
             List<List<Object>> listReportSumDetail = new LinkedList();
             List<List<Object>> listReportCounterDetail = new LinkedList();
-            List<List<Object>> listReportlistSumTotal = new LinkedList();
-            List<List<Object>> listReportlistCounterTotal = new LinkedList();
+            List<List<Object>> listReportSumTotal = new LinkedList();
+            List<List<Object>> listReportCounterTotal = new LinkedList();
             List listHeadDetail = new LinkedList();
             List listHeadCourentDetail = new LinkedList();
             List listHeadTotal = new LinkedList();
@@ -86,8 +94,8 @@ public class ReportsControllers {
                 listHeadTotal.add("Стоимость");
 
                 listReportSumDetail.add(listHeadDetail);
-                listReportlistSumTotal.add(listHeadTotal);
-                listReportlistCounterTotal.add(listHeadTotal);
+                listReportSumTotal.add(listHeadTotal);
+                listReportCounterTotal.add(listHeadTotal);
 
                 calculationsList = calculationsRepository.findAllByAdressPeriodFromPeriodTo(adress, periodFromTimestamp, periodToTimestamp);
                 System.out.println("!!!!!!!!!   calculationsList.size()  " + calculationsList.size());
@@ -135,7 +143,7 @@ public class ReportsControllers {
                         }
                     }
                     listSumTotal.add(sum);
-                    listReportlistSumTotal.add(listSumTotal);
+                    listReportSumTotal.add(listSumTotal);
                 }
 
                 //create new list services which are not in the counters
@@ -165,7 +173,7 @@ public class ReportsControllers {
                         }
                     }
                     listCounterTotal.add(counter);
-                    listReportlistCounterTotal.add(listCounterTotal);
+                    listReportCounterTotal.add(listCounterTotal);
                 }
 
                 //counterDetailData
@@ -212,11 +220,11 @@ public class ReportsControllers {
                 listHeadDetail.add("Услуга");
                 listHeadDetail.add(service.getServiceName());
                 listReportSumDetail.add(listHeadDetail);
-                listReportlistSumTotal.add(listHeadDetail);
+                listReportSumTotal.add(listHeadDetail);
 
                 if (outputCounter) {/*method fixSum, fixFormula, manual - do not return*/
                     listReportCounterDetail.add(listHeadDetail);
-                    listReportlistCounterTotal.add(listHeadDetail);
+                    listReportCounterTotal.add(listHeadDetail);
                 }
 
 
@@ -231,7 +239,7 @@ public class ReportsControllers {
                     List listSumTotal = new LinkedList();
                     listSumTotal.add(sdfDateMonth.format(calc.getPeriod()));
                     listSumTotal.add(calc.getSum());
-                    listReportlistSumTotal.add(listSumTotal);
+                    listReportSumTotal.add(listSumTotal);
 
 
                     if (outputCounter) {/*method fixSum, fixFormula, manual - do not return*/
@@ -245,7 +253,7 @@ public class ReportsControllers {
                         List listCounterTotal = new LinkedList();
                         listCounterTotal.add(sdfDateMonth.format(calc.getPeriod()));
                         listCounterTotal.add(calc.getCountCurrent() - calc.getCountLast());
-                        listReportlistCounterTotal.add(listCounterTotal);
+                        listReportCounterTotal.add(listCounterTotal);
                     }
                 }
             }
@@ -254,8 +262,8 @@ public class ReportsControllers {
             ReportCalculation reportCalculation = new ReportCalculation();
             reportCalculation.setSumDetailData(listReportSumDetail);
             reportCalculation.setCounterDetailData(listReportCounterDetail);
-            reportCalculation.setSumTotalData(listReportlistSumTotal);
-            reportCalculation.setcCounterTotalData(listReportlistCounterTotal);
+            reportCalculation.setSumTotalData(listReportSumTotal);
+            reportCalculation.setcCounterTotalData(listReportCounterTotal);
 
             ReportsBuilder builder = new ReportsBuilder();
             return builder.createJson(reportCalculation);
