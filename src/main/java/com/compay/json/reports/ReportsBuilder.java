@@ -1,14 +1,13 @@
-package com.compay.json.adminResponses.rateList;
+package com.compay.json.reports;
 
 import com.compay.json.JsonBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
-
-public class RateListBuilder implements JsonBuilder {
+public class ReportsBuilder implements JsonBuilder {
     @Override
     public void addInfo(Object o) {
+
     }
 
     @Override
@@ -16,7 +15,7 @@ public class RateListBuilder implements JsonBuilder {
         return null;
     }
 
-    public String createJson(ArrayList entity) throws JsonProcessingException {
+    public String createJson(ReportCalculation entity) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(entity);
     }
 }

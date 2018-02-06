@@ -12,22 +12,22 @@ public class AdressServices {
     private int id;
 
     @ManyToOne//(cascade= CascadeType.ALL)
-    @JoinColumn(name = "ADRESSID", nullable=false, referencedColumnName="Id")
+    @JoinColumn(name = "ADRESSID", nullable = false, referencedColumnName = "Id")
     private Adress adress;
 
-    @Column(name="NOTACTIVE")
+    @Column(name = "NOTACTIVE")
     private boolean notActive;
 
-    @Column(name="PERSACC")
+    @Column(name = "PERSACC")
     private int persAcc;
 
-    @Column(name="CHECKACC")
+    @Column(name = "CHECKACC")
     private long checkAcc;
 
-    @Column(name="MFO")
+    @Column(name = "MFO")
     private int MFO;
 
-    @Column(name="EGRPO")
+    @Column(name = "EGRPO")
     private int EGRPO;
 
     public int getId() {
@@ -47,7 +47,7 @@ public class AdressServices {
     }
 
     @ManyToOne//(cascade= CascadeType.ALL)
-    @JoinColumn(name = "SERVICEID", nullable=false, referencedColumnName="Id")
+    @JoinColumn(name = "SERVICEID", nullable = false, referencedColumnName = "Id")
     private Services service;
 
     public boolean isNotActive() {
@@ -66,7 +66,7 @@ public class AdressServices {
         this.service = service;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="adressServices")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "adressServices")
     private Set<Rates> rate;
 
     public int getPersAcc() {

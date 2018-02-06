@@ -14,7 +14,7 @@ public class Calculations {
     private int id;
 
     @ManyToOne//(cascade= CascadeType.ALL)
-    @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")
+    @JoinColumn(name = "USER_ID", nullable = false, referencedColumnName = "Id")
     private User user;
 
     //TODO
@@ -22,11 +22,11 @@ public class Calculations {
     private Timestamp period;
 
     @ManyToOne//(cascade= CascadeType.ALL)
-    @JoinColumn(name = "ADRESSID", nullable=false, referencedColumnName="Id")
+    @JoinColumn(name = "ADRESSID", nullable = false, referencedColumnName = "Id")
     private Adress adress;
 
     @ManyToOne//(cascade= CascadeType.ALL)
-    @JoinColumn(name = "SERVICEID", nullable=false, referencedColumnName="Id")
+    @JoinColumn(name = "SERVICEID", nullable = false, referencedColumnName = "Id")
     private Services service;
 
     @Column(name = "COUNTLAST")
@@ -36,7 +36,7 @@ public class Calculations {
     @Column(name = "COUNTCURRENT")
     private int countCurrent;
 
-    @Column(name = "SUM", columnDefinition="Decimal(10,2) default '0.00'")
+    @Column(name = "SUM", columnDefinition = "Decimal(10,2) default '0.00'")
     private double sum;
 
     public int getId() {

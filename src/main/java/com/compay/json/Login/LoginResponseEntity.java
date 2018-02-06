@@ -1,9 +1,5 @@
 package com.compay.json.Login;
 
-import com.compay.json.adminResponses.userList.List;
-
-import java.util.ArrayList;
-
 public class LoginResponseEntity {
     public String authToken;
     public boolean isAdmin;

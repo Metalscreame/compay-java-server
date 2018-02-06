@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LoginResponseBuilder implements JsonBuilder {
 
-    private LoginResponseEntityList list= new LoginResponseEntityList();
+    private LoginResponseEntityList list = new LoginResponseEntityList();
 
     @Override
     public void addInfo(Object o) {
@@ -16,6 +16,6 @@ public class LoginResponseBuilder implements JsonBuilder {
     @Override
     public String createJson() throws JsonProcessingException {
         String serialized = new ObjectMapper().writeValueAsString(list);
-        return serialized.substring(9,serialized.length()-2);
+        return serialized.substring(9, serialized.length() - 2);
     }
 }
