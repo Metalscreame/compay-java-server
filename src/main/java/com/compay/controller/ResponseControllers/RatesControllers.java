@@ -1,10 +1,6 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.Adress;
-import com.compay.entity.AdressArguments;
-import com.compay.entity.Methods;
-import com.compay.entity.Scales;
-import com.compay.entity.Arguments;
+import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 
@@ -19,16 +15,14 @@ import com.compay.json.RateList.Attrs;
 import com.compay.json.RateList.Scale;
 import com.compay.json.RateList.LivingArea;
 import com.compay.json.RateList.MainRate;
+import com.compay.json.RatesUpdate.RatesUpdate;
+import com.compay.json.requisites.update.RequaritiesUpdate;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
 
-import com.compay.service.AdressService;
-import com.compay.service.MethodsService;
-import com.compay.service.TokenService;
-import com.compay.service.UserService;
-import com.compay.service.AdressArgumentsService;
-import com.compay.service.ArgumentsService;
+import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +40,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Controller
 public class RatesControllers {
+
+    @Autowired
+    private RatesService ratesService;
 
     @Autowired
     private TokenService tokenService;
@@ -70,6 +67,13 @@ public class RatesControllers {
 
     @Autowired
     private ScalesRepository scalesRepository;
+    
+    @Autowired
+    private AdressServicesService adressServicesService;
+
+    @Autowired
+    private ScalesService scalesService;
+
 
     @RequestMapping(value = "/rates/{objectID}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
@@ -245,4 +249,83 @@ public class RatesControllers {
         }
         return formula;
     }
+
+    @RequestMapping(value = "/rates/update", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
+    @ResponseBody
+    public String ratesUpdate(
+            @RequestHeader(value = CONTENT_TYPE) String type,
+            @RequestHeader(value = AUTHORIZATION) String authToken,
+            @RequestBody String body,
+            HttpServletResponse response) throws AuthException, JsonProcessingException, ParseException {
+
+        //AuthCheck
+        try {
+            if (tokenService.authChek(authToken)) {
+            } else throw new AuthException();
+        } catch (AuthException e) {
+            response.setStatus(401);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"message\": \"Unauthorized\"}";
+        }
+        //AuthCheck
+
+        //deserialize
+        RatesUpdate updateBody;
+        try {
+            updateBody = new ObjectMapper().readValue(body, RatesUpdate.class);
+        } catch (Exception e) {
+            response.setStatus(402);
+            response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+            return "{\"info\": \"Wrong data\"}";
+        }
+        //deserialize
+
+
+        //first - find adressServiceId by objid and serv Id
+        AdressServices addrSvcToFind= adressServicesService.findByAdressIdandServiceId(updateBody.getObjectID(),updateBody.getServiceID());
+
+        try{
+        if (addrSvcToFind == null) throw new WrongDataExc();
+    } catch (WrongDataExc e) {
+        response.setStatus(400);
+        response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
+        return "{\"info\": \"Такого ObjectId или ServiceId не существует\"}";
+    }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Timestamp startDateMS=new java.sql.Timestamp(dateFormat.parse(updateBody.getStartDate()).getTime());
+
+        Rates rateToUpdt=ratesService.findByAddIdAndStartDateAndMethod(addrSvcToFind.getId(),startDateMS,updateBody.getMethod());
+
+        try{
+            if (rateToUpdt == null) throw new WrongDataExc();
+        } catch (WrongDataExc e) {
+            response.setStatus(400);
+            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
+            return "{\"info\": \"Такого Method или StartDateTime или ObjectId или ServiceId не существует\"}";
+        }
+
+        try {
+            ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
+            ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
+
+            int i=0;
+            for (Scales s:scalesToUpd) {
+                com.compay.json.RatesUpdate.Scale scaleToSet=scalesReceived.get(i);
+                s.setMainRate(scaleToSet.getMainRate());
+                s.setMaxValue(scaleToSet.getMaxValue());
+                s.setMinValue(scaleToSet.getMinValue());
+                scalesService.update(s);
+                ++i;
+            }
+
+            response.setStatus(200);
+            response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
+            return "{\"info\":\"Тариф на ServiceId"+updateBody.getServiceID()+" c "+updateBody.getStartDate()+"  успешно обновлен\"}";
+        }catch (Exception e){
+            response.setStatus(400);
+            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
+            return "{\"info\": \""+e+"\"}";
+        }
+    }
+
 }

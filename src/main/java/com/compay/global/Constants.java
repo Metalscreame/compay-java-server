@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 public final class Constants {
     public static final String UTF_8 = "UTF-8";
     public static final String ADMIN = "admin";
+    public static final String USER = "user";
 
 
     private Constants() {

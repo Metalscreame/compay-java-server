@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.compay.global.Constants.ADMIN;
+import static com.compay.global.Constants.USER;
 
 /*
 Controller to test the stuff
@@ -174,16 +175,16 @@ public class TestController {
 
         User root = new User();//root test user
 
-        root.setName("root");
-        root.setPassword("root");
-        root.setEmail("root@root.root");
-        root.setLastName("rootLname");
+        root.setName("admin");
+        root.setPassword("admin");
+        root.setEmail("admin@gmail.com");
+        root.setLastName("AdminLname");
         root.setRole(ADMIN);
         svc.create(root);
         User newUsr = new User();
         newUsr.setEmail("dima@dima.dima");
         newUsr.setName("Дмитрий");
-        newUsr.setRole("user");
+        newUsr.setRole(USER);
         newUsr.setLastName("Павлочич");
         newUsr.setPassword("040593");
         svc.create(newUsr);
