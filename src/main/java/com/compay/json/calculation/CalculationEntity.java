@@ -1,6 +1,7 @@
 package com.compay.json.calculation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ public class CalculationEntity {
     @JsonProperty("period")
     public String period;
     @JsonProperty("objectID")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer objectID;
     @JsonProperty("services")
     public ArrayList<CalcServicesArrList> services;
