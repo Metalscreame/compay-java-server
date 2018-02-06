@@ -229,6 +229,7 @@ public class CalculationController {
                                         formula.setMainRate((float) rQ[8]);
                                         formula.setValue((String) rQ[7]);
                                         formula.setView(formulaView);
+                                        method.setFormula(formula);
                                         break;
                                     case "registeredPersons":
 
