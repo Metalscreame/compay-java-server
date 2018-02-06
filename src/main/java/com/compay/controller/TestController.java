@@ -672,7 +672,7 @@ public class TestController {
         defaultRatesId5.setFormula("mainRate * livingArea");
         defaultRatesId5.setService(service5);
         defaultRatesId5.setMethod(methodId2);
-        defaultRatesId5.setMainRate(0.0);
+        defaultRatesId5.setMainRate(12.5);
         defaultRatesId5.setUserScale(false);
         defaultRatesService.create(defaultRatesId5);
 

@@ -1,6 +1,5 @@
 package com.compay.json.calculation;
 
-import com.compay.json.calculation.electricity.ScaleElectr;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
@@ -74,6 +73,5 @@ public class Method {
         this.view = view;
         this.scale = scale;
         this.mainRate = mainRate;
-        //this.formula = formula;
     }
 }

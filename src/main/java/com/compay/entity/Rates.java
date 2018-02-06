@@ -2,9 +2,7 @@ package com.compay.entity;
 
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.Set;
 
 @Entity
@@ -17,8 +15,8 @@ public class Rates {
 
     /*@Column(name = "SERVICE_ID")
     private int serviceId;*/
-    @ManyToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "ADRESSSERVICE_ID", nullable=false, referencedColumnName="Id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ADRESSSERVICE_ID", nullable = false, referencedColumnName = "Id")
     private AdressServices adressServices;
 
     @Column(name = "PERIOD_FROM")//,columnDefinition="DATETIME")
@@ -43,7 +41,7 @@ public class Rates {
         this.periodTill = periodTill;
     }
 
-    @Column(name = "MAINRATE", columnDefinition="Decimal(10,2) default '0.00'")
+    @Column(name = "MAINRATE", columnDefinition = "Decimal(10,2) default '0.00'")
     private double mainRate;
 
     @Column(name = "USERSCALE")
@@ -59,18 +57,19 @@ public class Rates {
     public void setId(int id) {
         this.id = id;
     }
-/*
-    public int getServiceId() {
-        return serviceId;
-    }
 
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
-    }
-*/
+    /*
+        public int getServiceId() {
+            return serviceId;
+        }
+
+        public void setServiceId(int serviceId) {
+            this.serviceId = serviceId;
+        }
+    */
     public AdressServices getAdressService() {
-    return adressServices;
-}
+        return adressServices;
+    }
 
     public void setAdressService(AdressServices adressServices) {
         this.adressServices = adressServices;
@@ -99,20 +98,21 @@ public class Rates {
     public void setFormula(String formula) {
         this.formula = formula;
     }
-/*
-    @Column(name = "METHODID")
-    private int methodID;
 
-    public int getMethodID() {
-        return methodID;
-    }
+    /*
+        @Column(name = "METHODID")
+        private int methodID;
 
-    public void setMethodID(int methodID) {
-        this.methodID = methodID;
-    }
-*/
-    @ManyToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "METHODID", nullable=false, referencedColumnName="Id")
+        public int getMethodID() {
+            return methodID;
+        }
+
+        public void setMethodID(int methodID) {
+            this.methodID = methodID;
+        }
+    */
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "METHODID", nullable = false, referencedColumnName = "Id")
     private Methods method;
 
     public Methods getMethod() {
@@ -123,7 +123,7 @@ public class Rates {
         this.method = method;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="rate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rate")
     private Set<Scales> scale;
 
     @Override

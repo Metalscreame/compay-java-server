@@ -1,10 +1,10 @@
 package com.compay.json.adminResponses.rateList;
 
 public class Service {
-        public int id;
-        public String serviceName;
-        public String link;
-        public String units;
+    public int id;
+    public String serviceName;
+    public String link;
+    public String units;
 
 
     public int getId() {

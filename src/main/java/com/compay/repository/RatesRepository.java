@@ -1,16 +1,20 @@
 package com.compay.repository;
 
+import com.compay.entity.AdressServices;
 import com.compay.entity.Rates;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
 public interface RatesRepository extends JpaRepository<Rates, Integer> {
+
+    @Query("select r from Rates r where r.adressServices =:adressServices order by r.periodFrom DESC")
+    List<Rates> findAllByAdressService(@Param("adressServices") AdressServices adressServices);
+
     @Query(value = "SELECT ADS.ADRESSID, AD.TYPE, " +
             "                        ADS.SERVICEID,  SERVICES.LINK, SERVICES.SERVICE_NAME, SERVICES.UNITS, " +
             "                        CASE WHEN R.FORMULA IS NULL THEN '' ELSE R.FORMULA END AS FORMULA, " +
