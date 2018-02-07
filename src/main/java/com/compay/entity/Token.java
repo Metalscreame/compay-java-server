@@ -15,7 +15,7 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false, referencedColumnName = "Id")
     private User user;
 
