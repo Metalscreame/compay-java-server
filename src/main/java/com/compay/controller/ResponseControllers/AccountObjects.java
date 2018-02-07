@@ -68,7 +68,8 @@ public class AccountObjects {
                 Adress adress = new Adress();
                 //adress.setId(999999999);
                 adress.setType(accountObjectsJSON.getName());
-                adress.setObjectDefault(accountObjectsJSON.isObjectDefault());
+                //костыль для фронта
+                adress.setObjectDefault(true);
                 adress.setUser(currentUser);
                 adress.setAppartmentNumber("");
                 adress.setCity("");
@@ -117,8 +118,6 @@ public class AccountObjects {
                                      @RequestHeader(value = AUTHORIZATION) String authToken,
                                      @RequestBody AccountObjectsJSONUpdate AccountObjectsJSONUpdate,
                                      HttpServletResponse response) {
-
-
         try {
             String result = null;
             if (tokenService.authChek(authToken)) {

@@ -192,7 +192,7 @@ public class RateList {
             return "{\"message\": \"" + e + "\"}";
         }
     }
-    
+
     public static <T> T fromJSON(final TypeReference<T> type,
                                  final String jsonPacket) {
         T data = null;
