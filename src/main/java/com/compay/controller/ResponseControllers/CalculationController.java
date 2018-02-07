@@ -11,7 +11,6 @@ import com.compay.entity.Services;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.global.Constants;
-
 import com.compay.json.calculation.CalcServicesArrList;
 import com.compay.json.calculation.CalculationBuilder;
 import com.compay.json.calculation.CalculationEntity;
@@ -41,7 +40,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -219,20 +217,24 @@ public class CalculationController {
                     for (AdressArguments adressArguments : adressArgumentsList) {
 
                         String nameArgument = adressArguments.getArgument().getName();
-                        String viewArgument = adressArguments.getArgument().getView();
+                        //String viewArgument = adressArguments.getArgument().getView();
 
                         for (String t : strings) {
                             if (nameArgument.equals(t)) {
                                 switch (t) {
                                     case "livingArea":
                                         formula.setLivingArea(adressArguments.getValue());
-                                        formula.setMainRate((float) rQ[8]);
                                         formula.setValue((String) rQ[7]);
                                         formula.setView(formulaView);
+                                        formula.setMainRate((float) rQ[8]);
                                         method.setFormula(formula);
                                         break;
                                     case "registeredPersons":
-
+                                        formula.setRegisteredPersons(adressArguments.getValue());
+                                        formula.setValue((String) rQ[7]);
+                                        formula.setView(formulaView);
+                                        formula.setMainRate((float) rQ[8]);
+                                        method.setFormula(formula);
                                         break;
                                 }
                             }
