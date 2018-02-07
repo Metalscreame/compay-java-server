@@ -90,7 +90,7 @@ public class User {
     private Set<Adress> adress;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="user")
     private Set<Token> tokens;
 
 

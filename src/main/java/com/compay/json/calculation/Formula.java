@@ -10,6 +10,8 @@ public class Formula {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public double livingArea;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public double registeredPersons;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Float mainRate;
 
     public String getValue() {
@@ -34,6 +36,14 @@ public class Formula {
 
     public void setLivingArea(double livingArea) {
         this.livingArea = livingArea;
+    }
+
+    public double getRegisteredPersons() {
+        return registeredPersons;
+    }
+
+    public void setRegisteredPersons(double registeredPersons) {
+        this.registeredPersons = registeredPersons;
     }
 
     public Float getMainRate() {
