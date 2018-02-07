@@ -1,6 +1,6 @@
 package com.compay.json.RateList;
 
-public class LivingArea
+public class Argument
 {
     private String view;
 
@@ -14,7 +14,7 @@ public class LivingArea
 
     public void setValue(double value) { this.value = value; }
 
-    public LivingArea(String view, double value) {
+    public Argument(String view, double value) {
         this.view = view;
         this.value = value;
     }

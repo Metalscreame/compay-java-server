@@ -5,18 +5,18 @@ import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 
 import com.compay.global.Constants;
+
+import com.compay.json.RateList.Argument;
+import com.compay.json.RateList.Attrs;
+import com.compay.json.RateList.History;
+import com.compay.json.RateList.MainRate;
 import com.compay.json.RateList.Method2;
+import com.compay.json.RateList.Rate;
 import com.compay.json.RateList.Rate2;
 import com.compay.json.RateList.RateListEntity;
 import com.compay.json.RateList.RatesBuilder;
-import com.compay.json.RateList.History;
-import com.compay.json.RateList.Rate;
-import com.compay.json.RateList.Attrs;
 import com.compay.json.RateList.Scale;
-import com.compay.json.RateList.LivingArea;
-import com.compay.json.RateList.MainRate;
 import com.compay.json.RatesUpdate.RatesUpdate;
-import com.compay.json.requisites.update.RequaritiesUpdate;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
 
@@ -199,6 +199,11 @@ public class RatesControllers {
             scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue()));
         }
 
+        Rate2 rate2 = new Rate2();
+        rate2.setMainRate(mainRate);
+        rate2.setScale(scaleArrayList);
+
+
         //Attrs
         String formulaView = formula;
         Attrs attrs = new Attrs();
@@ -218,33 +223,30 @@ public class RatesControllers {
                     if (nameArgument.equals(t)) {
                         switch (t) {
                             case "livingArea":
-                                attrs.setLivingArea(new LivingArea(viewArgument, adressArguments.getValue()));
+                                attrs.setLivingArea(new Argument(viewArgument, adressArguments.getValue()));
                                 attrs.setMainRate(new MainRate(viewArgument, mainRate));
                                 break;
                             case "registeredPersons":
-
+                                attrs.setRegisteredPersons(new Argument(viewArgument, adressArguments.getValue()));
+                                attrs.setMainRate(new MainRate(viewArgument, mainRate));
                                 break;
                         }
                     }
                 }
             }
+            rate2.setView(formulaView);
+            rate2.setValue(formula);
+            rate2.setAttrs(attrs);
         }
-
-        Rate2 rate2 = new Rate2();
-        rate2.setMainRate(mainRate);
-        rate2.setScale(scaleArrayList);
-        rate2.setView(formulaView);
-        rate2.setValue(formula);
-        rate2.setAttrs(attrs);
 
         return rate2;
     }
 
     public String convertFormula(String formula) {
 
-        List<Arguments> argumentsList = argumentsService.findAll();
+        List<com.compay.entity.Arguments> argumentsList = argumentsService.findAll();
 
-        for (Arguments arguments : argumentsList) {
+        for (com.compay.entity.Arguments arguments : argumentsList) {
             formula = formula.replaceAll(arguments.getName(), "[" + arguments.getView() + "]");
         }
         return formula;
