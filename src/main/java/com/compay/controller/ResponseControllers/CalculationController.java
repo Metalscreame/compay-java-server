@@ -232,7 +232,6 @@ public class CalculationController {
                     for (AdressArguments adressArguments : adressArgumentsList) {
 
                         String nameArgument = adressArguments.getArgument().getName();
-                        //String viewArgument = adressArguments.getArgument().getView();
 
                         for (String t : strings) {
                             if (nameArgument.equals(t)) {
