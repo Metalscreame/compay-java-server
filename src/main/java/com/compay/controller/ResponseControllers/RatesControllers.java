@@ -3,9 +3,7 @@ package com.compay.controller.ResponseControllers;
 import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
-
 import com.compay.global.Constants;
-
 import com.compay.json.RateList.Argument;
 import com.compay.json.RateList.Attrs;
 import com.compay.json.RateList.History;
@@ -19,7 +17,6 @@ import com.compay.json.RateList.Scale;
 import com.compay.json.RatesUpdate.RatesUpdate;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
-
 import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,8 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class RatesControllers {
@@ -67,7 +64,7 @@ public class RatesControllers {
 
     @Autowired
     private ScalesRepository scalesRepository;
-    
+
     @Autowired
     private AdressServicesService adressServicesService;
 

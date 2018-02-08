@@ -1,7 +1,6 @@
 package com.compay.json.calculation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CalcServicesArrList {
@@ -10,15 +9,11 @@ public class CalcServicesArrList {
     public int serviceID;
     public String serviceName;
     public Method method;
-
     @JsonProperty("lastCounter")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public int lastCounter;
     @JsonProperty("currentCounter")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public int currentCounter;
     @JsonProperty("currentSum")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public double currentSum;
 
     public CalcServicesArrList(int serviceID, String serviceName, Method method, int lastCounter, int currentCounter, double currentSum) {
