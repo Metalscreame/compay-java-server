@@ -13,16 +13,14 @@ public class Rates {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    /*@Column(name = "SERVICE_ID")
-    private int serviceId;*/
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ADRESSSERVICE_ID", nullable = false, referencedColumnName = "Id")
     private AdressServices adressServices;
 
-    @Column(name = "PERIOD_FROM")//,columnDefinition="DATETIME")
+    @Column(name = "PERIOD_FROM")
     private Timestamp periodFrom;
 
-    @Column(name = "PERIOD_TILL")//,columnDefinition="DATETIME")
+    @Column(name = "PERIOD_TILL")
     private Timestamp periodTill;
 
     public Timestamp getPeriodFrom() {
@@ -58,15 +56,6 @@ public class Rates {
         this.id = id;
     }
 
-    /*
-        public int getServiceId() {
-            return serviceId;
-        }
-
-        public void setServiceId(int serviceId) {
-            this.serviceId = serviceId;
-        }
-    */
     public AdressServices getAdressService() {
         return adressServices;
     }
@@ -99,19 +88,7 @@ public class Rates {
         this.formula = formula;
     }
 
-    /*
-        @Column(name = "METHODID")
-        private int methodID;
-
-        public int getMethodID() {
-            return methodID;
-        }
-
-        public void setMethodID(int methodID) {
-            this.methodID = methodID;
-        }
-    */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "METHODID", nullable = false, referencedColumnName = "Id")
     private Methods method;
 

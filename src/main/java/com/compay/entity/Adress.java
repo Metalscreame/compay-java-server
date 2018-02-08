@@ -13,7 +13,7 @@ public class Adress {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne//(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")//foreignKey = @ForeignKey())
     private User user;
 
@@ -113,6 +113,9 @@ public class Adress {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
     private Set<AdressArguments> adress;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
+    private Set<Calculations> adressCalulations;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
     private Set<AdressServices> adressService;

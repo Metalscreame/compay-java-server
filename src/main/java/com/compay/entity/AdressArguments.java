@@ -10,15 +10,11 @@ public class AdressArguments {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    /*@Column(name = "ADRESSID",nullable = false)
-    private int adressID;*/
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ADRESSID", nullable=false, referencedColumnName="Id")
     private Adress adress;
 
-    /*@Column(name = "ARGUMENTID",nullable = false)
-    private int argumentID;*/
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ARGUMENTID", nullable=false, referencedColumnName="Id")
     private Arguments argument;
 
@@ -32,15 +28,7 @@ public class AdressArguments {
     public void setId(int id) {
         this.id = id;
     }
-/*
-    public int getAdressID() {
-        return adressID;
-    }
 
-    public void setAdressID(int adressID) {
-        this.adressID = adressID;
-    }
-*/
     public Adress getAdress() {
     return adress;
 }
@@ -48,15 +36,7 @@ public class AdressArguments {
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
-/*
-    public int getArgumentID() {
-        return argumentID;
-    }
 
-    public void setArgumentID(int argumentID) {
-        this.argumentID = argumentID;
-    }
-*/
     public Arguments getArgument() {
     return argument;
 }

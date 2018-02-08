@@ -1,4 +1,5 @@
 package com.compay.entity;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,11 +14,11 @@ public class Services {
     @Column(name = "SERVICE_NAME")
     private String serviceName;
 
-    @Column(name="LINK")
+    @Column(name = "LINK")
 
     private String link;
 
-    @Column(name="UNITS")
+    @Column(name = "UNITS")
     private String units;
 
     public int getId() {
@@ -62,9 +63,9 @@ public class Services {
                 '}';
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="service")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "service")
     private Set<AdressServices> adressServices;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="defaultServices")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "defaultServices")
     private Set<DefaultRates> defaultRates;
 }
