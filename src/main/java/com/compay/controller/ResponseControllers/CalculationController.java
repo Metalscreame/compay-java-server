@@ -164,16 +164,27 @@ public class CalculationController {
 
             //checking for correct objectID
             Adress adress = adressService.findAdressById(objectID);
-            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail()) || adress == null) {
+            if (adress == null || !adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail())) {
                 throw new WrongDataExc();
             }
 
             Timestamp periodTimestamp = new java.sql.Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse(period).getTime());
+            List<Object[]> resultQuery;
 
-            List<Object[]> resultQuery = calculationsRepository.findAllByUserAdressPeriod(objectID, periodTimestamp, adress.getUser().getId());
+            try {
 
-            ArrayList services = new ArrayList();
-            CalculationEntity entity = new CalculationEntity(period, services);
+                resultQuery = calculationsRepository.findAllByUserAdressPeriod(objectID, periodTimestamp, adress.getUser().getId());
+
+            } catch (RuntimeException e) {
+                ArrayList services = new ArrayList();
+                CalculationEntity entity = new CalculationEntity(period, services);
+                CalculationBuilder builder = new CalculationBuilder();
+                result = builder.createJson(entity);
+                response.setStatus(200);
+                response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
+                return result;
+            }
+
             CalculationBuilder builder = new CalculationBuilder();
 
              /*rQ[0] ADRESSID
@@ -189,18 +200,22 @@ public class CalculationController {
             rQ[10] NAME
             rQ[11] VIEW
             rQ[12] USERSCALE
-            rQ[13] RATES_ID*/
+            rQ[13] RATES_ID
+            rQ[14] SERVICE_NAME*/
 
             ArrayList<CalcServicesArrList> calcServicesArrayList = new ArrayList<CalcServicesArrList>();
 
             for (Object[] rQ : resultQuery) {
                 Methods methods = methodsRepository.findOne((int) rQ[9]);
 
-                List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne((int) rQ[13]));
                 ArrayList<ScaleElectr> scaleArrayList = new ArrayList<ScaleElectr>();
+                // if USERSCALE != 0 then the scale is used
+                if ((int) rQ[12] != 0) {
+                    List<Scales> scalesEntityList = scalesRepository.findAllByRate(ratesRepository.findOne((int) rQ[13]));
 
-                for (Scales scalesEntity : scalesEntityList) {
-                    scaleArrayList.add(new ScaleElectr(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
+                    for (Scales scalesEntity : scalesEntityList) {
+                        scaleArrayList.add(new ScaleElectr(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
+                    }
                 }
 
                 Method method = new Method((int) rQ[9], methods.getName(), methods.getView(), scaleArrayList, (float) rQ[8]);
@@ -241,8 +256,7 @@ public class CalculationController {
                         }
                     }
                 }
-                //Formula formula = new Formula((String) rQ[7], "", livingAreaValue, (float) rQ[8]);
-                calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[10], method, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
+                calcServicesArrayList.add(new CalcServicesArrList((int) rQ[5], (String) rQ[14], method, (int) rQ[2], (int) rQ[1], (float) rQ[4]));
             }
 
             result = builder.createJson(new CalculationEntity(period, calcServicesArrayList));
