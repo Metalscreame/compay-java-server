@@ -13,25 +13,24 @@ public class Calculations {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne//(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false, referencedColumnName = "Id")
     private User user;
 
     //TODO
-    @Column(name = "PERIOD")//"DATETIME")
+    @Column(name = "PERIOD")
     private Timestamp period;
 
-    @ManyToOne//(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ADRESSID", nullable = false, referencedColumnName = "Id")
     private Adress adress;
 
-    @ManyToOne//(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "SERVICEID", nullable = false, referencedColumnName = "Id")
     private Services service;
 
     @Column(name = "COUNTLAST")
     private int countLast;
-
 
     @Column(name = "COUNTCURRENT")
     private int countCurrent;

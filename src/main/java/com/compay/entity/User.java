@@ -1,10 +1,10 @@
 package com.compay.entity;
 
 
-
 import javax.persistence.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Base64;
+import java.util.Set;
 
 
 @Entity
@@ -15,19 +15,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "PASSWORD",nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "EMAIL",nullable = false,unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column (name = "NAME",nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "LASTNAME",nullable = false)
+    @Column(name = "LASTNAME", nullable = false)
     private String lastName;
 
-    @Column(name = "ROLE",nullable = false)
+    @Column(name = "ROLE", nullable = false)
     private String role;
 
     public String getRole() {
@@ -51,7 +51,7 @@ public class User {
         return password;
     }
 
-    public String getPasswordDecoded(){
+    public String getPasswordDecoded() {
         byte[] decoded = Base64.getDecoder().decode(password);
         String str = new String(decoded, StandardCharsets.UTF_8);
         return str;
@@ -86,13 +86,11 @@ public class User {
     }
 
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Adress> adress;
 
-
-    @OneToMany(cascade=CascadeType.ALL,mappedBy="user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Token> tokens;
-
 
     @Override
     public String toString() {
@@ -105,15 +103,6 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
-
-    /*
-    public void setAdress(Set<Adress> adress){
-        this.adress = adress;
-    }
-
-    public Set<Adress> getAdress(){
-        return this.adress;
-    }*/
 }
 
 

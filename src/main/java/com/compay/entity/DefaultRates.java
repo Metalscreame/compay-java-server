@@ -2,7 +2,6 @@ package com.compay.entity;
 
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -13,18 +12,18 @@ public class DefaultRates {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne//(cascade= CascadeType.ALL)
-    @JoinColumn(name = "SERVICEID", nullable=false, referencedColumnName="Id")
+    @ManyToOne
+    @JoinColumn(name = "SERVICEID", nullable = false, referencedColumnName = "Id")
     private Services defaultServices;
 
-    @ManyToOne//(cascade= CascadeType.ALL)
-    @JoinColumn(name = "METHODID", nullable=false, referencedColumnName="Id")
+    @ManyToOne
+    @JoinColumn(name = "METHODID", nullable = false, referencedColumnName = "Id")
     private Methods defaultMethod;
 
-    @Column(name = "MAINRATE", columnDefinition="Decimal(10,2) default '0.00'")
+    @Column(name = "MAINRATE", columnDefinition = "Decimal(10,2) default '0.00'")
     private double mainRate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="defaultRates")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "defaultRates")
     private Set<DefaultScales> defaultScales;
 
     @Column(name = "USERSCALE")

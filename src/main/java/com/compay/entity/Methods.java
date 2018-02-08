@@ -11,10 +11,10 @@ public class Methods {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "NAME",nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "VIEW",nullable = false)
+    @Column(name = "VIEW", nullable = false)
     private String view;
 
     public int getId() {
@@ -41,10 +41,10 @@ public class Methods {
         this.id = id;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="method")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "method")
     private Set<Methods> method;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="defaultMethod")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "defaultMethod")
     private Set<DefaultRates> defaultMethod;
 
     @Override

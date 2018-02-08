@@ -11,10 +11,8 @@ public class DefaultScales {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    //@Column(name = "RATEID",nullable = false)
-    //private int rateId;
-    @ManyToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "DEFAULTRATEID", nullable=false, referencedColumnName="Id")
+    @ManyToOne
+    @JoinColumn(name = "DEFAULTRATEID", nullable = false, referencedColumnName = "Id")
     private DefaultRates defaultRates;
 
     @Column(name = "MINVALUE")
@@ -23,7 +21,7 @@ public class DefaultScales {
     @Column(name = "MAXVALUE")
     private int maxValue;
 
-    @Column(name = "MAINRATE", columnDefinition="Decimal(10,2) default '0.00'")
+    @Column(name = "MAINRATE", columnDefinition = "Decimal(10,2) default '0.00'")
     private double mainRate;
 
     public int getId() {
@@ -35,8 +33,8 @@ public class DefaultScales {
     }
 
     public DefaultRates getRate() {
-    return defaultRates;
-}
+        return defaultRates;
+    }
 
     public void setRate(DefaultRates defaultRates) {
         this.defaultRates = defaultRates;

@@ -11,7 +11,7 @@ public class AdressServices {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne//(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ADRESSID", nullable = false, referencedColumnName = "Id")
     private Adress adress;
 
@@ -46,7 +46,7 @@ public class AdressServices {
         this.adress = adress;
     }
 
-    @ManyToOne//(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "SERVICEID", nullable = false, referencedColumnName = "Id")
     private Services service;
 
