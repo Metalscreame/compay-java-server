@@ -15,7 +15,6 @@ import java.util.Map;
 @Service
 public class TruncateDataBase {
 
-
     private EntityManager entityManager;
 
     @Autowired
@@ -24,7 +23,7 @@ public class TruncateDataBase {
     }
 
     @Transactional
-    public void truncate() throws Exception {
+    public void truncate() {
         List<String> tableNames = new ArrayList<>();
         Session session = entityManager.unwrap(Session.class);
         Map<String, ClassMetadata> hibernateMetadata = session.getSessionFactory().getAllClassMetadata();
@@ -35,9 +34,7 @@ public class TruncateDataBase {
         }
 
         entityManager.flush();
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
-        tableNames.forEach(tableName -> entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate());
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
+        tableNames.forEach(tableName -> entityManager.createNativeQuery("DELETE FROM " + tableName).executeUpdate());
     }
 
 
