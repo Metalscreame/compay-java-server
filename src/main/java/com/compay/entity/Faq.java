@@ -10,10 +10,10 @@ public class Faq {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column (name = "request",nullable = false)
+    @Column(name = "request", nullable = false)
     private String request;
 
-    @Column (name = "response",nullable = false)
+    @Column(name = "response", nullable = false)
     private String response;
 
     public int getId() {

@@ -1,11 +1,14 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.*;
+import com.compay.entity.Adress;
+import com.compay.entity.AdressArguments;
+import com.compay.entity.Methods;
+import com.compay.entity.Scales;
+import com.compay.entity.AdressServices;
+import com.compay.entity.Rates;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
-
 import com.compay.global.Constants;
-
 import com.compay.json.RateList.Argument;
 import com.compay.json.RateList.Attrs;
 import com.compay.json.RateList.History;
@@ -19,11 +22,9 @@ import com.compay.json.RateList.Scale;
 import com.compay.json.RatesUpdate.RatesUpdate;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
-
 import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +34,11 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Controller
 public class RatesControllers {
@@ -67,7 +69,7 @@ public class RatesControllers {
 
     @Autowired
     private ScalesRepository scalesRepository;
-    
+
     @Autowired
     private AdressServicesService adressServicesService;
 
@@ -89,14 +91,26 @@ public class RatesControllers {
 
             //checking for correct objectID
             Adress adress = adressService.findAdressById(objectID);
-            if (!adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail()) || adress == null) {
+            if (adress == null || !adress.getUser().getEmail().equals(tokenService.findByToken(authToken).getUser().getEmail())) {
                 throw new WrongDataExc();
             }
 
             Timestamp periodTimestamp = new Timestamp(System.currentTimeMillis());
+            List<Object[]> resultQuery;
 
             try {
-                List<Object[]> resultQuery = ratesRepository.findAllByAdressServices(objectID, periodTimestamp.getTime());
+                resultQuery = ratesRepository.findAllByAdressServices(objectID, periodTimestamp.getTime());
+            } catch (RuntimeException e) {
+                RateListEntity rateListEntity = new RateListEntity();
+                RatesBuilder builder = new RatesBuilder();
+                builder.addInfo(rateListEntity);
+                result = builder.createJson();
+
+                response.setStatus(200);
+                response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
+
+                return result;
+            }
 
                 /*
                 rQ[0] ADRESSSERVICES.ADRESSID
@@ -115,25 +129,27 @@ public class RatesControllers {
                 rQ[13] ADRESSSERVICES.ID
 
                 */
-                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-                RateListEntity rateListEntity = new RateListEntity();
-                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+            RateListEntity rateListEntity = new RateListEntity();
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
 
-                for (Object[] rQ : resultQuery) {
+            for (Object[] rQ : resultQuery) {
 
-                    //createRate2(int methodId, int rates_id, float mainRate, String formula);
-                    Rate2 rate2 = createRate2(adress, (int) rQ[12], (Float) rQ[9], ((String) rQ[6]));
+                //createRate2(int methodId, int rates_id, float mainRate, String formula);
+                Rate2 rate2 = createRate2(adress, (int) rQ[12], (Float) rQ[9], ((String) rQ[6]));
 
-                    Methods methods = methodsService.findMethodById((int) rQ[10]);
-                    Method2 method2 = new Method2(methods.getId(), methods.getName(), methods.getView());
+                Methods methods = methodsService.findMethodById((int) rQ[10]);
+                Method2 method2 = new Method2(methods.getId(), methods.getName(), methods.getView());
 
-                    //History
-                    ArrayList<History> historyList = new ArrayList<>();
-                    List<Object[]> resultQueryHistory;
+                //History
+                ArrayList<History> historyList = new ArrayList<>();
+                List<Object[]> resultQueryHistory = new LinkedList<>();
 
-                    try {
-                        resultQueryHistory = ratesRepository.findAllHistoryByAdressServices((int) rQ[13], Long.parseLong((String) rQ[7]));
+                try {
+                    resultQueryHistory = ratesRepository.findAllHistoryByAdressServices((int) rQ[13], Long.parseLong((String) rQ[7]));
+                } catch (RuntimeException e) {
+                }
                         /*
                         rQH[0] id
                         rQH[1] FORMULA
@@ -143,41 +159,34 @@ public class RatesControllers {
                         rQH[5] ADRESSSERVICE_ID
                         rQH[6] METHODID
                         */
-                        for (Object[] rQH : resultQueryHistory) {
-                            //createRate2(methodId, rates_id, mainRate, formula);
-                            Rate2 rate2History = createRate2(adress, (int) rQH[0], (Float) rQH[2], (String) rQH[1]);
+                for (Object[] rQH : resultQueryHistory) {
+                    //createRate2(methodId, rates_id, mainRate, formula);
+                    Rate2 rate2History = createRate2(adress, (int) rQH[0], (Float) rQH[2], (String) rQH[1]);
 
-                            Methods methodsHistory = methodsService.findMethodById((int) rQH[6]);
-                            Method2 method2History = new Method2(methodsHistory.getId(), methodsHistory.getName(), methodsHistory.getView());
+                    Methods methodsHistory = methodsService.findMethodById((int) rQH[6]);
+                    Method2 method2History = new Method2(methodsHistory.getId(), methodsHistory.getName(), methodsHistory.getView());
 
-                            timestamp.setTime(Long.parseLong((String) rQH[3]));
-                            History history = new History(sdfDate.format(timestamp), method2History, rate2History);
+                    timestamp.setTime(Long.parseLong((String) rQH[3]));
+                    History history = new History(sdfDate.format(timestamp), method2History, rate2History);
 
-                            historyList.add(history);
-                        }
-                    } catch (RuntimeException e) {
-                    }
-
-                    timestamp.setTime(Long.parseLong((String) rQ[7]));
-                    Rate rate = new Rate((int) rQ[2], (String) rQ[4], sdfDate.format(timestamp), method2, rate2, historyList);
-
-                    rateListEntity.addRates(rate);
+                    historyList.add(history);
                 }
 
+                timestamp.setTime(Long.parseLong((String) rQ[7]));
+                Rate rate = new Rate((int) rQ[2], (String) rQ[4], sdfDate.format(timestamp), method2, rate2, historyList);
 
-                RatesBuilder builder = new RatesBuilder();
-                builder.addInfo(rateListEntity);
-                result = builder.createJson();
-
-                response.setStatus(200);
-                response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
-
-                return result;
-            } catch (MappingException e) {
-                response.setStatus(402);
-                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-                return "{\"message\": \"Wrong objectID\"}";
+                rateListEntity.addRates(rate);
             }
+
+
+            RatesBuilder builder = new RatesBuilder();
+            builder.addInfo(rateListEntity);
+            result = builder.createJson();
+
+            response.setStatus(200);
+            response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
+
+            return result;
         } catch (AuthException e) {
             response.setStatus(401);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");

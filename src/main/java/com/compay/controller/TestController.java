@@ -13,19 +13,7 @@ import com.compay.entity.Scales;
 import com.compay.entity.Services;
 import com.compay.entity.Token;
 import com.compay.entity.User;
-import com.compay.service.AdressArgumentsService;
-import com.compay.service.AdressService;
-import com.compay.service.AdressServicesService;
-import com.compay.service.ArgumentsService;
-import com.compay.service.CalculationsService;
-import com.compay.service.DefaultRatesService;
-import com.compay.service.DefaultScalesService;
-import com.compay.service.MethodsService;
-import com.compay.service.RatesService;
-import com.compay.service.ScalesService;
-import com.compay.service.ServicesService;
-import com.compay.service.TokenService;
-import com.compay.service.UserService;
+import com.compay.service.*;
 import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,6 +154,16 @@ public class TestController {
         return result;
     }
 
+
+    @Autowired
+    TruncateDataBase truncateDataBase;
+
+    @RequestMapping(value = "/dropAll", method = RequestMethod.GET)
+    @ResponseBody
+    public String truncateDB() throws Exception {
+        truncateDataBase.truncate();
+        return "tables has been dropped";
+    }
 
     @RequestMapping(value = "/testInitializeDataBase", method = RequestMethod.GET)
     @ResponseBody
