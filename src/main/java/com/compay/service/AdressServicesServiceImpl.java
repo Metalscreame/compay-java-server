@@ -46,6 +46,11 @@ public class AdressServicesServiceImpl implements  AdressServicesService{
     }
 
     @Override
+    public List<AdressServices> findAllByAdressId(int id) {
+        return adressServicesRepository.findAllByAdress_Id(id);
+    }
+
+    @Override
     public AdressServices update(AdressServices adressService) {
         return adressServicesRepository.save(adressService);
     }

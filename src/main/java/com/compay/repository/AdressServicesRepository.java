@@ -25,4 +25,7 @@ public interface AdressServicesRepository extends JpaRepository<AdressServices, 
 
     @Query("SELECT a from  AdressServices a where a.adress.id =:aId and a.service.id=:sId")
     AdressServices findByAdressIdAndServiceId(@Param("aId") int adressId,@Param("sId") int serviceId);
+
+    List<AdressServices> findAllByAdress_Id(int id);
+
 }

@@ -28,7 +28,7 @@ public class CalculationMethods {
     @ResponseBody
     public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
                                @RequestHeader(value = AUTHORIZATION) String authToken,
-                               HttpServletResponse response) throws JsonProcessingException, ParseException {
+                               HttpServletResponse response){
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
@@ -54,7 +54,7 @@ public class CalculationMethods {
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
-            String result = null;
+            String result;
 
             result = "[{\"formulaId\":\"rate_livingSpace\",\"formula\":\" [Тариф] х [Жилая площадь]\",\"attrs\":{\"rate\":{\"name\":\"Тариф\",\"val\":\"\",\"units\":\"(грн/м2)/мес\"},\"livingSpace\": {     \"name\":\"Жилая площадь\",\"val\":\"\",\"units\":\"м2\"}}},{\"formulaId\":\"rate_coeff\",\"formula\":\" [Тариф] х [Коэффициент]\",\"attrs\":{\"rate\":{\"name\":\"Тариф\",\"val\":\"\",\"units\":\"(грн/м2)/мес\"},\"coeff\": {\"name\":\"Коэффициент\",\"val\":\"\",\"units\":\"\"}}}]";
             response.setStatus(200);

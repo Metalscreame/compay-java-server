@@ -1,11 +1,6 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.Adress;
-import com.compay.entity.AdressArguments;
-import com.compay.entity.Methods;
-import com.compay.entity.Scales;
-import com.compay.entity.AdressServices;
-import com.compay.entity.Rates;
+import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.global.Constants;
@@ -20,6 +15,11 @@ import com.compay.json.RateList.RateListEntity;
 import com.compay.json.RateList.RatesBuilder;
 import com.compay.json.RateList.Scale;
 import com.compay.json.RatesUpdate.RatesUpdate;
+import com.compay.json.adminResponses.rateList.Formula;
+import com.compay.json.adminResponses.rateList.Method;
+import com.compay.json.adminResponses.rateList.RateListBuilder;
+import com.compay.json.adminResponses.rateList.Service;
+import com.compay.repository.DefaultScalesRepository;
 import com.compay.repository.RatesRepository;
 import com.compay.repository.ScalesRepository;
 import com.compay.service.*;
@@ -50,9 +50,6 @@ public class RatesControllers {
     private TokenService tokenService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private AdressService adressService;
 
     @Autowired
@@ -76,18 +73,22 @@ public class RatesControllers {
     @Autowired
     private ScalesService scalesService;
 
+    @Autowired
+    private DefaultRatesService defaultRatesService;
+
+    @Autowired
+    private DefaultScalesRepository defaultScalesRepository;
+
 
     @RequestMapping(value = "/rates/{objectID}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
                                @RequestHeader(value = AUTHORIZATION) String authToken,
-                               HttpServletResponse response, @PathVariable("objectID") int objectID) throws JsonProcessingException, ParseException {
-
-
+                               HttpServletResponse response, @PathVariable("objectID") int objectID) throws JsonProcessingException {
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
-            String result = null;
+            String result;
 
             //checking for correct objectID
             Adress adress = adressService.findAdressById(objectID);
@@ -101,14 +102,63 @@ public class RatesControllers {
             try {
                 resultQuery = ratesRepository.findAllByAdressServices(objectID, periodTimestamp.getTime());
             } catch (RuntimeException e) {
-                RateListEntity rateListEntity = new RateListEntity();
-                RatesBuilder builder = new RatesBuilder();
-                builder.addInfo(rateListEntity);
-                result = builder.createJson();
+                //if there is no rates
 
+                List<AdressServices> adressServices= adressServicesService.findAllByAdressId(objectID);
+                List<DefaultRates> defaultRatesList=new ArrayList<>();
+
+                for(AdressServices a:adressServices){
+                    defaultRatesList.add(defaultRatesService.findByService_Id(a.getId()));
+                }
+
+                //arr list for json
+                ArrayList<Object> arrayList = new ArrayList<>();
+
+                for (DefaultRates defaultRates : defaultRatesList) {
+                    final Services service = defaultRates.getService();
+                    final Methods method = defaultRates.getMethod();
+
+
+                    Service serviceRate = new Service(service.getId(), service.getServiceName(), service.getLink(), service.getUnits());
+                    Method methodRate = new Method(method.getId(), method.getName(), method.getView());
+
+                    com.compay.json.adminResponses.rateList.Rate rate = new com.compay.json.adminResponses.rateList.Rate(serviceRate, methodRate);
+
+                    final ArrayList<com.compay.json.adminResponses.rateList.Scale> defaultScaleArrayList = new ArrayList<>();
+                    final List<DefaultScales> defaultScalesList = defaultScalesRepository.findAllByDefaultRates(defaultRates);
+
+                    for (DefaultScales defaultScales : defaultScalesList) {
+                        defaultScaleArrayList.add(new com.compay.json.adminResponses.rateList.Scale(defaultScales.getMinValue(), defaultScales.getMaxValue(), defaultScales.getMainRate()));
+                    }
+                    rate.setScale(defaultScaleArrayList);
+
+                    rate.setMainRate(defaultRates.getMainRate());
+
+                    if (defaultRates.getFormula() != null && !defaultRates.getFormula().isEmpty()) {
+                        final Formula formula = new Formula(defaultRates.getFormula());
+                        rate.setFormula(formula);
+
+                        final com.compay.json.adminResponses.rateList.Arguments arguments = new com.compay.json.adminResponses.rateList.Arguments(defaultRates.getMainRate(), 50d);
+                        rate.setArguments(arguments);
+                    }
+
+                    arrayList.add(rate);
+                }
+
+                RateListBuilder builder = new RateListBuilder();
+
+                result = builder.createJson(arrayList);
+
+
+
+
+
+//                RateListEntity rateListEntity = new RateListEntity();
+//                RatesBuilder builder = new RatesBuilder();
+//                builder.addInfo(rateListEntity);
+//                result = builder.createJson();
                 response.setStatus(200);
                 response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
-
                 return result;
             }
 

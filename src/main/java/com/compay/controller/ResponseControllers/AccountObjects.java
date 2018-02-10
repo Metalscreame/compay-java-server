@@ -66,7 +66,6 @@ public class AccountObjects {
 
             try {
                 Adress adress = new Adress();
-                //adress.setId(999999999);
                 adress.setType(accountObjectsJSON.getName());
                 //костыль для фронта
                 adress.setObjectDefault(true);

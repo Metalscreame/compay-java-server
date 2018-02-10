@@ -1,9 +1,7 @@
 package com.compay.config;
 
 
-import com.compay.repository.UserRepository;
 import com.compay.service.UserDetailsServiceImpl;
-import com.compay.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
