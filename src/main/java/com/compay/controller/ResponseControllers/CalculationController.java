@@ -156,7 +156,7 @@ public class CalculationController {
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
-            String result = null;
+            String result;
 
             //checking for correct objectID
             Adress adress = adressService.findAdressById(objectID);
@@ -171,7 +171,7 @@ public class CalculationController {
 
                 resultQuery = calculationsRepository.findAllByUserAdressPeriod(objectID, periodTimestamp, adress.getUser().getId());
 
-            } catch (RuntimeException e) {
+            } catch (Exception e) {
                 ArrayList services = new ArrayList();
                 CalculationEntity entity = new CalculationEntity(period, services);
                 CalculationBuilder builder = new CalculationBuilder();
