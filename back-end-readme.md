@@ -9,10 +9,10 @@ https://tomcat.apache.org/download-80.cgi
 Разахривировать его в любое доступное место(вы потому туда еще попадете, так что запомните его :) )
 
 Открыть свойтства вашего компьютера -> Дополнительные параметры системы -> Переменные среды:
-Переменные среды пользователя. Создать 
+Переменные среды пользователя. Создать и использовать ваши пути
 
-	JRE_HOME  	      	C:\Program Files\Java\jre1.8.0_151 (     )
-	CATALINA_HOME		D:\Development\Tomcat\apache-tomcat-8.5.23   (   )
+	JRE_HOME  	      	C:\Program Files\Java\jre1.8.0_151
+	CATALINA_HOME		D:\Development\Tomcat\apache-tomcat-8.5.23  
 
   Системные переменные 
 
