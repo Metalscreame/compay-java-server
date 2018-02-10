@@ -32,7 +32,6 @@ public class TruncateDataBase {
             AbstractEntityPersister aep = (AbstractEntityPersister) classMetadata;
             tableNames.add(aep.getTableName());
         }
-
         entityManager.flush();
         tableNames.forEach(tableName -> entityManager.createNativeQuery("DELETE FROM " + tableName).executeUpdate());
     }

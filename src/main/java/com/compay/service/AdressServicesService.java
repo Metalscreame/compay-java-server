@@ -16,5 +16,7 @@ public interface AdressServicesService {
     List<AdressServices> findAllByService(Services service);
 
     AdressServices findByAdressIdandServiceId(int adressId,int services);
+    List<AdressServices> findAllByAdressId(int id);
+
 
 }
