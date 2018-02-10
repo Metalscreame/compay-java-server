@@ -108,7 +108,7 @@ public class RequaritiesController {
             @RequestHeader(value = CONTENT_TYPE) String type,
             @RequestHeader(value = AUTHORIZATION) String authToken,
             HttpServletResponse response,
-            @PathVariable("objectId") int id) throws AuthException, JsonProcessingException {
+            @PathVariable("objectID") int id) throws AuthException, JsonProcessingException {
 
         String result = "";
 
