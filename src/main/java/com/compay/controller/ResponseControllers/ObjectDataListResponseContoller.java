@@ -9,6 +9,7 @@ import com.compay.exception.AuthException;
 import com.compay.global.Constants;
 import com.compay.json.ObjectsDataList.ObjectsDataListEntity;
 import com.compay.json.ObjectsDataList.ObjectsDataListJsonBuilder;
+import com.compay.repository.AdressServicesRepository;
 import com.compay.service.AdressService;
 import com.compay.service.AdressServicesService;
 import com.compay.service.ServicesService;
@@ -42,8 +43,12 @@ public class ObjectDataListResponseContoller {
 
     @Autowired
     private AdressService adressService;
+
     @Autowired
     private AdressServicesService adressServicesService;
+
+    @Autowired
+    private AdressServicesRepository adressServicesRepository;
 
     @Autowired
     private ServicesService servicesService;
@@ -85,7 +90,7 @@ public class ObjectDataListResponseContoller {
                         //building serviceList
                         String resultServiceList = "";
                         Adress adress = adressService.findAdressById(adres.getId());
-                        List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
+                        List<AdressServices> adressServicesList = adressServicesRepository.findAllByActiveServiceAdress(adress);
                         List<Map> serviceList = new ArrayList<>();
                         for (AdressServices adressServices : adressServicesList) {
                             Services service = adressServices.getService();
@@ -101,7 +106,7 @@ public class ObjectDataListResponseContoller {
                                 "/" + adres.getAppartmentNumber();
                         //serviceList
                         Adress adress = adressService.findAdressById(adres.getId());
-                        List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
+                        List<AdressServices> adressServicesList = adressServicesRepository.findAllByActiveServiceAdress(adress);
                         List<Map> serviceList = new ArrayList<>();
                         for (AdressServices adressServices : adressServicesList) {
                             Services service = adressServices.getService();
