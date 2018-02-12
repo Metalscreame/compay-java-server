@@ -548,42 +548,42 @@ public class TestController {
         Calculations calculations = new Calculations();
         calculations.setId(1);
         calculations.setAdress(adressId1);
-        calculations.setCountCurrent(125);
-        calculations.setCountLast(231);
+        calculations.setCountCurrent(231);
+        calculations.setCountLast(125);
 
 
         String datestr1 = "2017-09-01";
         Date parsedDate1 = dateFormat.parse(datestr1);
         Timestamp timestamp = new java.sql.Timestamp(parsedDate1.getTime());
         calculations.setPeriod(timestamp);
-        calculations.setSum(2);
+        calculations.setSum(104);
         calculations.setService(service1);
         calculations.setUser(user);
         calculationsService.create(calculations);
 
         calculations.setId(2);
         calculations.setAdress(adressId1);
-        calculations.setCountCurrent(120);
+        calculations.setCountCurrent(510);
         calculations.setCountLast(231);
         String datestr2 = "2017-11-01";
         Date parsedDate2 = dateFormat.parse(datestr2);
         Timestamp timestamp2 = new java.sql.Timestamp(parsedDate2.getTime());
         calculations.setPeriod(timestamp2);
-        calculations.setSum(2);
+        calculations.setSum(224);
         calculations.setService(service1);
         calculations.setUser(user);
         calculationsService.create(calculations);
 
         calculations.setId(3);
         calculations.setAdress(adressId1);
-        calculations.setCountCurrent(510);
-        calculations.setCountLast(231);
+        calculations.setCountCurrent(615);
+        calculations.setCountLast(510);
 
         String datestr3 = "2017-12-01";
         Date parsedDate3 = dateFormat.parse(datestr3);
         Timestamp timestamp3 = new java.sql.Timestamp(parsedDate3.getTime());
         calculations.setPeriod(timestamp3);
-        calculations.setSum(2);
+        calculations.setSum(102.5d);
         calculations.setService(service1);
         calculations.setUser(user);
         calculationsService.create(calculations);
@@ -591,27 +591,27 @@ public class TestController {
         calculations.setId(4);
         calculations.setAdress(adressId1);
         calculations.setCountCurrent(510);
-        calculations.setCountLast(231);
+        calculations.setCountLast(500);
         String datestr4 = "2018-01-01";
 
         Date parsedDate = dateFormat.parse(datestr4);
         Timestamp timestamp4 = new java.sql.Timestamp(parsedDate.getTime());
         calculations.setPeriod(timestamp4);
-        calculations.setSum(58);
+        calculations.setSum(12.30d);
         calculations.setService(service2);
         calculations.setUser(user);
         calculationsService.create(calculations);
 
         calculations.setId(5);
         calculations.setAdress(adressId1);
-        calculations.setCountCurrent(510);
-        calculations.setCountLast(231);
+        calculations.setCountCurrent(435);
+        calculations.setCountLast(215);
 
         String datestr5 = "2017-10-01";
         Date parsedDate5 = dateFormat.parse(datestr5);
         Timestamp timestamp5 = new java.sql.Timestamp(parsedDate5.getTime());
         calculations.setPeriod(timestamp5);
-        calculations.setSum(8);
+        calculations.setSum(1518);
         calculations.setService(service3);
         calculations.setUser(user);
         calculationsService.create(calculations);
