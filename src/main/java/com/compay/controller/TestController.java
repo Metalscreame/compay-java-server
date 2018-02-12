@@ -37,7 +37,6 @@ import static com.compay.global.Constants.USER;
 Controller to test the stuff
  */
 
-
 @Controller
 public class TestController {
     @Autowired
@@ -98,14 +97,7 @@ public class TestController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public String test() {
-
-//        ArrayList<String> buffer = new ArrayList<>();
-//
-//        try (Stream<User> stream = svc.findAll()) {
-//            stream.forEach((k)->buffer.add("User : " + k));
-//        }
         return "The first user in the database is : " + svc.findUserById(1).getEmail();
-
         //return "redirect:index.jsp/";
 //        return buffer.get(1);
     }
@@ -113,22 +105,17 @@ public class TestController {
     @RequestMapping(value = "/testName", method = RequestMethod.GET)
     @ResponseBody
     public String testNameFinder() {
-
         List testList = svc.findByName("romka");//сетаем то, что мы будем искать
         User firstUserWIthName = (User) testList.get(0);//Возвращает первую запись
-
         return firstUserWIthName.getName();
     }
 
     @RequestMapping(value = "/testEmail", method = RequestMethod.GET)
     @ResponseBody
     public String testEmailFind() {
-
         User firstUserWithMail = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
-
         return "The user with " + firstUserWithMail.getEmail() + " has ID: " + firstUserWithMail.getId() + ", Name : " + firstUserWithMail.getName() + ", Password :  " + firstUserWithMail.getPassword();
     }
-
 
     @RequestMapping(value = "/testJson", method = RequestMethod.GET)
     @ResponseBody
@@ -153,7 +140,6 @@ public class TestController {
         }
         return result;
     }
-
 
     @Autowired
     TruncateDataBase truncateDataBase;

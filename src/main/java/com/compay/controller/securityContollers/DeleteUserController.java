@@ -35,7 +35,6 @@ public class DeleteUserController {
     public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
                                @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response) throws JsonProcessingException, ParseException {
-
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
