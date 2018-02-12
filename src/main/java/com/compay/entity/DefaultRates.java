@@ -13,7 +13,7 @@ public class DefaultRates {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "SERVICEID", nullable = false, referencedColumnName = "Id")
+    @JoinColumn(name = "SERVICE_ID", nullable = false, referencedColumnName = "Id")
     private Services defaultServices;
 
     @ManyToOne

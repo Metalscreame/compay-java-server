@@ -50,7 +50,6 @@ public class LoginController {
         boolean isUser, isAdmin;
         LoginResponseBuilder builder = new LoginResponseBuilder();
 
-
         //json deserealize
         PersonToLoginEntity userToLogin = new ObjectMapper().readValue(body, PersonToLoginEntity.class);
 
@@ -95,7 +94,6 @@ public class LoginController {
                     newToken.setToken();
                     tokenService.create(newToken);
                 }
-
             } catch (Exception e) {
                 //first time Login
                 newToken.setId(Integer.MAX_VALUE);
@@ -105,7 +103,6 @@ public class LoginController {
                 newToken.setToken();
                 tokenService.create(newToken);
             }
-
 
             ObjectListEntity objectDefault = new ObjectListEntity();
             List<Adress> adresses = adressService.findAllByUser(user);
@@ -125,7 +122,6 @@ public class LoginController {
                 builder.addInfo(new LoginResponseEntity(newToken.getToken(), isAdmin, isUser, new ArrayList()));
             }
 
-
             result = builder.createJson();
             response.setStatus(200);
             response.setHeader("Headers", "{\"Content-Type\":\"application/json\"}");
@@ -135,7 +131,5 @@ public class LoginController {
             response.setHeader("Headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\":\"Неверный пароль или логин\"}";
         }
-
-
     }
 }

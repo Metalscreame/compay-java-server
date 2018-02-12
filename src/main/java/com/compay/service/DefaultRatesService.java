@@ -12,4 +12,5 @@ public interface DefaultRatesService {
     List<DefaultRates> findAll();
     void deleteAll();
     void save(DefaultRates defaultRates);
+    DefaultRates findByService_Id(int serviceId);
 }

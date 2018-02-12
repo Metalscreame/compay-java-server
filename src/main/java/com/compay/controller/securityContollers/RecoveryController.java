@@ -78,7 +78,6 @@ public class RecoveryController {
         }
         user = service.findByEmail(user.getEmail());
 
-
         //temp for lambda
         User finalUser = user;
         new Thread(() -> mailSender.sendRecoveryMail(finalUser)).start();
@@ -87,7 +86,6 @@ public class RecoveryController {
         response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
         return "{\"info\": \"На указанный адрес E-mail отправлено письмо с новым паролем\"}";
     }
-
 
     @RequestMapping(value = "/admin/resetUserPassword", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
