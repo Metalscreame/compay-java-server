@@ -159,7 +159,7 @@ public class RatesControllers {
 //                result = builder.createJson();
                 response.setStatus(200);
                 response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
-                return result;
+                return "{\"rates\":"+result+"}";
             }
 
                 /*
@@ -185,6 +185,7 @@ public class RatesControllers {
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
 
             for (Object[] rQ : resultQuery) {
+
 
                 //createRate2(int methodId, int rates_id, float mainRate, String formula);
                 Rate2 rate2 = createRate2(adress, (int) rQ[12], (Float) rQ[9], ((String) rQ[6]));
