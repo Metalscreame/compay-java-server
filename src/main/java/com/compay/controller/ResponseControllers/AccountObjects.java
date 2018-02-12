@@ -1,22 +1,20 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.Adress;
-import com.compay.entity.AdressServices;
-import com.compay.entity.Services;
-import com.compay.entity.User;
+import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.global.Constants;
 import com.compay.json.AccountObjectsDelete.AccObjDelEntity;
 import com.compay.json.accountObjects.AccountObjectsJSON;
 import com.compay.json.accountObjects.AccountObjectsJSONUpdate;
-import com.compay.service.AdressService;
-import com.compay.service.AdressServicesService;
-import com.compay.service.ServicesService;
-import com.compay.service.TokenService;
+import com.compay.json.profile.ProfileBuilder;
+import com.compay.json.profile.ProfileEntity;
+import com.compay.repository.DefaultRatesRepository;
+import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -49,52 +49,66 @@ public class AccountObjects {
     @Autowired
     ServicesService servicesService;
 
-    @RequestMapping(value = "/accountObjects/add", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
-    @ResponseBody
-    public String responseBodyAdd(@RequestHeader(value = CONTENT_TYPE) String type,
-                                  @RequestHeader(value = AUTHORIZATION) String authToken,
-                                  @RequestBody AccountObjectsJSON accountObjectsJSON,
-                                  HttpServletResponse response) {
+    @Autowired
+    DefaultRatesService defaultRatesService;
+
+    @Autowired
+    RatesService ratesService;
+
+
+        @RequestMapping(value = "/accountObjects/add", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
+        @ResponseBody
+        public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
+                                   @RequestHeader(value = AUTHORIZATION) String authToken,
+//                @RequestBody AccountObjectsJSON accountObjectsJSON,
+                                   @RequestBody Adress adress,
+                                   HttpServletResponse response, HttpServletRequest request) {
 
 
         try {
-            String result = null;
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
-            if (accountObjectsJSON == null) throw new WrongDataExc();
-            User currentUser = tokenService.findByToken(authToken).getUser();
-
             try {
-                Adress adress = new Adress();
-                adress.setType(accountObjectsJSON.getName());
-                //костыль для фронта
-                adress.setObjectDefault(true);
-                adress.setUser(currentUser);
-                adress.setAppartmentNumber("");
-                adress.setCity("");
-                adress.setHouseNumber((short) 0);
-                adress.setRegion("");
-                adress.setStreet("");
 
-                Set<AdressServices> adressServSet = new HashSet<>();
-                for (Integer serviceId : accountObjectsJSON.getServices()) {
 
-                    Services service = servicesService.findServicesById(serviceId);
+                List<AdressServices> receivedAdressServiceesList =
+                        adressServicesService.findAllByAdress(adress);
 
-                    if (service == null) throw new WrongDataExc();
 
-                    AdressServices adressService = new AdressServices();
-                    adressService.setAdress(adress);
-                    adressService.setService(service);
-                    adressServSet.add(adressService);
+
+                for(AdressServices adressServices:receivedAdressServiceesList){
+                    Services service = adressServices.getService();
+
+                    DefaultRates defaultRates = defaultRatesService.findByService_Id(service.getId());
+
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
+                    calendar.set(Calendar.DAY_OF_MONTH,1);
+
+
+
+                    Rates rates = new Rates();
+                    rates.setAdressService(adressServices);
+                    rates.setFormula(defaultRates.getFormula());
+                    rates.setMainRate(defaultRates.getMainRate());
+                    rates.setUserScale(defaultRates.getUserScale());
+                    rates.setMethod(defaultRates.getMethod());
+                    rates.setPeriodFrom( new Timestamp(calendar.getTimeInMillis()));
+
+                    ratesService.create(rates);
+
+
                 }
-                adress.setAdressService(adressServSet);
-                adressService.create(adress);
 
                 response.setStatus(200);
                 response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
                 return "{\"info\": \"Объект учета успешно добавлен\"}";
-            } catch (WrongDataExc e) {
+            } catch (Exception e) {
+                e.printStackTrace();
                 response.setStatus(402);
                 response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
                 return "{\"info\": \"Wrong data\"}";
@@ -104,12 +118,14 @@ public class AccountObjects {
             response.setStatus(401);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\": \"Unauthorized\"}";
-        } catch (WrongDataExc e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"info\": \"Wrong data\"}";
         }
-    }
+}
+
 
     @RequestMapping(value = "/accountObjects/update", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody

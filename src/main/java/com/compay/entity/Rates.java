@@ -1,6 +1,8 @@
 package com.compay.entity;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Set;

@@ -1,6 +1,8 @@
 package com.compay.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +15,20 @@ public class Adress {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    public Adress(int id,short houseNumber, String street, String appartmentNumber, String city, String region, boolean objectDefault, String type) {
+        this.houseNumber = houseNumber;
+        this.street = street;
+        this.appartmentNumber = appartmentNumber;
+        this.city = city;
+        this.region = region;
+        this.objectDefault = objectDefault;
+        this.type = type;
+        this.id = id;
+    }
+
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")//foreignKey = @ForeignKey())
+    @JsonIgnore
     private User user;
 
     @Column(name = "HOUSE_NUMBER",nullable = false)
@@ -35,8 +49,13 @@ public class Adress {
     @Column(name = "DEFAULT_OBJ",nullable = false)
     private boolean objectDefault;
 
+    public Adress() {
+    }
+
     @Column(name = "TYPE",nullable = false)
     private String type;
+
+
 
     public String getType() {
         return type;

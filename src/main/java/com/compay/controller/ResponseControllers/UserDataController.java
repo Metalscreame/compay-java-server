@@ -3,7 +3,6 @@ package com.compay.controller.ResponseControllers;
 import com.compay.entity.Adress;
 import com.compay.entity.User;
 import com.compay.exception.AuthException;
-import com.compay.global.Constants;
 import com.compay.service.AdressService;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.compay.global.Constants.ADMIN;
-
 @Controller
 public class UserDataController {
     @Autowired
@@ -29,36 +26,40 @@ public class UserDataController {
     private UserService userService;
     @Autowired
     private AdressService adressService;
-
-    @RequestMapping(value = "/userData", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
+    @RequestMapping(value = "/userData", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String responseBody(@RequestHeader(value = "Authorization") String authToken,
                                HttpServletResponse response) throws AuthException, JsonProcessingException {
         String res = "";
 
+//        String authToken="2f12931cb1c6032a1472d50ccdfc1b4185e6af78";
 
         if (!tokenService.authChek(authToken)) {
             response.setStatus(401);
 
             ObjectNode error = new ObjectMapper().createObjectNode();
-            error.put("message", "Unauthorized");
+            error.put("message","Unauthorized");
             res = error.toString();
-        } else {
+        }
+        else {
             User usrByToken = tokenService.findByToken(authToken).getUser();
             Adress findedAdress = adressService.findDefaultAdressByUsrId(usrByToken.getId());
 
             ObjectNode rootNode = new ObjectMapper().createObjectNode();
-            rootNode.put("isAdmin", usrByToken.getRole().equals(ADMIN));
+            rootNode.put("isAdmin",usrByToken.getRole().equals("admin"));
 
             ObjectNode adressNode = new ObjectMapper().createObjectNode();
-            adressNode.put("id", findedAdress.getId());
-            adressNode.put("name", findedAdress.getType() + ", " + findedAdress.getStreet() + " " +
-                    findedAdress.getHouseNumber() + "/" + findedAdress.getAppartmentNumber());
-            adressNode.put("objectDefault", findedAdress.getObjectDefault());
 
-            rootNode.put("currentObject", adressNode);
+            if(findedAdress != null) {
+                adressNode.put("id", findedAdress.getId());
+                adressNode.put("name", findedAdress.getType() + ", " + findedAdress.getStreet() + " " +
+                        findedAdress.getHouseNumber() + "/" + findedAdress.getAppartmentNumber());
+                adressNode.put("objectDefault", findedAdress.getObjectDefault());
 
-            res = rootNode.toString();
+            }
+            rootNode.put("currentObject",adressNode);
+
+            res  = rootNode.toString();
 
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
