@@ -232,7 +232,7 @@ public class ReportsControllers {
                     //sumDetailData
                     List listSumDetail = new LinkedList();
                     listSumDetail.add(sdfDateMonth.format(calc.getPeriod()));
-                    listSumDetail.add(Math.max(0, calc.getSum());
+                    listSumDetail.add(Math.max(0, calc.getSum()));
                     listReportSumDetail.add(listSumDetail);
 
                     //sumTotalData
