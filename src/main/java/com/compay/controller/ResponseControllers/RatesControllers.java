@@ -104,10 +104,10 @@ public class RatesControllers {
             } catch (RuntimeException e) {
                 //if there is no rates
 
-                List<AdressServices> adressServices= adressServicesService.findAllByAdressId(objectID);
-                List<DefaultRates> defaultRatesList=new ArrayList<>();
+                List<AdressServices> adressServices = adressServicesService.findAllByAdressId(objectID);
+                List<DefaultRates> defaultRatesList = new ArrayList<>();
 
-                for(AdressServices a:adressServices){
+                for (AdressServices a : adressServices) {
                     defaultRatesList.add(defaultRatesService.findByService_Id(a.getId()));
                 }
 
@@ -150,16 +150,13 @@ public class RatesControllers {
                 result = builder.createJson(arrayList);
 
 
-
-
-
 //                RateListEntity rateListEntity = new RateListEntity();
 //                RatesBuilder builder = new RatesBuilder();
 //                builder.addInfo(rateListEntity);
 //                result = builder.createJson();
                 response.setStatus(200);
                 response.setHeader("headers", "{\"Content-Type':\"application/json\"}");
-                return "{\"rates\":"+result+"}";
+                return "{\"rates\":" + result + "}";
             }
 
                 /*
@@ -368,17 +365,36 @@ public class RatesControllers {
         }
 
         try {
-            ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
-            ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
+            if (updateBody.getServiceID() == 1) {
+                ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
+                ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
+                int i = 0;
+                for (Scales s : scalesToUpd) {
+                    com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
+                    s.setMainRate(scaleToSet.getMainRate());
+                    s.setMaxValue(scaleToSet.getMaxValue());
+                    s.setMinValue(scaleToSet.getMinValue());
+                    scalesService.update(s);
+                    ++i;
+                }
+            }
 
-            int i = 0;
-            for (Scales s : scalesToUpd) {
-                com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
-                s.setMainRate(scaleToSet.getMainRate());
-                s.setMaxValue(scaleToSet.getMaxValue());
-                s.setMinValue(scaleToSet.getMinValue());
-                scalesService.update(s);
-                ++i;
+            if(updateBody.getServiceID() == 2||updateBody.getServiceID()==3||updateBody.getServiceID()==6||updateBody.getServiceID()==7){
+                rateToUpdt.setMainRate(updateBody.getRate().getMainRate());
+                ratesService.update(rateToUpdt);
+            }
+
+            if(updateBody.getServiceID()==4){
+                rateToUpdt.setFormula(updateBody.getRate().getValue());
+                //find adress arg by arg id and adress id to update
+                AdressArguments adrArgTpUpd =adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(),2);
+                adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getMainRate().getValue());
+                adressArgumentsService.create(adrArgTpUpd);
+                adrArgTpUpd =adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(),1);
+                adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getLivingArea().getValue());
+                adressArgumentsService.create(adrArgTpUpd);
+
+                ratesService.update(rateToUpdt);
             }
 
             response.setStatus(200);

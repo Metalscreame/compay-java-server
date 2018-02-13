@@ -334,19 +334,22 @@ public class TestController {
 
         argumentsService.create(argument1);
 
+
+
+        Arguments argument3 = new Arguments();
+        argument3.setId(2);
+        argument3.setName("mainRate");
+        argument3.setView("Тариф, грн");
+
+        argumentsService.create(argument3);
+
         Arguments argument2 = new Arguments();
-        argument2.setId(2);
+        argument2.setId(3);
         argument2.setName("registeredPersons");
         argument2.setView("Прописано человек, чел");
 
         argumentsService.create(argument2);
 
-        Arguments argument3 = new Arguments();
-        argument3.setId(3);
-        argument3.setName("mainRate");
-        argument3.setView("Тариф, грн");
-
-        argumentsService.create(argument3);
 
         message += " Arguments;";
 

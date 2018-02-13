@@ -49,6 +49,10 @@ public class AccountObjects {
     DefaultRatesService defaultRatesService;
 
 
+    @Autowired
+    AdressArgumentsService adressArgumentsService;
+    @Autowired
+    ArgumentsService argumentsService;
     @RequestMapping(value = "/accountObjects/add", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBodyAdd(@RequestHeader(value = CONTENT_TYPE) String type,
@@ -74,6 +78,11 @@ public class AccountObjects {
                 adress.setHouseNumber((short) 0);
                 adress.setRegion("");
                 adress.setStreet("");
+
+
+
+
+
 
                 //creating current first day of a month
                 Calendar calendar = Calendar.getInstance();
@@ -117,6 +126,22 @@ public class AccountObjects {
                 }
                 adress.setAdressService(adressServSet);
                 adressService.create(adress);
+
+
+
+                //made for rates update, dummy arguments
+                if(accountObjectsJSON.getName().equals("Квартира")){
+                    for(int i=0;i<2;i++){
+                        Arguments arguments = argumentsService.findArgumentById(i);
+                        AdressArguments ad= new AdressArguments();
+                        ad.setAdress(adress);
+                        ad.setValue(0.0);
+                        ad.setArgument(arguments);
+                        adressArgumentsService.create(ad);
+                    }
+                }
+
+
 
                 response.setStatus(200);
                 response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
