@@ -23,7 +23,6 @@ import com.compay.service.TokenService;
 import com.compay.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,9 +39,6 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 public class RateList {
 
     static String errMsg;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private TokenService tokenService;

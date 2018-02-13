@@ -31,4 +31,6 @@ public interface AdressServicesRepository extends JpaRepository<AdressServices, 
 
     @Query("select c.service from AdressServices c where c.adress =:adress AND c.notActive = false")
     List<Services> findAllServiceByActiveServiceAdress(@Param("adress") Adress adress);
+
+    List<AdressServices> findAllByAdress_Id(int id);
 }

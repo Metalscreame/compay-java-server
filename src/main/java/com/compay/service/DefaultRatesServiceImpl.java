@@ -42,4 +42,9 @@ public class DefaultRatesServiceImpl implements  DefaultRatesService{
     public void save(DefaultRates defaultRates) {
         defaultRatesRepository.save(defaultRates);
     }
+
+    @Override
+    public DefaultRates findByService_Id(int serviceId) {
+        return defaultRatesRepository.findDefaultRatesByService_Id(serviceId);
+    }
 }

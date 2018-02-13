@@ -55,7 +55,6 @@ public class RegistrationController {
                     throw new AuthException();
             }
 
-
             user.setId(Integer.MAX_VALUE);//cant be null and cant be a number that is already registered
             user.setEmail(newUser.getEmail());
             user.setPassword(newUser.getPassword());
@@ -66,7 +65,6 @@ public class RegistrationController {
 
             //because email sends for too long
             new Thread(() -> mailSender.sendEmail(user)).start();
-
 
             response.setStatus(200);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");

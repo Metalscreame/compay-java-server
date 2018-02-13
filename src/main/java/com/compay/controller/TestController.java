@@ -13,19 +13,7 @@ import com.compay.entity.Scales;
 import com.compay.entity.Services;
 import com.compay.entity.Token;
 import com.compay.entity.User;
-import com.compay.service.AdressArgumentsService;
-import com.compay.service.AdressService;
-import com.compay.service.AdressServicesService;
-import com.compay.service.ArgumentsService;
-import com.compay.service.CalculationsService;
-import com.compay.service.DefaultRatesService;
-import com.compay.service.DefaultScalesService;
-import com.compay.service.MethodsService;
-import com.compay.service.RatesService;
-import com.compay.service.ScalesService;
-import com.compay.service.ServicesService;
-import com.compay.service.TokenService;
-import com.compay.service.UserService;
+import com.compay.service.*;
 import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +36,6 @@ import static com.compay.global.Constants.USER;
 /*
 Controller to test the stuff
  */
-
 
 @Controller
 public class TestController {
@@ -110,14 +97,7 @@ public class TestController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public String test() {
-
-//        ArrayList<String> buffer = new ArrayList<>();
-//
-//        try (Stream<User> stream = svc.findAll()) {
-//            stream.forEach((k)->buffer.add("User : " + k));
-//        }
         return "The first user in the database is : " + svc.findUserById(1).getEmail();
-
         //return "redirect:index.jsp/";
 //        return buffer.get(1);
     }
@@ -125,22 +105,17 @@ public class TestController {
     @RequestMapping(value = "/testName", method = RequestMethod.GET)
     @ResponseBody
     public String testNameFinder() {
-
         List testList = svc.findByName("romka");//сетаем то, что мы будем искать
         User firstUserWIthName = (User) testList.get(0);//Возвращает первую запись
-
         return firstUserWIthName.getName();
     }
 
     @RequestMapping(value = "/testEmail", method = RequestMethod.GET)
     @ResponseBody
     public String testEmailFind() {
-
         User firstUserWithMail = svc.findByEmail("test@test.test");//сетаем то, что мы будем искать
-
         return "The user with " + firstUserWithMail.getEmail() + " has ID: " + firstUserWithMail.getId() + ", Name : " + firstUserWithMail.getName() + ", Password :  " + firstUserWithMail.getPassword();
     }
-
 
     @RequestMapping(value = "/testJson", method = RequestMethod.GET)
     @ResponseBody
@@ -166,6 +141,15 @@ public class TestController {
         return result;
     }
 
+    @Autowired
+    TruncateDataBase truncateDataBase;
+
+    @RequestMapping(value = "/dropAll", method = RequestMethod.GET)
+    @ResponseBody
+    public String truncateDB() throws Exception {
+        truncateDataBase.truncate();
+        return "tables has been dropped";
+    }
 
     @RequestMapping(value = "/testInitializeDataBase", method = RequestMethod.GET)
     @ResponseBody
