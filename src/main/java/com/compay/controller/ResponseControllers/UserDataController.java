@@ -3,6 +3,7 @@ package com.compay.controller.ResponseControllers;
 import com.compay.entity.Adress;
 import com.compay.entity.User;
 import com.compay.exception.AuthException;
+import com.compay.global.Constants;
 import com.compay.service.AdressService;
 import com.compay.service.TokenService;
 import com.compay.service.UserService;
@@ -26,13 +27,11 @@ public class UserDataController {
     private UserService userService;
     @Autowired
     private AdressService adressService;
-    @RequestMapping(value = "/userData", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/userData", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBody(@RequestHeader(value = "Authorization") String authToken,
                                HttpServletResponse response) throws AuthException, JsonProcessingException {
-        String res = "";
-
-//        String authToken="2f12931cb1c6032a1472d50ccdfc1b4185e6af78";
+        String res;
 
         if (!tokenService.authChek(authToken)) {
             response.setStatus(401);

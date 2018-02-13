@@ -24,7 +24,6 @@ public class Token {
     @Column(name = "TOKEN_CREATE_DATE", nullable = false)
     private Timestamp tokenCreateDate;
 
-    //TODO токен должен выдаваться каждый раз, когда пользователь гуляет по страницам
     @Column(name = "USER_PLUS_PASS_HASH")
     private String userPlusPassHash;
 

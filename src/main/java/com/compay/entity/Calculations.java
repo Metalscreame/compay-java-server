@@ -17,7 +17,6 @@ public class Calculations {
     @JoinColumn(name = "USER_ID", nullable = false, referencedColumnName = "Id")
     private User user;
 
-    //TODO
     @Column(name = "PERIOD")
     private Timestamp period;
 
