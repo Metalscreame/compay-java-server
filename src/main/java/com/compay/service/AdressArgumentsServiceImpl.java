@@ -35,4 +35,9 @@ public class AdressArgumentsServiceImpl implements  AdressArgumentsService{
     public List<AdressArguments> findAllByArgument(Arguments argument) {
         return adressArgumentsRepository.findAllByArgument(argument);
     }
+
+    @Override
+    public AdressArguments findByAdrIdAndArgId(Integer id,Integer argId) {
+        return adressArgumentsRepository.findByAdress_IdAndArgument_Id(id,argId);
+    }
 }

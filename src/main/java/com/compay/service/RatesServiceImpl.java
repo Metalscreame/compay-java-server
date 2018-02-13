@@ -30,4 +30,9 @@ public class RatesServiceImpl implements  RatesService{
     public Rates findByAddIdAndStartDateAndMethod(int adressId, Timestamp startDate, int methodId) {
         return ratesRepository.findByAddIdAndStartDateAndMethod(adressId,startDate,methodId);
     }
+
+    @Override
+    public void update(Rates r){
+        ratesRepository.save(r);
+    }
 }
