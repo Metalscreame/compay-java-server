@@ -40,6 +40,7 @@ public class AdressServiceImpl implements  AdressService{
 
     @Override
     public Adress findDefaultAdressByUsrId(int userId) {
-        return adressRepository.findDefaultAdressByUsrId(userId).get(0);
+        List<Adress> defaultAdressByUsrId = adressRepository.findDefaultAdressByUsrId(userId);
+        return (defaultAdressByUsrId.size()>0)?defaultAdressByUsrId.get(0):null;
     }
 }

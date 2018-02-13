@@ -88,17 +88,14 @@ public class ReportsControllers {
 
             if (serviceID == 0) {
 
-                List<AdressServices> adrServicesList = adressServicesService.findAllByAdress(adress);
-
                 listHeadTotal.add("Услуга");
                 listHeadTotal.add("Стоимость");
 
                 listReportSumDetail.add(listHeadDetail);
                 listReportSumTotal.add(listHeadTotal);
                 listReportCounterTotal.add(listHeadTotal);
-
-                calculationsList = calculationsRepository.findAllByAdressPeriodFromPeriodTo(adress, periodFromTimestamp, periodToTimestamp);
-                System.out.println("!!!!!!!!!   calculationsList.size()  " + calculationsList.size());
+                List<Services> servicesActiveList = adressServicesRepository.findAllServiceByActiveServiceAdress(adress);
+                calculationsList = calculationsRepository.findAllByAdressPeriodFromPeriodTo(adress, servicesActiveList, periodFromTimestamp, periodToTimestamp);
 
 
                 TreeMap<Date, List<Calculations>> dateTreeMap =
@@ -124,7 +121,7 @@ public class ReportsControllers {
                         double sum = 0;
                         for (Calculations calc : calcList) {
                             if (calc.getService().equals(serv)) {
-                                sum = calc.getSum();
+                                sum = Math.max(0, calc.getSum());
                             }
                         }
                         listSumDetail.add(sum);
@@ -139,7 +136,7 @@ public class ReportsControllers {
                     double sum = 0;
                     for (Calculations calc : calculationsList) {
                         if (calc.getService().equals(serv)) {
-                            sum += calc.getSum();
+                            sum += Math.max(0, calc.getSum());
                         }
                     }
                     listSumTotal.add(sum);
@@ -169,7 +166,7 @@ public class ReportsControllers {
                     listCounterTotal.add(serv.getServiceName());
                     for (Calculations calc : calculationsList) {
                         if (calc.getService().equals(serv)) {
-                            counter += calc.getCountCurrent() - calc.getCountLast();
+                            counter += Math.max(0, calc.getCountCurrent() - calc.getCountLast());
                         }
                     }
                     listCounterTotal.add(counter);
@@ -190,7 +187,7 @@ public class ReportsControllers {
                         double counter = 0;
                         for (Calculations calc : calcList) {
                             if (calc.getService().equals(serv)) {
-                                counter += calc.getCountCurrent() - calc.getCountLast();
+                                counter += Math.max(0, calc.getCountCurrent() - calc.getCountLast());
                             }
                         }
                         listCounterDetail.add(counter);
@@ -232,13 +229,13 @@ public class ReportsControllers {
                     //sumDetailData
                     List listSumDetail = new LinkedList();
                     listSumDetail.add(sdfDateMonth.format(calc.getPeriod()));
-                    listSumDetail.add(calc.getSum());
+                    listSumDetail.add(Math.max(0, calc.getSum()));
                     listReportSumDetail.add(listSumDetail);
 
                     //sumTotalData
                     List listSumTotal = new LinkedList();
                     listSumTotal.add(sdfDateMonth.format(calc.getPeriod()));
-                    listSumTotal.add(calc.getSum());
+                    listSumTotal.add(Math.max(0, calc.getSum()));
                     listReportSumTotal.add(listSumTotal);
 
 
@@ -246,13 +243,13 @@ public class ReportsControllers {
                         //counterDetailData
                         List listCounterDetail = new LinkedList();
                         listCounterDetail.add(sdfDateMonth.format(calc.getPeriod()));
-                        listCounterDetail.add(calc.getCountCurrent() - calc.getCountLast());
+                        listCounterDetail.add(Math.max(0, calc.getCountCurrent() - calc.getCountLast()));
                         listReportCounterDetail.add(listCounterDetail);
 
                         //counterTotalData
                         List listCounterTotal = new LinkedList();
                         listCounterTotal.add(sdfDateMonth.format(calc.getPeriod()));
-                        listCounterTotal.add(calc.getCountCurrent() - calc.getCountLast());
+                        listCounterTotal.add(Math.max(0, calc.getCountCurrent() - calc.getCountLast()));
                         listReportCounterTotal.add(listCounterTotal);
                     }
                 }
