@@ -21,8 +21,8 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Inte
     @Query("select c from Calculations c where adress =:adress AND service =:service AND period >=:periodFrom AND period <=:periodTo order by period, service")
     List<Calculations> findAllByAdressServicePeriodFromPeriodTo(@Param("adress") Adress adress, @Param("service") Services service, @Param("periodFrom") Timestamp periodFrom, @Param("periodTo") Timestamp periodTo);
 
-    @Query("select c from Calculations c where c.adress =:adress AND c.period >=:periodFrom AND c.period <=:periodTo order by period ASC, service ASC")
-    List<Calculations> findAllByAdressPeriodFromPeriodTo(@Param("adress") Adress adress, @Param("periodFrom") Timestamp periodFrom, @Param("periodTo") Timestamp periodTo);
+    @Query("select c from Calculations c where c.adress =:adress  AND service IN (:serviceActiveList) AND c.period >=:periodFrom AND c.period <=:periodTo order by period ASC, service ASC")
+    List<Calculations> findAllByAdressPeriodFromPeriodTo(@Param("adress") Adress adress, @Param("serviceActiveList") List<Services> serviceActiveList, @Param("periodFrom") Timestamp periodFrom, @Param("periodTo") Timestamp periodTo);
 
 
     @Query("select c from Calculations c where c.adress =:adress AND c.period = :period")
