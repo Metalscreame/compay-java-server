@@ -69,6 +69,10 @@ public class AdressServices {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "adressServices")
     private Set<Rates> rate;
 
+    public void setRate(Set<Rates> rate) {
+        this.rate = rate;
+    }
+
     public int getPersAcc() {
         return persAcc;
     }

@@ -1,6 +1,8 @@
 package com.compay.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,7 +16,7 @@ public class Adress {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")//foreignKey = @ForeignKey())
-    private User user;
+     private User user;
 
     @Column(name = "HOUSE_NUMBER",nullable = false)
     private short houseNumber;
@@ -34,8 +36,12 @@ public class Adress {
     @Column(name = "DEFAULT_OBJ",nullable = false)
     private boolean objectDefault;
 
+    public Adress() {
+    }
+
     @Column(name = "TYPE",nullable = false)
     private String type;
+
 
     public String getType() {
         return type;

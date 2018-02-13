@@ -1,19 +1,13 @@
 package com.compay.controller.ResponseControllers;
 
-import com.compay.entity.Adress;
-import com.compay.entity.AdressServices;
-import com.compay.entity.Services;
-import com.compay.entity.User;
+import com.compay.entity.*;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.global.Constants;
 import com.compay.json.AccountObjectsDelete.AccObjDelEntity;
 import com.compay.json.accountObjects.AccountObjectsJSON;
 import com.compay.json.accountObjects.AccountObjectsJSONUpdate;
-import com.compay.service.AdressService;
-import com.compay.service.AdressServicesService;
-import com.compay.service.ServicesService;
-import com.compay.service.TokenService;
+import com.compay.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,26 +45,29 @@ public class AccountObjects {
     @Autowired
     ServicesService servicesService;
 
+    @Autowired
+    DefaultRatesService defaultRatesService;
+
+
     @RequestMapping(value = "/accountObjects/add", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBodyAdd(@RequestHeader(value = CONTENT_TYPE) String type,
                                   @RequestHeader(value = AUTHORIZATION) String authToken,
                                   @RequestBody AccountObjectsJSON accountObjectsJSON,
                                   HttpServletResponse response) {
-
-
         try {
-            String result = null;
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
+
             if (accountObjectsJSON == null) throw new WrongDataExc();
             User currentUser = tokenService.findByToken(authToken).getUser();
 
             try {
+
+                //creating adress
                 Adress adress = new Adress();
                 adress.setType(accountObjectsJSON.getName());
-                //костыль для фронта
-                adress.setObjectDefault(true);
+                adress.setObjectDefault(true);//костыль для фронта
                 adress.setUser(currentUser);
                 adress.setAppartmentNumber("");
                 adress.setCity("");
@@ -76,17 +75,45 @@ public class AccountObjects {
                 adress.setRegion("");
                 adress.setStreet("");
 
+                //creating current first day of a month
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                calendar.set(Calendar.DAY_OF_MONTH,1);
+
+                Timestamp timestampObj = new Timestamp(calendar.getTimeInMillis());
+
+                //creating adress services and default rates for selected services
                 Set<AdressServices> adressServSet = new HashSet<>();
                 for (Integer serviceId : accountObjectsJSON.getServices()) {
+
 
                     Services service = servicesService.findServicesById(serviceId);
 
                     if (service == null) throw new WrongDataExc();
 
+
+
                     AdressServices adressService = new AdressServices();
                     adressService.setAdress(adress);
                     adressService.setService(service);
+
+                    Set<Rates> rateSet=new HashSet<>();
+                    DefaultRates defaultRate = defaultRatesService.findByService_Id(serviceId);
+                    Rates rateToSet = new Rates();
+                    rateToSet.setMainRate(defaultRate.getMainRate());
+                    rateToSet.setMethod(defaultRate.getMethod());
+                    rateToSet.setPeriodFrom(timestampObj);
+                    rateToSet.setUserScale(defaultRate.getUserScale());
+                    rateToSet.setFormula(defaultRate.getFormula());
+                    rateToSet.setAdressService(adressService);
+                    rateSet.add(rateToSet);
+
+                    adressService.setRate(rateSet);
                     adressServSet.add(adressService);
+
                 }
                 adress.setAdressService(adressServSet);
                 adressService.create(adress);
@@ -145,12 +172,33 @@ public class AccountObjects {
                     }
                     if (newServiceId) {
                         Services service = servicesService.findServicesById(serviceId);
-
                         if (service == null) throw new WrongDataExc();
 
                         AdressServices adressService = new AdressServices();
                         adressService.setAdress(adress);
                         adressService.setService(service);
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        calendar.set(Calendar.DAY_OF_MONTH,1);
+
+                        Timestamp timestampObj = new Timestamp(calendar.getTimeInMillis());
+
+                        Set<Rates> rateSet=new HashSet<>();
+                        DefaultRates defaultRate = defaultRatesService.findByService_Id(serviceId);
+                        Rates rateToSet = new Rates();
+                        rateToSet.setMainRate(defaultRate.getMainRate());
+                        rateToSet.setMethod(defaultRate.getMethod());
+                        rateToSet.setPeriodFrom(timestampObj);
+                        rateToSet.setUserScale(defaultRate.getUserScale());
+                        rateToSet.setFormula(defaultRate.getFormula());
+                        rateToSet.setAdressService(adressService);
+                        rateSet.add(rateToSet);
+                        adressService.setRate(rateSet);
+
                         adressServicesService.create(adressService);
                     }
                 }

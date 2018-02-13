@@ -38,7 +38,6 @@ public class User {
         this.role = role;
     }
 
-
     public int getId() {
         return id;
     }
@@ -84,7 +83,6 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Adress> adress;
