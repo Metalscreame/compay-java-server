@@ -88,17 +88,14 @@ public class ReportsControllers {
 
             if (serviceID == 0) {
 
-                List<AdressServices> adrServicesList = adressServicesService.findAllByAdress(adress);
-
                 listHeadTotal.add("Услуга");
                 listHeadTotal.add("Стоимость");
 
                 listReportSumDetail.add(listHeadDetail);
                 listReportSumTotal.add(listHeadTotal);
                 listReportCounterTotal.add(listHeadTotal);
-
-                calculationsList = calculationsRepository.findAllByAdressPeriodFromPeriodTo(adress, periodFromTimestamp, periodToTimestamp);
-                System.out.println("!!!!!!!!!   calculationsList.size()  " + calculationsList.size());
+                List<Services> servicesActiveList = adressServicesRepository.findAllServiceByActiveServiceAdress(adress);
+                calculationsList = calculationsRepository.findAllByAdressPeriodFromPeriodTo(adress, servicesActiveList, periodFromTimestamp, periodToTimestamp);
 
 
                 TreeMap<Date, List<Calculations>> dateTreeMap =
