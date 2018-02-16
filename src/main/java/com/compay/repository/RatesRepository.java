@@ -19,7 +19,10 @@ public interface RatesRepository extends JpaRepository<Rates, Integer> {
     @Query(value = "SELECT ADS.ADRESSID, AD.TYPE, " +
             "                        ADS.SERVICEID,  SERVICES.LINK, SERVICES.SERVICE_NAME, SERVICES.UNITS, " +
             "                        CASE WHEN R.FORMULA IS NULL THEN '' ELSE R.FORMULA END AS FORMULA, " +
-            "                        CAST(R.PERIOD_FROM AS TEXT) AS STARTDATE, M.NAME, CAST(R.MAINRATE AS FLOAT) AS MAINRATE, R.METHODID, R.USERSCALE, R.Id AS RATES_ID, ADS.ID " +
+            "                        CAST(CASE WHEN R.PERIOD_FROM IS NULL THEN 0 ELSE R.PERIOD_FROM END AS TEXT) AS STARTDATE, M.NAME, " +
+            "                        CAST(CASE WHEN R.MAINRATE IS NULL THEN 0 ELSE R.MAINRATE END AS FLOAT) AS MAINRATE, " +
+            "                        CASE WHEN R.METHODID IS NULL THEN 0 ELSE R.METHODID END, R.USERSCALE, " +
+            "                        CASE WHEN R.Id  IS NULL THEN 0 ELSE R.Id END AS RATES_ID, ADS.ID " +
             "                        FROM ADRESSSERVICES AS ADS " +
             "                        LEFT JOIN ADRESS AS AD ON ADS.ADRESSID = AD.id " +
             "                        LEFT JOIN SERVICES AS SERVICES ON ADS.SERVICEID = SERVICES.id " +

@@ -187,8 +187,17 @@ public class RatesControllers {
                 //createRate2(int methodId, int rates_id, float mainRate, String formula);
                 Rate2 rate2 = createRate2(adress, (int) rQ[12], (Float) rQ[9], ((String) rQ[6]));
 
-                Methods methods = methodsService.findMethodById((int) rQ[10]);
-                Method2 method2 = new Method2(methods.getId(), methods.getName(), methods.getView());
+                Method2 method2 = new Method2();
+                if ((int) rQ[10] != 0 ) {
+                    Methods methods = methodsService.findMethodById((int) rQ[10]);
+                    method2.setId(methods.getId());
+                    method2.setName(methods.getName());
+                    method2.setView(methods.getView());
+                }else {
+                    method2.setId(0);
+                    method2.setName("manual");
+                    method2.setView("Ручной ввод");
+                }
 
                 //History
                 ArrayList<History> historyList = new ArrayList<>();
@@ -254,7 +263,7 @@ public class RatesControllers {
         ArrayList<Scale> scaleArrayList = new ArrayList<Scale>();
 
         for (Scales scalesEntity : scalesEntityList) {
-            scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue()));
+            scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
         }
 
         Rate2 rate2 = new Rate2();
@@ -379,18 +388,18 @@ public class RatesControllers {
                 }
             }
 
-            if(updateBody.getServiceID() == 2||updateBody.getServiceID()==3||updateBody.getServiceID()==6||updateBody.getServiceID()==7){
+            if (updateBody.getServiceID() == 2 || updateBody.getServiceID() == 3 || updateBody.getServiceID() == 6 || updateBody.getServiceID() == 7) {
                 rateToUpdt.setMainRate(updateBody.getRate().getMainRate());
                 ratesService.update(rateToUpdt);
             }
 
-            if(updateBody.getServiceID()==4){
+            if (updateBody.getServiceID() == 4) {
                 rateToUpdt.setFormula(updateBody.getRate().getValue());
                 //find adress arg by arg id and adress id to update
-                AdressArguments adrArgTpUpd =adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(),2);
+                AdressArguments adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 2);
                 adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getMainRate().getValue());
                 adressArgumentsService.create(adrArgTpUpd);
-                adrArgTpUpd =adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(),1);
+                adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 1);
                 adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getLivingArea().getValue());
                 adressArgumentsService.create(adrArgTpUpd);
 

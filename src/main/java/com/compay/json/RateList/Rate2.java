@@ -14,7 +14,6 @@ public class Rate2
 
     public void setScale(ArrayList<Scale> scale) { this.scale = scale; }
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Float mainRate;
 
     public Float getMainRate() { return this.mainRate; }

@@ -48,11 +48,14 @@ public class AccountObjects {
     @Autowired
     DefaultRatesService defaultRatesService;
 
+    @Autowired
+    DefaultScalesService defaultScalesService;
 
     @Autowired
     AdressArgumentsService adressArgumentsService;
     @Autowired
     ArgumentsService argumentsService;
+
     @RequestMapping(value = "/accountObjects/add", method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBodyAdd(@RequestHeader(value = CONTENT_TYPE) String type,
@@ -80,17 +83,13 @@ public class AccountObjects {
                 adress.setStreet("");
 
 
-
-
-
-
                 //creating current first day of a month
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, 0);
                 calendar.set(Calendar.MINUTE, 0);
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
-                calendar.set(Calendar.DAY_OF_MONTH,1);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
 
                 Timestamp timestampObj = new Timestamp(calendar.getTimeInMillis());
 
@@ -98,18 +97,15 @@ public class AccountObjects {
                 Set<AdressServices> adressServSet = new HashSet<>();
                 for (Integer serviceId : accountObjectsJSON.getServices()) {
 
-
                     Services service = servicesService.findServicesById(serviceId);
 
                     if (service == null) throw new WrongDataExc();
-
-
 
                     AdressServices adressService = new AdressServices();
                     adressService.setAdress(adress);
                     adressService.setService(service);
 
-                    Set<Rates> rateSet=new HashSet<>();
+                    Set<Rates> rateSet = new HashSet<>();
                     DefaultRates defaultRate = defaultRatesService.findByService_Id(serviceId);
                     Rates rateToSet = new Rates();
                     rateToSet.setMainRate(defaultRate.getMainRate());
@@ -118,6 +114,18 @@ public class AccountObjects {
                     rateToSet.setUserScale(defaultRate.getUserScale());
                     rateToSet.setFormula(defaultRate.getFormula());
                     rateToSet.setAdressService(adressService);
+                    List<DefaultScales> defaultScalesList = defaultScalesService.findByDefaultRates(defaultRate);
+                    Set<Scales> scalesSet = new HashSet<>();
+                    for (DefaultScales defaultScales : defaultScalesList) {
+                        Scales scale = new Scales();
+                        scale.setMinValue(defaultScales.getMinValue());
+                        scale.setMaxValue(defaultScales.getMaxValue());
+                        scale.setMainRate(defaultScales.getMainRate());
+                        scale.setRate(rateToSet);
+                        scalesSet.add(scale);
+                    }
+                    rateToSet.setScale(scalesSet);
+
                     rateSet.add(rateToSet);
 
                     adressService.setRate(rateSet);
@@ -127,21 +135,17 @@ public class AccountObjects {
                 adress.setAdressService(adressServSet);
                 adressService.create(adress);
 
-
-
                 //made for rates update, dummy arguments
-                if(accountObjectsJSON.getName().equals("Квартира")){
-                    for(int i=0;i<2;i++){
-                        Arguments arguments = argumentsService.findArgumentById(i);
-                        AdressArguments ad= new AdressArguments();
-                        ad.setAdress(adress);
-                        ad.setValue(0.0);
-                        ad.setArgument(arguments);
-                        adressArgumentsService.create(ad);
-                    }
-                }
-
-
+//                if (accountObjectsJSON.getName().equals("Квартира")) {
+//                    for (int i = 1; i <= 3; i++) {
+//                        Arguments arguments = argumentsService.findArgumentById(i);
+//                        AdressArguments ad = new AdressArguments();
+//                        ad.setAdress(adress);
+//                        ad.setValue(0.0);
+//                        ad.setArgument(arguments);
+//                        adressArgumentsService.create(ad);
+//                    }
+//                }
 
                 response.setStatus(200);
                 response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
@@ -208,11 +212,11 @@ public class AccountObjects {
                         calendar.set(Calendar.MINUTE, 0);
                         calendar.set(Calendar.SECOND, 0);
                         calendar.set(Calendar.MILLISECOND, 0);
-                        calendar.set(Calendar.DAY_OF_MONTH,1);
+                        calendar.set(Calendar.DAY_OF_MONTH, 1);
 
                         Timestamp timestampObj = new Timestamp(calendar.getTimeInMillis());
 
-                        Set<Rates> rateSet=new HashSet<>();
+                        Set<Rates> rateSet = new HashSet<>();
                         DefaultRates defaultRate = defaultRatesService.findByService_Id(serviceId);
                         Rates rateToSet = new Rates();
                         rateToSet.setMainRate(defaultRate.getMainRate());
