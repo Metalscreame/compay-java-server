@@ -513,14 +513,14 @@ public class TestController {
         scale.setId(2);
         scale.setMainRate(1.20);//1.20
         scale.setMaxValue(600);
-        scale.setMinValue(101);
+        scale.setMinValue(100);
         scale.setRate(rateId1);
         scalesService.create(scale);
 
         scale.setId(3);
         scale.setMainRate(1.88);//1.88
         scale.setMaxValue(0);
-        scale.setMinValue(601);
+        scale.setMinValue(600);
         scale.setRate(rateId1);
         scalesService.create(scale);
 
@@ -534,14 +534,14 @@ public class TestController {
         scale.setId(5);
         scale.setMainRate(1.20);//1.20
         scale.setMaxValue(600);
-        scale.setMinValue(101);
+        scale.setMinValue(100);
         scale.setRate(rateId4);
         scalesService.create(scale);
 
         scale.setId(6);
         scale.setMainRate(1.88);//1.88
         scale.setMaxValue(0);
-        scale.setMinValue(601);
+        scale.setMinValue(600);
         scale.setRate(rateId4);
         scalesService.create(scale);
 
@@ -695,14 +695,14 @@ public class TestController {
         defaultScale.setId(2);
         defaultScale.setMainRate(1.20);//1.20
         defaultScale.setMaxValue(600);
-        defaultScale.setMinValue(101);
+        defaultScale.setMinValue(100);
         defaultScale.setRate(defaultRatesId1);
         defaultScalesService.create(defaultScale);
 
         defaultScale.setId(3);
         defaultScale.setMainRate(1.88);//1.88
         defaultScale.setMaxValue(0);
-        defaultScale.setMinValue(601);
+        defaultScale.setMinValue(600);
         defaultScale.setRate(defaultRatesId1);
         defaultScalesService.create(defaultScale);
 
