@@ -92,6 +92,7 @@ public class AccountObjects {
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
 
                 Timestamp timestampObj = new Timestamp(calendar.getTimeInMillis());
+                boolean isFormula = false;
 
                 //creating adress services and default rates for selected services
                 Set<AdressServices> adressServSet = new HashSet<>();
@@ -113,6 +114,9 @@ public class AccountObjects {
                     rateToSet.setPeriodFrom(timestampObj);
                     rateToSet.setUserScale(defaultRate.getUserScale());
                     rateToSet.setFormula(defaultRate.getFormula());
+                    if (defaultRate.getFormula() != null && !defaultRate.getFormula().isEmpty()){
+                        isFormula = true;
+                    }
                     rateToSet.setAdressService(adressService);
                     List<DefaultScales> defaultScalesList = defaultScalesService.findByDefaultRates(defaultRate);
                     Set<Scales> scalesSet = new HashSet<>();
@@ -136,16 +140,16 @@ public class AccountObjects {
                 adressService.create(adress);
 
                 //made for rates update, dummy arguments
-//                if (accountObjectsJSON.getName().equals("Квартира")) {
-//                    for (int i = 1; i <= 3; i++) {
-//                        Arguments arguments = argumentsService.findArgumentById(i);
-//                        AdressArguments ad = new AdressArguments();
-//                        ad.setAdress(adress);
-//                        ad.setValue(0.0);
-//                        ad.setArgument(arguments);
-//                        adressArgumentsService.create(ad);
-//                    }
-//                }
+                if (isFormula) {
+                    for (int i = 1; i <= 3; i++) {
+                        Arguments arguments = argumentsService.findArgumentById(i);
+                        AdressArguments ad = new AdressArguments();
+                        ad.setAdress(adress);
+                        ad.setValue(0.0);
+                        ad.setArgument(arguments);
+                        adressArgumentsService.create(ad);
+                    }
+                }
 
                 response.setStatus(200);
                 response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
