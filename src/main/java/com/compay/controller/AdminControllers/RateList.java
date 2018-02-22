@@ -141,7 +141,7 @@ public class RateList {
             //deserealize
             ArrayList<RateListPost> rateLists = fromJSON(new TypeReference<ArrayList<RateListPost>>() {
             }, body);
-            if (rateLists==null) throw new  WrongDataExc();
+            if (rateLists == null) throw new WrongDataExc();
 
             for (RateListPost r : rateLists) {
                 DefaultRates defaultRate = defaultRatesService.findDefaultRatesById(r.getService().getId());
@@ -181,7 +181,7 @@ public class RateList {
         } catch (WrongDataExc e) {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
-            return "{\"message\": \""+errMsg+"\"}";
+            return "{\"message\": \"" + errMsg + "\"}";
         } catch (Exception e) {
             response.setStatus(402);
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
@@ -197,7 +197,7 @@ public class RateList {
 //            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             data = new ObjectMapper().readValue(jsonPacket, type);
         } catch (Exception e) {
-            errMsg=e.getMessage();
+            errMsg = e.getMessage();
             return null;
         }
         return data;
