@@ -80,6 +80,7 @@ public class RatesControllers {
     private DefaultScalesRepository defaultScalesRepository;
 
 
+
     @RequestMapping(value = "/rates/{objectID}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
@@ -365,18 +366,35 @@ public class RatesControllers {
 
         Rates rateToUpdt = ratesService.findByAddIdAndStartDateAndMethod(addrSvcToFind.getId(), startDateMS, updateBody.getMethod());
 
-        try {
-            if (rateToUpdt == null) throw new WrongDataExc();
-        } catch (WrongDataExc e) {
-            response.setStatus(400);
-            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
-            return "{\"info\": \"Такого Method или StartDateTime или ObjectId или ServiceId не существует\"}";
+
+        //if there is no current date or method
+        if (rateToUpdt == null){
+            rateToUpdt.setPeriodFrom(startDateMS);
+            Methods methods = methodsService.findMethodById(updateBody.getMethod());
+            rateToUpdt.setMethod(methods);
+            rateToUpdt.setAdressService(addrSvcToFind);
+            ratesService.create(rateToUpdt);
         }
+
+
 
         try {
             if (updateBody.getServiceID() == 1) {
                 ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
                 ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
+                if(scalesToUpd==null){
+                    List<DefaultScales> defaultScalesToUpd = defaultScalesRepository.findAllByDefaultRates_Id(updateBody.getServiceID());
+                    int i = 0;
+                    for (DefaultScales s : defaultScalesToUpd) {
+                        com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
+                        s.setMainRate(scaleToSet.getMainRate());
+                        s.setMaxValue(scaleToSet.getMaxValue());
+                        s.setMinValue(scaleToSet.getMinValue());
+                        defaultScalesRepository.save(s);
+                        ++i;
+                    }
+                }
+
                 int i = 0;
                 for (Scales s : scalesToUpd) {
                     com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
