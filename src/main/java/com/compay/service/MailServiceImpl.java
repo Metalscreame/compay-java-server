@@ -32,7 +32,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendRecoveryMail(User user){
+    public void sendRecoveryMail(User user) {
         MimeMessagePreparator preparator = getMessagePreparatorRecovery(user);
         try {
             mailSender.send(preparator);
@@ -65,7 +65,7 @@ public class MailServiceImpl implements MailService {
                 mimeMessage.setRecipient(Message.RecipientType.TO,
                         new InternetAddress(user.getEmail()));
                 mimeMessage.setText("Дорогой " + user.getName()
-                        + ", ваш новый пароль: " + user.getPasswordDecoded()+"\n");
+                        + ", ваш новый пароль: " + user.getPasswordDecoded() + "\n");
                 mimeMessage.setSubject("С Любовью, Ваш Hillel");
             }
         };
