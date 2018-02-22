@@ -15,10 +15,10 @@ public class Adress {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable=false, referencedColumnName="Id")//foreignKey = @ForeignKey())
-     private User user;
+    @JoinColumn(name = "USER_ID", nullable = false, referencedColumnName = "Id")//foreignKey = @ForeignKey())
+    private User user;
 
-    @Column(name = "HOUSE_NUMBER",nullable = false)
+    @Column(name = "HOUSE_NUMBER", nullable = false)
     private short houseNumber;
 
     @Column(name = "STREET", nullable = false)
@@ -27,19 +27,19 @@ public class Adress {
     @Column(name = "APPARTMENT_NUMBER")
     private String appartmentNumber;
 
-    @Column(name = "CITY",nullable = false)
+    @Column(name = "CITY", nullable = false)
     private String city;
 
-    @Column(name = "REGION",nullable = false)
+    @Column(name = "REGION", nullable = false)
     private String region;
 
-    @Column(name = "DEFAULT_OBJ",nullable = false)
+    @Column(name = "DEFAULT_OBJ", nullable = false)
     private boolean objectDefault;
 
     public Adress() {
     }
 
-    @Column(name = "TYPE",nullable = false)
+    @Column(name = "TYPE", nullable = false)
     private String type;
 
 
@@ -116,13 +116,13 @@ public class Adress {
         this.region = region;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "adress")
     private Set<AdressArguments> adress;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "adress")
     private Set<Calculations> adressCalulations;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="adress")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "adress")
     private Set<AdressServices> adressService;
 
     public void setAdressService(Set<AdressServices> adressService) {
