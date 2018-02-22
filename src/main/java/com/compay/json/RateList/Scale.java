@@ -2,6 +2,16 @@ package com.compay.json.RateList;
 
 public class Scale
 {
+    private int minValue;
+
+    public int getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
+    }
+
     private int maxValue;
 
     public int getMaxValue() { return this.maxValue; }
@@ -12,7 +22,8 @@ public class Scale
 
     public double getMainRate() { return this.mainRate; }
 
-    public Scale(int maxValue, double mainRate) {
+    public Scale(int minValue, int maxValue, double mainRate) {
+        this.minValue = minValue;
         this.maxValue = maxValue;
         this.mainRate = mainRate;
     }

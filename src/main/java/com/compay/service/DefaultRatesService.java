@@ -3,6 +3,7 @@ package com.compay.service;
 
 import com.compay.entity.DefaultRates;
 import com.compay.entity.Rates;
+import com.compay.entity.Services;
 
 import java.util.List;
 

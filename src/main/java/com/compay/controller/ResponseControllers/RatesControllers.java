@@ -80,6 +80,7 @@ public class RatesControllers {
     private DefaultScalesRepository defaultScalesRepository;
 
 
+
     @RequestMapping(value = "/rates/{objectID}", method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
@@ -187,8 +188,17 @@ public class RatesControllers {
                 //createRate2(int methodId, int rates_id, float mainRate, String formula);
                 Rate2 rate2 = createRate2(adress, (int) rQ[12], (Float) rQ[9], ((String) rQ[6]));
 
-                Methods methods = methodsService.findMethodById((int) rQ[10]);
-                Method2 method2 = new Method2(methods.getId(), methods.getName(), methods.getView());
+                Method2 method2 = new Method2();
+                if ((int) rQ[10] != 0 ) {
+                    Methods methods = methodsService.findMethodById((int) rQ[10]);
+                    method2.setId(methods.getId());
+                    method2.setName(methods.getName());
+                    method2.setView(methods.getView());
+                }else {
+                    method2.setId(0);
+                    method2.setName("manual");
+                    method2.setView("Ручной ввод");
+                }
 
                 //History
                 ArrayList<History> historyList = new ArrayList<>();
@@ -254,7 +264,7 @@ public class RatesControllers {
         ArrayList<Scale> scaleArrayList = new ArrayList<Scale>();
 
         for (Scales scalesEntity : scalesEntityList) {
-            scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue()));
+            scaleArrayList.add(new Scale(scalesEntity.getMinValue(), scalesEntity.getMaxValue(), scalesEntity.getMainRate()));
         }
 
         Rate2 rate2 = new Rate2();
@@ -356,18 +366,35 @@ public class RatesControllers {
 
         Rates rateToUpdt = ratesService.findByAddIdAndStartDateAndMethod(addrSvcToFind.getId(), startDateMS, updateBody.getMethod());
 
-        try {
-            if (rateToUpdt == null) throw new WrongDataExc();
-        } catch (WrongDataExc e) {
-            response.setStatus(400);
-            response.setHeader("headers", "{\"Content-Type\": \"application/json\"}");
-            return "{\"info\": \"Такого Method или StartDateTime или ObjectId или ServiceId не существует\"}";
+
+        //if there is no current date or method
+        if (rateToUpdt == null){
+            rateToUpdt.setPeriodFrom(startDateMS);
+            Methods methods = methodsService.findMethodById(updateBody.getMethod());
+            rateToUpdt.setMethod(methods);
+            rateToUpdt.setAdressService(addrSvcToFind);
+            ratesService.create(rateToUpdt);
         }
+
+
 
         try {
             if (updateBody.getServiceID() == 1) {
                 ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
                 ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
+                if(scalesToUpd==null){
+                    List<DefaultScales> defaultScalesToUpd = defaultScalesRepository.findAllByDefaultRates_Id(updateBody.getServiceID());
+                    int i = 0;
+                    for (DefaultScales s : defaultScalesToUpd) {
+                        com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
+                        s.setMainRate(scaleToSet.getMainRate());
+                        s.setMaxValue(scaleToSet.getMaxValue());
+                        s.setMinValue(scaleToSet.getMinValue());
+                        defaultScalesRepository.save(s);
+                        ++i;
+                    }
+                }
+
                 int i = 0;
                 for (Scales s : scalesToUpd) {
                     com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
@@ -379,18 +406,18 @@ public class RatesControllers {
                 }
             }
 
-            if(updateBody.getServiceID() == 2||updateBody.getServiceID()==3||updateBody.getServiceID()==6||updateBody.getServiceID()==7){
+            if (updateBody.getServiceID() == 2 || updateBody.getServiceID() == 3 || updateBody.getServiceID() == 6 || updateBody.getServiceID() == 7) {
                 rateToUpdt.setMainRate(updateBody.getRate().getMainRate());
                 ratesService.update(rateToUpdt);
             }
 
-            if(updateBody.getServiceID()==4){
+            if (updateBody.getServiceID() == 4) {
                 rateToUpdt.setFormula(updateBody.getRate().getValue());
                 //find adress arg by arg id and adress id to update
-                AdressArguments adrArgTpUpd =adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(),2);
+                AdressArguments adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 2);
                 adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getMainRate().getValue());
                 adressArgumentsService.create(adrArgTpUpd);
-                adrArgTpUpd =adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(),1);
+                adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 1);
                 adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getLivingArea().getValue());
                 adressArgumentsService.create(adrArgTpUpd);
 

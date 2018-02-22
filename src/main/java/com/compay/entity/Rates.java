@@ -105,6 +105,10 @@ public class Rates {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rate")
     private Set<Scales> scale;
 
+    public void setScale(Set<Scales> scale) {
+        this.scale = scale;
+    }
+
     @Override
     public String toString() {
         return "Rates{" +

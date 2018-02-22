@@ -15,8 +15,8 @@ import java.util.List;
 @Repository
 public interface DefaultRatesRepository extends JpaRepository<DefaultRates, Integer> {
 
-    @Query("SELECT d from DefaultRates d where d.defaultServices.id=:id")
-    DefaultRates findDefaultRatesByService_Id(@Param("id")int serviceId);
+    @Query("SELECT d from DefaultRates d where d.defaultServices.id=:serviceId")
+    DefaultRates findDefaultRatesByService_Id(@Param("serviceId")int serviceId);
 
     @Transactional
     @Modifying

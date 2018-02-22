@@ -2,6 +2,7 @@ package com.compay.service;
 
 import com.compay.entity.DefaultRates;
 import com.compay.entity.Rates;
+import com.compay.entity.Services;
 import com.compay.repository.DefaultRatesRepository;
 import com.compay.repository.RatesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
