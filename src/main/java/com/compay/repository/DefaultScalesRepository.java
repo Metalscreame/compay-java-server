@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface DefaultScalesRepository extends JpaRepository<DefaultScales, Integer> {
     List<DefaultScales> findAllByDefaultRates(DefaultRates defaultRates);
+    List<DefaultScales> findAllByDefaultRates_Id(int id);
 }
