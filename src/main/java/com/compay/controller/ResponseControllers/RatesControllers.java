@@ -367,8 +367,9 @@ public class RatesControllers {
         Rates rateToUpdt = ratesService.findByAddIdAndStartDateAndMethod(addrSvcToFind.getId(), startDateMS, updateBody.getMethod());
 
 
-        //if there is no current date or method
+        //if there is no current date or method then create new rates
         if (rateToUpdt == null){
+            rateToUpdt = new Rates();
             rateToUpdt.setPeriodFrom(startDateMS);
             Methods methods = methodsService.findMethodById(updateBody.getMethod());
             rateToUpdt.setMethod(methods);
