@@ -90,6 +90,8 @@ public class AccountObjects {
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
+                calendar.set(Calendar.MONTH,1);
+                calendar.set(Calendar.YEAR,2017);
 
                 Timestamp timestampObj = new Timestamp(calendar.getTimeInMillis());
                 boolean isFormula = false;
