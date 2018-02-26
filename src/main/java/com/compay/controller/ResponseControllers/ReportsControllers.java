@@ -8,8 +8,10 @@ import com.compay.entity.Rates;
 import com.compay.exception.AuthException;
 import com.compay.exception.WrongDataExc;
 import com.compay.global.Constants;
+import com.compay.json.RatesUpdate.RatesUpdate;
 import com.compay.json.reports.ReportCalculation;
 import com.compay.json.reports.ReportsBuilder;
+import com.compay.json.reports.ReportsPOSTBody;
 import com.compay.repository.AdressServicesRepository;
 import com.compay.repository.CalculationsRepository;
 import com.compay.repository.RatesRepository;
@@ -18,13 +20,10 @@ import com.compay.service.AdressServicesService;
 import com.compay.service.ServicesService;
 import com.compay.service.TokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
@@ -59,13 +58,26 @@ public class ReportsControllers {
     public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
                                @RequestHeader(value = AUTHORIZATION) String authToken,
                                HttpServletResponse response,
-                               @RequestParam("objectID") int objectID,
-                               @RequestParam("serviceID") int serviceID,
-                               @RequestParam("periodFrom") String periodFrom,
-                               @RequestParam("periodTo") String periodTo) throws ParseException, JsonProcessingException {
+                               @RequestBody String body) throws ParseException, JsonProcessingException {
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
+
+            //deserialize
+            ReportsPOSTBody updateBody;
+            try {
+                updateBody = new ObjectMapper().readValue(body, ReportsPOSTBody.class);
+            } catch (Exception e) {
+                response.setStatus(402);
+                response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
+                return "{\"info\": \"Wrong data\"}";
+            }
+            //deserialize
+
+            //its a bug fix,so no time for refactor!)
+            int objectID = updateBody.getObjectID(), serviceID = updateBody.getServiceID();
+            String periodFrom = updateBody.getPeriodFrom();
+            String periodTo = updateBody.getPeriodTo();
 
             //checking for correct objectID
             final Adress adress = adressService.findAdressById(objectID);
