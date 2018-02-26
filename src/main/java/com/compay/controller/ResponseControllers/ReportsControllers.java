@@ -54,7 +54,7 @@ public class ReportsControllers {
     private CalculationsRepository calculationsRepository;
 
     @RequestMapping(value = "/reports",
-            method = RequestMethod.GET, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
+            method = RequestMethod.POST, produces = Constants.MimeTypes.UTF_8_PLAIN_TEXT)
     @ResponseBody
     public String responseBody(@RequestHeader(value = CONTENT_TYPE) String type,
                                @RequestHeader(value = AUTHORIZATION) String authToken,
