@@ -383,16 +383,18 @@ public class RatesControllers {
             if (updateBody.getServiceID() == 1) {
                 ArrayList<com.compay.json.RatesUpdate.Scale> scalesReceived = updateBody.getRate().getScale();
                 ArrayList<Scales> scalesToUpd = scalesService.findAllByRate(rateToUpdt);
-                if(scalesToUpd==null){
-                    List<DefaultScales> defaultScalesToUpd = defaultScalesRepository.findAllByDefaultRates_Id(updateBody.getServiceID());
-                    int i = 0;
-                    for (DefaultScales s : defaultScalesToUpd) {
+
+                //if there is no scale in the db
+                if(scalesToUpd.size()==0){
+
+                    for (int i =0;i<scalesReceived.size();i++) {
+                        Scales scales = new Scales();
                         com.compay.json.RatesUpdate.Scale scaleToSet = scalesReceived.get(i);
-                        s.setMainRate(scaleToSet.getMainRate());
-                        s.setMaxValue(scaleToSet.getMaxValue());
-                        s.setMinValue(scaleToSet.getMinValue());
-                        defaultScalesRepository.save(s);
-                        ++i;
+                        scales.setMainRate(scaleToSet.getMainRate());
+                        scales.setMaxValue(scaleToSet.getMaxValue());
+                        scales.setMinValue(scaleToSet.getMinValue());
+                        scales.setRate(rateToUpdt);
+                        scalesRepository.save(scales);
                     }
                 }
 
@@ -402,6 +404,7 @@ public class RatesControllers {
                     s.setMainRate(scaleToSet.getMainRate());
                     s.setMaxValue(scaleToSet.getMaxValue());
                     s.setMinValue(scaleToSet.getMinValue());
+                    s.setRate(rateToUpdt);
                     scalesService.update(s);
                     ++i;
                 }
