@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Req {
 
     @JsonProperty("persAcc")
-    public int persAcc;
+    public String  persAcc;
     @JsonProperty("checkAcc")
     public String checkAcc;
     @JsonProperty("MFO")
-    public int MFO;
+    public String MFO;
     @JsonProperty("EGRPO")
-    public int EGRPO;
+    public String EGRPO;
 
-    public Req(int persAcc, String checkAcc, int MFO, int EGRPO) {
+    public Req(String persAcc, String checkAcc, String MFO, String EGRPO) {
         this.persAcc = persAcc;
         this.checkAcc = checkAcc;
         this.MFO = MFO;
@@ -25,7 +25,7 @@ public class Req {
     }
 
 
-    public int getPersAcc() {
+    public String getPersAcc() {
         return persAcc;
     }
 
@@ -33,11 +33,11 @@ public class Req {
         return checkAcc;
     }
 
-    public int getMFO() {
+    public String getMFO() {
         return MFO;
     }
 
-    public int getEGRPO() {
+    public String getEGRPO() {
         return EGRPO;
     }
 }
