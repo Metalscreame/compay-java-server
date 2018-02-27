@@ -417,8 +417,8 @@ public class TestController {
         adressService1.setId(1);
         adressService1.setAdress(adressId1);
         adressService1.setService(service1);
-        adressService1.setPersAcc(123456);
-        adressService1.setCheckAcc(260065789876890L);
+        adressService1.setPersAcc("123456");
+        adressService1.setCheckAcc("260065789876890");
         adressService1.setMFO(309802);
         adressService1.setEGRPO(12324232);
         adressServicesService.create(adressService1);
@@ -427,8 +427,8 @@ public class TestController {
         adressService2.setId(2);
         adressService2.setAdress(adressId1);
         adressService2.setService(service2);
-        adressService2.setPersAcc(123456);
-        adressService2.setCheckAcc(260065789876890L);
+        adressService2.setPersAcc("123456");
+        adressService2.setCheckAcc("260065789876890");
         adressService2.setMFO(309802);
         adressService2.setEGRPO(12324232);
         adressServicesService.create(adressService2);
@@ -437,8 +437,8 @@ public class TestController {
         adressService3.setId(3);
         adressService3.setAdress(adressId1);
         adressService3.setService(service5);
-        adressService3.setPersAcc(123456);
-        adressService3.setCheckAcc(260065789876890L);
+        adressService3.setPersAcc("123456");
+        adressService3.setCheckAcc("260065789876890");
         adressService3.setMFO(309802);
         adressService3.setEGRPO(12324232);
         adressServicesService.create(adressService3);
