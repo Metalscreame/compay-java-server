@@ -19,10 +19,11 @@ public class AdressServices {
     private boolean notActive;
 
     @Column(name = "PERSACC")
-    private int persAcc;
+    private String persAcc;
+
 
     @Column(name = "CHECKACC")
-    private long checkAcc;
+    private String checkAcc;
 
     @Column(name = "MFO")
     private int MFO;
@@ -73,19 +74,19 @@ public class AdressServices {
         this.rate = rate;
     }
 
-    public int getPersAcc() {
+    public String getPersAcc() {
         return persAcc;
     }
 
-    public void setPersAcc(int persAcc) {
+    public void setPersAcc(String persAcc) {
         this.persAcc = persAcc;
     }
 
-    public long getCheckAcc() {
+    public String getCheckAcc() {
         return checkAcc;
     }
 
-    public void setCheckAcc(long checkAcc) {
+    public void setCheckAcc(String checkAcc) {
         this.checkAcc = checkAcc;
     }
 

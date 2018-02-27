@@ -84,9 +84,9 @@ public class RequaritiesController {
             }
 
             reqToUpdate.setPersAcc(updateBody.getReq().getPersAcc());
-            reqToUpdate.setCheckAcc(Long.parseLong(updateBody.getReq().getCheckAcc()));
-            reqToUpdate.setEGRPO(updateBody.getReq().getEGRPO());
-            reqToUpdate.setMFO(updateBody.getReq().getMFO());
+            reqToUpdate.setCheckAcc(updateBody.getReq().getCheckAcc());
+            reqToUpdate.setEGRPO(Integer.parseInt(updateBody.getReq().getEGRPO()));
+            reqToUpdate.setMFO(Integer.parseInt(updateBody.getReq().getMFO()));
 
             adressServicesService.update(reqToUpdate);
 
@@ -109,10 +109,7 @@ public class RequaritiesController {
             @RequestHeader(value = AUTHORIZATION) String authToken,
             HttpServletResponse response,
             @PathVariable("objectID") int id) throws AuthException, JsonProcessingException {
-
         String result = "";
-
-
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
@@ -121,21 +118,17 @@ public class RequaritiesController {
             response.setHeader("headers", "{\"Content-Type\":\"application/json\"}");
             return "{\"message\": \"Unauthorized\"}";
         }
-
-
         try {
             if (tokenService.authChek(authToken)) {
             } else throw new AuthException();
 
+
             Adress adress = adressService.findAdressById(id);
-
             List<AdressServices> adressServicesList = adressServicesService.findAllByAdress(adress);
-
             ReqGetBuilder builder = new ReqGetBuilder();
 
             for (AdressServices adressService : adressServicesList) {
-
-                Req req = new Req(adressService.getPersAcc(), String.valueOf(adressService.getCheckAcc()), adressService.getMFO(), adressService.getEGRPO());
+                Req req = new Req(adressService.getPersAcc(), String.valueOf(adressService.getCheckAcc()), String.valueOf(adressService.getMFO()), String.valueOf(adressService.getEGRPO()));
 
                 ReqService reqService = new ReqService((byte) adressService.getService().getId(), adressService.getService().getServiceName(), req);
                 builder.addInfo(reqService);
