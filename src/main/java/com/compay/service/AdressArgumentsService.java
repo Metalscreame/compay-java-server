@@ -11,5 +11,5 @@ public interface AdressArgumentsService {
     AdressArguments create(AdressArguments adressArgument);
     List<AdressArguments> findAllByAdress(Adress adress);
     List<AdressArguments> findAllByArgument(Arguments argument);
-    AdressArguments findByAdrIdAndArgId(Integer id,Integer argId);
+    AdressArguments findByAdrIdAndArgId(int id,int argId);
 }

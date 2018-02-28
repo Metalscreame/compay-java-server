@@ -410,21 +410,27 @@ public class RatesControllers {
                 }
             }
 
-            if (updateBody.getServiceID() == 2 || updateBody.getServiceID() == 3 || updateBody.getServiceID() == 6 || updateBody.getServiceID() == 7) {
+            if (updateBody.getServiceID() == 2 || updateBody.getServiceID() == 3 || updateBody.getServiceID() == 6 || updateBody.getServiceID() == 7 || updateBody.getServiceID() == 4) {
                 rateToUpdt.setMainRate(updateBody.getRate().getMainRate());
                 ratesService.update(rateToUpdt);
             }
 
-            if (updateBody.getServiceID() == 4) {
+            if (updateBody.getServiceID() == 5) {
+                rateToUpdt.setMainRate(updateBody.getRate().getMainRate());
                 rateToUpdt.setFormula(updateBody.getRate().getValue());
                 //find adress arg by arg id and adress id to update
-                AdressArguments adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 2);
-                adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getMainRate().getValue());
-                adressArgumentsService.create(adrArgTpUpd);
-                adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 1);
-                adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getLivingArea().getValue());
-                adressArgumentsService.create(adrArgTpUpd);
-
+                AdressArguments adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 1);
+                if(adrArgTpUpd!= null &&
+                        updateBody.getRate().getAttrs().getLivingArea() != null){
+                    adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getLivingArea().getValue());
+                    adressArgumentsService.create(adrArgTpUpd);
+                }
+                adrArgTpUpd = adressArgumentsService.findByAdrIdAndArgId(updateBody.getObjectID(), 3);
+                if(adrArgTpUpd!= null &&
+                        updateBody.getRate().getAttrs().getRegisteredPersons()!= null){
+                    adrArgTpUpd.setValue(updateBody.getRate().getAttrs().getRegisteredPersons().getValue());
+                    adressArgumentsService.create(adrArgTpUpd);
+                }
                 ratesService.update(rateToUpdt);
             }
 
