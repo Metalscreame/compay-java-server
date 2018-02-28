@@ -14,5 +14,6 @@ public interface AdressArgumentsRepository extends JpaRepository<AdressArguments
     List<AdressArguments> findAllByArgument(Arguments argument);
 
 
-    AdressArguments findByAdress_IdAndArgument_Id(Integer id, Integer argId);
+    AdressArguments findByAdress_IdAndArgument_Id(int id, int argId);
+
 }

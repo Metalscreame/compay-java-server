@@ -37,7 +37,7 @@ public class AdressArgumentsServiceImpl implements  AdressArgumentsService{
     }
 
     @Override
-    public AdressArguments findByAdrIdAndArgId(Integer id,Integer argId) {
+    public AdressArguments findByAdrIdAndArgId(int id,int argId) {
         return adressArgumentsRepository.findByAdress_IdAndArgument_Id(id,argId);
     }
 }

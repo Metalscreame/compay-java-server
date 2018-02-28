@@ -11,6 +11,13 @@ public class Attrs {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private MainRate livingArea;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private MainRate registeredPersons;
+
+    public MainRate getRegisteredPersons() {
+        return registeredPersons;
+    }
+
     public MainRate getMainRate() {
         return mainRate;
     }
